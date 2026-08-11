@@ -5,6 +5,7 @@
   border-radius:980px;border:1px solid var(--line);background:rgba(255,255,255,.9);outline:none;
   transition:width .2s,border-color .2s;-webkit-appearance:none}
 #as-q:focus{width:270px;border-color:var(--blue);background:#fff}
+.as-results[hidden]{display:none!important}
 .as-results{position:absolute;top:40px;right:0;width:340px;max-width:88vw;background:#fff;
   border:1px solid var(--line);border-radius:16px;box-shadow:0 14px 42px rgba(0,0,0,.18);
   overflow:hidden;z-index:200;max-height:64vh;overflow-y:auto}
@@ -25,6 +26,7 @@
 .as-fab::before{content:"✦";margin-right:7px}
 .as-fab:hover{transform:translateY(-2px) scale(1.03);box-shadow:0 10px 30px rgba(10,111,232,.5)}
 .as-fab.open{background:#6e6e73;box-shadow:0 4px 14px rgba(0,0,0,.25)}
+.as-panel[hidden]{display:none!important}
 .as-panel{position:fixed;right:20px;bottom:82px;z-index:300;width:390px;max-width:calc(100vw - 32px);
   height:min(560px,74vh);background:#fff;border-radius:22px;border:1px solid var(--line);
   box-shadow:0 18px 60px rgba(0,0,0,.24);display:flex;flex-direction:column;overflow:hidden}
