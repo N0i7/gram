@@ -114,3 +114,32 @@ footer p{margin-bottom:5px}
 .vbox li{font-size:13.5px;padding:3px 0;border-bottom:1px solid #f5f5f7}
 .vbox li:last-child{border-bottom:none}
 .vbox li .en{float:right;font-style:normal}
+
+/* ===== Aufgabentyp: Satz bauen ===== */
+.ord-answer{min-height:48px;border:2px dashed var(--line);border-radius:14px;padding:9px;
+  display:flex;flex-wrap:wrap;gap:7px;align-items:center;margin-bottom:10px;background:#fbfbfd}
+.ord-answer:empty::before{content:attr(data-empty);color:#a8a8ad;font-size:13.5px;padding-left:5px}
+.ord-answer.ok{border-style:solid;border-color:var(--ok);background:#e8fbee}
+.ord-answer.err{border-style:solid;border-color:var(--err);background:#ffecea}
+.ord-pool{display:flex;flex-wrap:wrap;gap:7px;margin-bottom:11px}
+.word{font-family:inherit;font-size:15px;padding:8px 14px;border-radius:11px;border:1.5px solid var(--line);
+  background:#fff;cursor:pointer;transition:all .13s}
+.word:hover:not(:disabled){border-color:var(--blue);color:var(--blue);transform:translateY(-1px)}
+.word:disabled{cursor:default;opacity:.9}
+.ord-actions{display:flex;gap:9px;margin-bottom:4px}
+.btn-chk{font-family:inherit;font-size:14px;padding:9px 20px;border-radius:980px;border:none;
+  background:var(--blue);color:#fff;cursor:pointer}
+.btn-ghost{font-family:inherit;font-size:14px;padding:9px 18px;border-radius:980px;
+  border:1.5px solid var(--line);background:#fff;color:var(--sec);cursor:pointer}
+.btn-ghost:hover{border-color:var(--sec);color:var(--text)}
+
+/* ===== Aufgabentyp: Zuordnen ===== */
+.match{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:6px}
+.m-col{display:flex;flex-direction:column;gap:7px}
+.m-left,.m-right{font-family:inherit;font-size:14.5px;padding:10px 13px;border-radius:12px;
+  border:1.5px solid var(--line);background:#fff;cursor:pointer;text-align:left;transition:all .13s}
+.m-left:hover:not(:disabled),.m-right:hover:not(:disabled){border-color:var(--blue);color:var(--blue)}
+.m-left.sel{border-color:var(--blue);background:#eaf3ff;color:var(--blue);font-weight:600}
+.m-left.ok,.m-right.ok{background:#e8fbee;border-color:var(--ok);color:#1a7a3a;font-weight:600}
+.m-left.err,.m-right.err{background:#ffecea;border-color:var(--err);color:#c22}
+.m-left:disabled,.m-right:disabled{cursor:default}

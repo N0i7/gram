@@ -15,7 +15,9 @@ q:[
 {q:"Partizip II von „einkaufen“:", o:["geeinkauft","eingekauft","einkauft"], c:1, h:"trennbar: ein + ge + kauft."},
 {q:"Partizip II von „telefonieren“:", o:["getelefoniert","telefoniert","getelefonieren"], c:1, h:"-ieren-Verben ohne ge-."},
 {q:"Wir ___ zu Hause geblieben.", o:["haben","sind","waren"], c:1, h:"bleiben nimmt immer sein."},
-{type:"gap", q:"Partizip II von „trinken“: Ich habe Wasser ___.", a:["getrunken"], h:"unregelmäßig: ge…en mit Vokalwechsel."}
+{type:"gap", q:"Partizip II von „trinken“: Ich habe Wasser ___.", a:["getrunken"], h:"unregelmäßig: ge…en mit Vokalwechsel."},
+{type:"match", q:"Ordne Infinitiv und Perfekt zu:", pairs:[["essen","hat gegessen"],["gehen","ist gegangen"],["einkaufen","hat eingekauft"],["telefonieren","hat telefoniert"],["bleiben","ist geblieben"]], h:"Bewegung und bleiben nehmen sein, der Rest haben."},
+{type:"order", q:"Baue den Perfekt-Satz: Partizip ans Ende.", w:["Gestern","habe","ich","eine","Pizza","gegessen"], a:["Gestern habe ich eine Pizza gegessen"], h:"habe auf Position 2, gegessen ganz ans Ende."}
 ]},
 
 {id:"praeteritum", chip:"war · hatte", title:"Präteritum: war, hatte, konnte", titleEn:"Simple past of sein, haben & modals",
@@ -40,7 +42,8 @@ q:[
 {q:"Ich fahre mit ___ Bus.", o:["den","dem","der"], c:1, h:"mit + Dativ: dem Bus."},
 {q:"Die Pizza schmeckt ___ Kindern.", o:["die","den","der"], c:1, h:"Plural-Dativ: den Kindern."},
 {q:"Er kommt ___ der Arbeit nach Hause.", o:["von","vom","zu"], c:0, h:"von + Dativ: von der Arbeit."},
-{type:"gap", q:"Ich danke ___ (du → Dativ).", a:["dir"], h:"danken + Dativ: dir."}
+{type:"gap", q:"Ich danke ___ (du → Dativ).", a:["dir"], h:"danken + Dativ: dir."},
+{type:"match", q:"Ordne Verb und Kasus zu:", pairs:[["helfen","Dativ"],["sehen","Akkusativ"],["gehören","Dativ"],["kaufen","Akkusativ"],["gefallen","Dativ"]], h:"helfen, gehören, gefallen fordern immer Dativ."}
 ]},
 
 {id:"wechsel", chip:"Wo? Wohin?", title:"Wechselpräpositionen", titleEn:"Two-way prepositions: Wo or Wohin?",
@@ -53,7 +56,8 @@ q:[
 {q:"Er legt das Handy ___ Tisch.", o:["auf dem","auf den","auf der"], c:1, h:"legen = Bewegung → auf den Tisch."},
 {q:"Das Handy liegt ___ Tisch.", o:["auf dem","auf den","auf das"], c:0, h:"liegen = Position → auf dem Tisch."},
 {q:"Wir fahren ___ Strand.", o:["am","an den","an dem"], c:1, h:"Wohin? → an den Strand."},
-{type:"gap", q:"Das Bild hängt ___ der Wand. (an + Dativ)", a:["an"], h:"Wo? → an der Wand."}
+{type:"gap", q:"Das Bild hängt ___ der Wand. (an + Dativ)", a:["an"], h:"Wo? → an der Wand."},
+{type:"match", q:"Wo oder wohin? Ordne zu:", pairs:[["Ich gehe ins Kino.","Wohin? → Akkusativ"],["Ich bin im Kino.","Wo? → Dativ"],["Ich lege das Buch auf den Tisch.","Wohin? → Akkusativ"],["Das Buch liegt auf dem Tisch.","Wo? → Dativ"]], h:"Bewegung = Akkusativ, Position = Dativ."}
 ]},
 
 {id:"nebensatz", chip:"weil · dass · wenn", title:"Nebensätze: weil, dass, wenn", titleEn:"Subordinate clauses — verb to the end!",
@@ -66,7 +70,9 @@ q:[
 {q:"Ich hoffe, ___ du kommst.", o:["dass","weil","wenn"], c:0, h:"Aussage/Hoffnung → dass."},
 {q:"___ es regnet, bleiben wir hier.", o:["Dass","Wenn","Weil"], c:1, h:"Bedingung → wenn."},
 {q:"Wenn ich Geld habe, ___ ich ein Auto.", o:["ich kaufe","kaufe","kaufe ich"], c:1, h:"Nebensatz vorn → im Hauptsatz kommt zuerst das Verb: …, kaufe ich ein Auto."},
-{type:"gap", q:"Er sagt, dass er müde ___.", a:["ist"], h:"Verb ans Ende: … dass er müde ist."}
+{type:"gap", q:"Er sagt, dass er müde ___.", a:["ist"], h:"Verb ans Ende: … dass er müde ist."},
+{type:"order", q:"Baue den Nebensatz: Verb ans Ende!", w:["Ich","lerne","Deutsch,","weil","ich","in","Deutschland","arbeiten","will"], a:["Ich lerne Deutsch, weil ich in Deutschland arbeiten will"], h:"Nach weil steht das konjugierte Verb ganz am Ende."},
+{type:"order", q:"Nebensatz zuerst: Was passiert im Hauptsatz?", w:["Wenn","ich","Zeit","habe,","gehe","ich","ins","Gym"], a:["Wenn ich Zeit habe, gehe ich ins Gym"], h:"Nebensatz vorn → Hauptsatz beginnt mit dem Verb."}
 ]},
 
 {id:"komparativ", chip:"Komparativ", title:"Komparativ & Superlativ", titleEn:"Comparative & superlative",
@@ -171,5 +177,118 @@ q:[
 {q:"„Ich finde, dass Deutsch wichtig ___.“", o:["ist","sein","–"], c:0, h:"dass-Satz: Verb ans Ende → ist."},
 {q:"Jemand sagt „Entschuldigung“. Du antwortest:", o:["Viel Glück!","Das macht nichts.","Bis später!"], c:1, h:"Das macht nichts = never mind."},
 {type:"gap", q:"Meiner ___ nach ist Cebu wunderschön. <span class='en'>(in my opinion)</span>", a:["meinung"], h:"Meiner Meinung nach + Verb."}
+]}
+,
+{id:"komma", chip:"Komma", title:"Komma: die Grundregeln", titleEn:"Commas: the basic rules",
+explain:"<p>Auf A2 brauchst du zwei Regeln:</p><p><b>1 · Vor Nebensätzen</b> — vor <b>weil, dass, wenn, ob, obwohl</b> und vor Relativsätzen steht immer ein Komma.</p><div class='ex'>Ich bleibe zu Hause<b>,</b> weil ich krank bin.<br>Ich glaube<b>,</b> dass er kommt.<br>Wenn es regnet<b>,</b> bleiben wir hier. <span class='small'>(Nebensatz vorn → Komma dahinter)</span></div><p><b>2 · Bei Aufzählungen</b> — Komma zwischen den Teilen, aber <b>nicht</b> vor „und“ und „oder“.</p><div class='ex'>Ich kaufe Brot<b>,</b> Milch<b>,</b> Käse und Obst.</div><p>Kein Komma vor <b>und/oder</b> in einfachen Aufzählungen. Bei „aber“ und „sondern“ steht dagegen ein Komma: <i>Ich bin müde<b>,</b> aber glücklich.</i></p><p class='en'>Comma before subordinate clauses (weil, dass, wenn, ob, obwohl, relative clauses) and between items in a list — but not before und/oder.</p>",
+merk:"Verb am Satzende? Dann steht davor fast sicher ein Komma.",
+merkEn:"Verb at the end of the clause? There's almost certainly a comma before it.",
+q:[
+{q:"Wo steht das Komma? „Ich lerne Deutsch weil ich nach Deutschland will.“", o:["vor „weil“","vor „nach“","kein Komma"], c:0, h:"Nebensatz mit weil → Komma davor."},
+{q:"Welcher Satz ist richtig?", o:["Ich kaufe Brot, und Milch.","Ich kaufe Brot, Milch und Käse.","Ich kaufe, Brot Milch und Käse."], c:1, h:"Aufzählung: Komma zwischen den Teilen, keins vor und."},
+{q:"„Wenn ich Zeit habe ___ gehe ich ins Gym.“", o:["Komma","kein Komma","Punkt"], c:0, h:"Nebensatz vorn → Komma dahinter."},
+{type:"gap", q:"Braucht dieser Satz ein Komma? „Ich bin müde aber glücklich.“ Antworte „ja“ oder „nein“.", a:["ja"], h:"Vor „aber“ steht ein Komma."}
+]}
+,
+{id:"ndeklination", chip:"n-Deklination", title:"Die n-Deklination", titleEn:"Weak masculine nouns",
+explain:"<p>Eine kleine Gruppe maskuliner Nomen bekommt in <b>allen Fällen außer Nominativ</b> ein <b>-(e)n</b>.</p><table class='wide'><tr><th>Fall</th><th>Beispiel</th></tr><tr><td class='thn'>Nominativ</td><td class='tdn'>der Kolleg<b>e</b> · der Student · der Herr</td></tr><tr><td class='tha'>Akkusativ</td><td class='tda'>den Kolleg<b>en</b> · den Student<b>en</b> · den Herr<b>n</b></td></tr><tr><td class='thd'>Dativ</td><td class='tdd'>dem Kolleg<b>en</b> · dem Student<b>en</b> · dem Herr<b>n</b></td></tr><tr><td class='thg'>Genitiv</td><td class='tdg'>des Kolleg<b>en</b> · des Student<b>en</b> · des Herr<b>n</b></td></tr></table><p><b>Wer gehört dazu?</b></p><ul><li>Maskuline Nomen auf <b>-e</b>: der Junge, Kollege, Kunde, Experte, Neffe, Löwe, Affe</li><li>Personen auf <b>-ent, -ant, -ist, -at, -oge</b>: Student, Praktikant, Polizist, Kandidat, Biologe</li><li>Einzelfälle: der Herr, der Mensch, der Nachbar, der Bauer, der Held</li></ul><div class='ex'>Ich frage <b>den Kollegen</b>. · Ich helfe <b>dem Patienten</b>. · Das Auto <b>des Herrn</b>.</div><p class='en'>These masculine nouns add -(e)n in every case except the nominative. Nearly all of them refer to people.</p>",
+merk:"Fast alle n-Deklination-Nomen sind Personen — und fast alle maskulin auf -e.",
+merkEn:"Almost all weak nouns are male persons ending in -e.",
+q:[
+{q:"Ich frage ___ (der Kollege).", o:["der Kollege","den Kollege","den Kollegen"], c:2, h:"Akkusativ → Kollegen."},
+{q:"Ich helfe ___ (der Patient).", o:["dem Patient","dem Patienten","den Patienten"], c:1, h:"Dativ maskulin: dem + Patienten."},
+{q:"Welches Wort gehört NICHT zur n-Deklination?", o:["der Student","der Tisch","der Junge"], c:1, h:"der Tisch ist ein normales Nomen — kein -n."},
+{type:"match", q:"Ordne Nominativ und Akkusativ zu:", pairs:[["der Kunde","den Kunden"],["der Mensch","den Menschen"],["der Herr","den Herrn"],["der Nachbar","den Nachbarn"]], h:"Immer -(e)n außer im Nominativ."},
+{type:"gap", q:"Ich sehe den ___. (der Junge)", a:["jungen"], h:"Akkusativ → Jungen."}
+]},
+
+{id:"indefinit", chip:"man · jemand", title:"Indefinitpronomen: man, jemand, etwas", titleEn:"Indefinite pronouns",
+explain:"<p>Diese Wörter stehen für Personen oder Dinge, die man nicht genau benennt.</p><table class='wide'><tr><th>Wort</th><th>Bedeutung</th><th>Beispiel</th></tr><tr><td><b>man</b></td><td>Menschen allgemein (wie „people“)</td><td><b>Man</b> spricht hier Deutsch. <span class='small'>(Verb wie er/sie/es)</span></td></tr><tr><td><b>jemand / niemand</b></td><td>irgendeine Person / keine Person</td><td>Ist <b>jemand</b> da? — Nein, <b>niemand</b>.</td></tr><tr><td><b>etwas / nichts</b></td><td>irgendeine Sache / keine Sache</td><td>Ich möchte <b>etwas</b> trinken. Ich habe <b>nichts</b> gesagt.</td></tr><tr><td><b>alle / viele / einige / wenige</b></td><td>Mengen</td><td><b>Viele</b> Schüler lernen Deutsch.</td></tr><tr><td><b>jeder / jede / jedes</b></td><td>jede einzelne Person/Sache</td><td><b>Jeder</b> kann Deutsch lernen.</td></tr><tr><td><b>einer / keiner</b></td><td>einer davon / keiner davon</td><td>Hast du Stifte? — Ich habe <b>keinen</b>.</td></tr></table><p><b>Achtung:</b> <i>man</i> ist nicht <i>der Mann</i>! <i>man</i> = allgemein, <i>der Mann</i> = eine männliche Person.</p><p class='en'>man = people in general (takes the er-form of the verb). Don't confuse it with der Mann (the man).</p>",
+merk:"man ≠ Mann. „man“ steht für alle Menschen und nimmt die er-Form.",
+merkEn:"man ≠ Mann. man means people in general.",
+q:[
+{q:"„In Deutschland ___ man den Müll.“", o:["trennen","trennt","trennst"], c:1, h:"man nimmt die er/sie/es-Form: trennt."},
+{q:"„Ist ___ zu Hause?“ — „Nein, ___.“", o:["etwas … nichts","jemand … niemand","einer … keiner"], c:1, h:"Personen → jemand/niemand."},
+{q:"„Möchtest du ___ essen?“", o:["etwas","jemand","alle"], c:0, h:"Sache → etwas."},
+{type:"match", q:"Ordne Gegensätze zu:", pairs:[["jemand","niemand"],["etwas","nichts"],["alle","keiner"],["viele","wenige"]], h:"Person, Sache, Menge — jeweils positiv und negativ."},
+{type:"gap", q:"„___ kann Deutsch lernen.“ <span class='en'>(everyone)</span>", a:["jeder"], h:"jeder = every single person."}
+]},
+
+{id:"demonstrativ", chip:"dieser · jener", title:"Demonstrativpronomen: dieser, jener", titleEn:"Demonstrative pronouns — this one, that one",
+explain:"<p>Mit <b>dieser</b> zeigst du auf etwas Nahes oder gerade Erwähntes. Die Endungen sind genau wie bei <b>der/die/das</b>.</p><table class='wide'><tr><th></th><th>maskulin</th><th>feminin</th><th>neutral</th><th>Plural</th></tr><tr><td class='thn'>Nominativ</td><td class='tdn'>dies<b>er</b></td><td class='tdn'>dies<b>e</b></td><td class='tdn'>dies<b>es</b></td><td class='tdn'>dies<b>e</b></td></tr><tr><td class='tha'>Akkusativ</td><td class='tda'>dies<b>en</b></td><td class='tda'>dies<b>e</b></td><td class='tda'>dies<b>es</b></td><td class='tda'>dies<b>e</b></td></tr><tr><td class='thd'>Dativ</td><td class='tdd'>dies<b>em</b></td><td class='tdd'>dies<b>er</b></td><td class='tdd'>dies<b>em</b></td><td class='tdd'>dies<b>en</b></td></tr></table><div class='ex'><b>Dieses</b> Handy ist billig, aber <b>das</b> dort ist besser.<br>Ich nehme <b>diesen</b> Kurs.</div><p><b>jener</b> („jener Mann dort“) ist alt und sehr formell — im Alltag sagt man <b>der/die/das … da/dort</b>.</p><p>Auch <b>derselbe</b> (= genau der gleiche) und <b>solch-</b> (= so einer) gehören dazu: <i>Wir haben <b>denselben</b> Lehrer. <b>Solche</b> Fehler passieren.</i></p><p class='en'>dieser follows exactly the der/die/das endings. jener is old-fashioned; in daily speech use der … da.</p>",
+merk:"dieser hat immer dieselbe Endung wie der/die/das: dieser = der, diesen = den.",
+merkEn:"dieser copies the der/die/das endings exactly.",
+q:[
+{q:"„___ Buch gefällt mir.“ (das Buch, Nominativ)", o:["Dieser","Diese","Dieses"], c:2, h:"das → dieses."},
+{q:"„Ich nehme ___ Kurs.“ (der Kurs, Akkusativ)", o:["diesen","dieser","diesem"], c:0, h:"den → diesen."},
+{q:"„Mit ___ Auto fahre ich.“ (das Auto, Dativ)", o:["diesem","dieses","diesen"], c:0, h:"dem → diesem."},
+{type:"gap", q:"„___ Frau kenne ich.“ (die Frau, Akkusativ)", a:["diese"], h:"die → diese."}
+]},
+
+{id:"indirektefrage", chip:"ob-Satz", title:"Indirekte Fragen & ob-Sätze", titleEn:"Indirect questions",
+explain:"<p>Eine höfliche oder eingebettete Frage wird zum <b>Nebensatz</b> — das Verb geht ans Ende.</p><table class='wide'><tr><th>Direkte Frage</th><th>Indirekte Frage</th></tr><tr><td>Wo ist der Bahnhof?</td><td>Können Sie mir sagen, <b>wo</b> der Bahnhof <b>ist</b>?</td></tr><tr><td>Wann kommt der Bus?</td><td>Ich weiß nicht, <b>wann</b> der Bus <b>kommt</b>.</td></tr><tr><td>Kommt er heute? <span class='small'>(Ja/Nein-Frage)</span></td><td>Ich weiß nicht, <b>ob</b> er heute <b>kommt</b>.</td></tr></table><p><b>Die Regel:</b> W-Frage → das Fragewort bleibt. Ja/Nein-Frage → du brauchst <b>ob</b>.</p><p>Typische Einleitungen: <i>Ich weiß nicht, … · Können Sie mir sagen, … · Ich möchte wissen, … · Wissen Sie, …</i></p><p class='en'>Indirect questions become subordinate clauses: verb goes to the end. Yes/no questions need ob (whether).</p>",
+merk:"Keine Frage mit Fragewort? Dann brauchst du „ob“.",
+merkEn:"No question word? Then you need ob.",
+q:[
+{q:"„Kommt er mit?“ → Ich weiß nicht, ___ er mitkommt.", o:["wann","ob","dass"], c:1, h:"Ja/Nein-Frage → ob."},
+{q:"„Wo wohnst du?“ → Sag mir bitte, wo du ___.", o:["wohnst","wohnst du","du wohnst"], c:0, h:"Verb ans Ende, kein Subjekt-Verb-Tausch."},
+{q:"Welcher Satz ist richtig?", o:["Ich weiß nicht, wann kommt der Bus.","Ich weiß nicht, wann der Bus kommt.","Ich weiß nicht, wann kommt er."], c:1, h:"Im Nebensatz steht das Verb ganz am Ende."},
+{type:"order", q:"Baue die indirekte Frage:", w:["Können","Sie","mir","sagen,","wo","der","Bahnhof","ist?"], a:["Können Sie mir sagen, wo der Bahnhof ist?"], h:"Fragewort, dann Subjekt, Verb ans Ende."},
+{type:"gap", q:"„Hat er Zeit?“ → Ich frage ihn, ___ er Zeit hat.", a:["ob"], h:"Ja/Nein-Frage → ob."}
+]},
+
+{id:"satzglieder", chip:"Satzglieder", title:"Satzglieder & Satzklammer", titleEn:"Sentence elements & the verb bracket",
+explain:"<p>Ein deutscher Satz besteht aus Bausteinen. Zwei sind Pflicht:</p><table class='wide'><tr><th>Baustein</th><th>Frage</th><th>Beispiel</th></tr><tr><td class='thn'><b>Subjekt</b></td><td>Wer? Was?</td><td class='tdn'><b>Der Lehrer</b> erklärt die Regel.</td></tr><tr><td class='tha'><b>Prädikat</b> (Verb)</td><td>Was tut er?</td><td class='tda'>Der Lehrer <b>erklärt</b> die Regel.</td></tr><tr><td class='thd'><b>Objekt</b></td><td>Wen? Wem?</td><td class='tdd'>Der Lehrer erklärt <b>die Regel</b>.</td></tr><tr><td class='thg'><b>Adverbiale</b></td><td>Wann? Wo? Wie? Warum?</td><td class='tdg'>Der Lehrer erklärt die Regel <b>langsam</b>.</td></tr></table><h3 class='sub' style='margin-top:14px'>Die Satzklammer</h3><p>Das ist die wichtigste Struktur im Deutschen: Das <b>konjugierte Verb</b> steht auf Position 2, der <b>zweite Verbteil</b> ganz am Ende. Dazwischen liegt alles andere — das nennt man Mittelfeld.</p><table class='wide'><tr><th>Position 1</th><th>Verb 2</th><th>Mittelfeld</th><th>Verb-Ende</th></tr><tr><td>Ich</td><td><b>habe</b></td><td>gestern mit Anna</td><td><b>telefoniert</b>.</td></tr><tr><td>Morgen</td><td><b>muss</b></td><td>ich früh</td><td><b>aufstehen</b>.</td></tr><tr><td>Ich</td><td><b>kaufe</b></td><td>im Supermarkt</td><td><b>ein</b>.</td></tr></table><p class='en'>The verb bracket is the backbone of German: conjugated verb in position 2, second verb part at the very end, everything else in between.</p>",
+merk:"Die Klammer schließt am Satzende — Partizip, Infinitiv oder Vorsilbe kommen immer zuletzt.",
+merkEn:"The bracket closes at the end: participle, infinitive or prefix always comes last.",
+q:[
+{q:"Was ist das Subjekt? „Meine Schwester kauft ein Auto.“", o:["ein Auto","kauft","Meine Schwester"], c:2, h:"Wer kauft? → Meine Schwester."},
+{q:"Wo steht der zweite Verbteil?", o:["direkt nach Position 2","am Satzende","auf Position 1"], c:1, h:"Satzklammer: zweiter Teil ganz ans Ende."},
+{q:"Welcher Satz hat eine korrekte Satzklammer?", o:["Ich habe telefoniert gestern.","Ich habe gestern telefoniert.","Ich gestern habe telefoniert."], c:1, h:"habe auf Position 2, telefoniert am Ende."},
+{type:"order", q:"Baue den Satz mit korrekter Satzklammer:", w:["Morgen","will","ich","meine","Freundin","besuchen"], a:["Morgen will ich meine Freundin besuchen"], h:"will auf Position 2, besuchen ans Ende."}
+]},
+
+{id:"tekamolo", chip:"TEKAMOLO", title:"TEKAMOLO: die Reihenfolge im Satz", titleEn:"TEKAMOLO — word order in the middle field",
+explain:"<p>Wenn mehrere Angaben im Satz stehen, gilt diese Reihenfolge:</p><table class='wide'><tr><th>TE</th><th>KA</th><th>MO</th><th>LO</th></tr><tr><td><b>temporal</b><br>Wann?</td><td><b>kausal</b><br>Warum?</td><td><b>modal</b><br>Wie?</td><td><b>lokal</b><br>Wo? Wohin?</td></tr><tr><td>heute, morgen, um 8 Uhr</td><td>wegen des Regens, deshalb</td><td>mit dem Bus, schnell, gern</td><td>nach Cebu, im Büro, hier</td></tr></table><div class='ex'>Ich fahre <b>morgen</b> (TE) <b>wegen des Termins</b> (KA) <b>mit dem Taxi</b> (MO) <b>nach Mandaue</b> (LO).</div><p><b>Die Kurzform für den Alltag:</b> <b>Zeit vor Ort</b> — <i>Ich fahre morgen nach Manila</i>, nicht „nach Manila morgen“.</p><p><b>Objekte:</b> Zwei Nomen → <b>Dativ vor Akkusativ</b> (Ich gebe <b>dem Kind</b> <b>das Buch</b>). Ist ein Pronomen dabei, steht es zuerst (Ich gebe <b>es</b> dem Kind).</p><p class='en'>TEKAMOLO: time, cause, manner, place. The short version for daily use: time before place.</p>",
+merk:"TEKAMOLO — merk dir mindestens: Zeit kommt vor Ort.",
+merkEn:"At minimum remember: time before place.",
+q:[
+{q:"Welcher Satz folgt TEKAMOLO?", o:["Ich fahre nach Berlin morgen.","Ich fahre morgen nach Berlin.","Ich morgen fahre nach Berlin."], c:1, h:"Zeit (morgen) vor Ort (nach Berlin)."},
+{q:"Wofür steht das KA in TEKAMOLO?", o:["kausal — warum?","Kasus","kein Adverb"], c:0, h:"TE-KA-MO-LO: temporal, kausal, modal, lokal."},
+{q:"„Ich gebe ___ ___.“ Zwei Nomen — welche Reihenfolge?", o:["das Buch dem Kind","dem Kind das Buch","beide möglich"], c:1, h:"Dativ vor Akkusativ, wenn beide Nomen sind."},
+{type:"order", q:"Baue nach TEKAMOLO:", w:["Ich","gehe","heute","mit","Freunden","ins","Kino"], a:["Ich gehe heute mit Freunden ins Kino"], h:"heute (TE) → mit Freunden (MO) → ins Kino (LO)."}
+]},
+
+{id:"futur1", chip:"Futur I", title:"Futur I: die Zukunft", titleEn:"Future tense",
+explain:"<p><b>werden + Infinitiv</b> — der Infinitiv steht am Satzende.</p><table class='wide'><tr><th></th><th>werden</th><th>Beispiel</th></tr><tr><td>ich</td><td>werde</td><td>Ich <b>werde</b> Deutsch <b>lernen</b>.</td></tr><tr><td>du</td><td>wirst</td><td>Du <b>wirst</b> es <b>schaffen</b>.</td></tr><tr><td>er/sie/es</td><td>wird</td><td>Er <b>wird</b> morgen <b>kommen</b>.</td></tr><tr><td>wir/sie/Sie</td><td>werden</td><td>Wir <b>werden</b> uns <b>sehen</b>.</td></tr><tr><td>ihr</td><td>werdet</td><td>Ihr <b>werdet</b> viel <b>üben</b>.</td></tr></table><p><b>Wann benutzt man es?</b></p><ul><li><b>Versprechen &amp; Vorsätze:</b> Ich <b>werde</b> ab morgen jeden Tag lernen.</li><li><b>Vermutung</b> (mit wohl): Er <b>wird</b> wohl krank sein.</li><li><b>Vorhersage:</b> Es <b>wird</b> morgen regnen.</li></ul><p><b>Wichtig:</b> Für feste Pläne reicht das <b>Präsens</b> + Zeitangabe — so sprechen Deutsche meistens: <i>Ich fliege morgen nach Manila.</i></p><p class='en'>werden + infinitive. But for fixed plans, Germans normally just use the present tense with a time expression.</p>",
+merk:"Für Pläne reicht Präsens: „Ich fahre morgen“ ist normaler als „Ich werde fahren“.",
+merkEn:"For plans, present tense is more natural than Futur I.",
+q:[
+{q:"„Ich ___ dir helfen.“", o:["werde","wirst","wird"], c:0, h:"ich werde."},
+{q:"Welcher Satz ist richtig?", o:["Ich werde lernen Deutsch.","Ich werde Deutsch lernen.","Ich Deutsch werde lernen."], c:1, h:"Infinitiv ans Satzende."},
+{q:"„Er wird wohl im Stau stehen.“ — was bedeutet das?", o:["Er verspricht es.","Ich vermute es.","Es ist sicher."], c:1, h:"werden + wohl = Vermutung."},
+{type:"gap", q:"„Wir ___ nächstes Jahr nach Deutschland gehen.“", a:["werden"], h:"wir werden."}
+]},
+
+{id:"gradpartikel", chip:"sehr · zu · ganz", title:"Gradpartikeln: sehr, zu, ganz", titleEn:"Intensity words",
+explain:"<p>Diese kleinen Wörter verstärken oder schwächen ein Adjektiv. Sie stehen immer <b>direkt davor</b>.</p><table class='wide'><tr><th>Stärke</th><th>Wort</th><th>Beispiel</th></tr><tr><td>sehr stark</td><td><b>sehr, wirklich, total</b></td><td>Das ist <b>sehr</b> gut.</td></tr><tr><td>zu viel (negativ!)</td><td><b>zu</b></td><td>Der Kaffee ist <b>zu</b> heiß. <span class='small'>(= ein Problem)</span></td></tr><tr><td>mittel</td><td><b>ganz, ziemlich, recht</b></td><td>Es war <b>ziemlich</b> teuer.</td></tr><tr><td>schwach</td><td><b>etwas, ein bisschen, kaum</b></td><td>Ich bin <b>ein bisschen</b> müde.</td></tr><tr><td>gar nicht</td><td><b>überhaupt nicht, gar nicht</b></td><td>Das ist <b>überhaupt nicht</b> schwer.</td></tr></table><p><b>Achtung — der häufigste Fehler:</b> <i>sehr</i> = viel (positiv), <i>zu</i> = zu viel (negativ). „Der Kurs ist <b>sehr</b> gut“ ist ein Lob. „Der Kurs ist <b>zu</b> gut“ ergibt keinen Sinn.</p><p class='en'>sehr = very (positive). zu = too much (always a problem). Don't mix them up.</p>",
+merk:"„zu“ ist immer ein Problem: zu teuer, zu spät, zu schwer.",
+merkEn:"zu always signals a problem: too expensive, too late.",
+q:[
+{q:"Positiv: „Das Essen ist ___ lecker!“", o:["zu","sehr","kaum"], c:1, h:"Lob → sehr."},
+{q:"Problem: „Die Wohnung ist ___ teuer, ich kann sie nicht bezahlen.“", o:["sehr","ganz","zu"], c:2, h:"zu = mehr als möglich → Problem."},
+{q:"Schwach: „Ich bin ___ müde.“", o:["total","ein bisschen","überhaupt nicht"], c:1, h:"ein bisschen = leicht."},
+{type:"match", q:"Ordne Wort und Stärke zu:", pairs:[["sehr","stark, positiv"],["zu","zu viel, ein Problem"],["ziemlich","mittel"],["kaum","fast gar nicht"]], h:"Vier Stufen der Verstärkung."}
+]},
+
+{id:"nichtstellung", chip:"Stellung von nicht", title:"Wo steht „nicht“?", titleEn:"Where to put nicht",
+explain:"<p><b>nicht</b> steht direkt <b>vor dem Wort, das verneint wird</b>. Verneinst du den ganzen Satz, rutscht es möglichst weit nach hinten — aber immer <b>vor</b> den zweiten Verbteil.</p><table class='wide'><tr><th>Was wird verneint?</th><th>Position</th><th>Beispiel</th></tr><tr><td>ganzer Satz</td><td>am Ende</td><td>Ich kenne den Mann <b>nicht</b>.</td></tr><tr><td>Verb + zweiter Teil</td><td>vor dem Verbteil</td><td>Ich habe ihn <b>nicht</b> gesehen.<br>Ich kann heute <b>nicht</b> kommen.</td></tr><tr><td>Adjektiv</td><td>davor</td><td>Der Film ist <b>nicht</b> gut.</td></tr><tr><td>Ort / Zeit / Art</td><td>davor</td><td>Ich fahre <b>nicht</b> nach Berlin.<br>Er kommt <b>nicht</b> heute, sondern morgen.</td></tr><tr><td>Präpositionalobjekt</td><td>davor</td><td>Ich warte <b>nicht</b> auf ihn.</td></tr></table><p><b>Doppelte Verneinung:</b> Anders als im Englischen verneint man im Deutschen <b>nur einmal</b>. <i>Ich habe <b>nichts</b> gesehen</i> — nicht „Ich habe nicht nichts gesehen“.</p><p class='en'>nicht goes directly before what it negates; for whole sentences it goes as late as possible but always before the second verb part. German uses single negation only.</p>",
+merk:"nicht steht vor dem, was du verneinst — und immer vor dem Verbteil am Ende.",
+merkEn:"nicht goes before what it negates, and always before the final verb part.",
+q:[
+{q:"Wo steht nicht? „Ich habe ihn gesehen.“ (verneinen)", o:["Ich nicht habe ihn gesehen.","Ich habe ihn nicht gesehen.","Ich habe ihn gesehen nicht."], c:1, h:"Vor dem Partizip am Ende."},
+{q:"„Der Film ist ___ interessant.“", o:["nicht","kein","nichts"], c:0, h:"Adjektiv verneinen → nicht davor."},
+{q:"Welcher Satz ist falsch?", o:["Ich habe nichts gesagt.","Ich habe nicht nichts gesagt.","Ich habe nicht viel gesagt."], c:1, h:"Deutsch verneint nur einmal."},
+{type:"order", q:"Baue den verneinten Satz:", w:["Ich","kann","heute","nicht","kommen"], a:["Ich kann heute nicht kommen"], h:"nicht vor dem Infinitiv am Ende."}
 ]}
 ]};

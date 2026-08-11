@@ -1,4 +1,4 @@
-/* FLOß Grammatik – Quiz-Engine */
+/* FLOß Grammatik – Übungs-Engine */
 (function(){
   const D = window.LEVEL_DATA;
   if(!D) return;
@@ -8,8 +8,11 @@
   hero.innerHTML = '<span class="badge" style="background:'+D.color+'">'+D.level+'</span>'+
     '<h1>'+D.title+'</h1><p>'+D.subtitle+'<br><span class="en">'+D.subtitleEn+'</span></p>';
 
-  const bar = document.getElementById("chipbar");
-  bar.innerHTML = D.topics.map(t=>'<a href="#'+t.id+'">'+t.chip+'</a>').join("");
+  document.getElementById("chipbar").innerHTML =
+    D.topics.map(t=>'<a href="#'+t.id+'">'+t.chip+'</a>').join("");
+
+  function shuffle(a){ a=a.slice(); for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]];} return a; }
+  function esc(s){ return String(s).replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/"/g,"&quot;"); }
 
   const root = document.getElementById("topics");
   root.innerHTML = D.topics.map(t=>{
@@ -29,30 +32,44 @@
 
   function renderQ(tid,q,i){
     const qid = tid+"-"+i;
+    const head = '<div class="q" id="q-'+qid+'"><p class="qtext">'+q.q+'</p>';
+    const foot = '<p class="fb" id="fb-'+qid+'"></p></div>';
+
     if(q.type==="gap"){
-      return '<div class="q" id="q-'+qid+'"><p class="qtext">'+q.q+'</p>'+
-        '<div class="gapline"><input type="text" id="in-'+qid+'" placeholder="…" autocomplete="off" autocapitalize="off">'+
-        '<button onclick="window._chkGap(\''+tid+'\','+i+')">Prüfen</button></div>'+
-        '<p class="fb" id="fb-'+qid+'"></p></div>';
+      return head+'<div class="gapline"><input type="text" id="in-'+qid+'" placeholder="…" autocomplete="off" autocapitalize="off">'+
+        '<button onclick="window._chkGap(\''+tid+'\','+i+')">Prüfen</button></div>'+foot;
+    }
+    if(q.type==="order"){
+      const pool = shuffle(q.w).map(w=>'<button class="word" onclick="window._ordMove(this,\''+qid+'\')">'+esc(w)+'</button>').join("");
+      return head+
+        '<div class="ord-answer" id="oa-'+qid+'" data-empty="Wörter hier anklicken · click the words in order"></div>'+
+        '<div class="ord-pool" id="op-'+qid+'">'+pool+'</div>'+
+        '<div class="ord-actions"><button class="btn-chk" onclick="window._chkOrder(\''+tid+'\','+i+')">Prüfen</button>'+
+        '<button class="btn-ghost" onclick="window._ordReset(\''+qid+'\')">Zurücksetzen</button></div>'+foot;
+    }
+    if(q.type==="match"){
+      const rights = shuffle(q.pairs.map((p,j)=>({t:p[1],j:j})));
+      const left = q.pairs.map((p,j)=>'<button class="m-left" id="ml-'+qid+'-'+j+'" data-j="'+j+'" onclick="window._mPick(\''+qid+'\',\''+tid+'\','+i+',this,0)">'+esc(p[0])+'</button>').join("");
+      const right = rights.map(r=>'<button class="m-right" id="mr-'+qid+'-'+r.j+'" data-j="'+r.j+'" onclick="window._mPick(\''+qid+'\',\''+tid+'\','+i+',this,1)">'+esc(r.t)+'</button>').join("");
+      return head+'<div class="match"><div class="m-col">'+left+'</div><div class="m-col">'+right+'</div></div>'+foot;
     }
     const opts = q.o.map((o,j)=>'<button onclick="window._chkMC(\''+tid+'\','+i+','+j+',this)">'+o+'</button>').join("");
-    return '<div class="q" id="q-'+qid+'"><p class="qtext">'+q.q+'</p><div class="opts">'+opts+'</div>'+
-      '<p class="fb" id="fb-'+qid+'"></p></div>';
+    return head+'<div class="opts">'+opts+'</div>'+foot;
   }
 
   const state = {};
   D.topics.forEach(t=>{ if(t.q && t.q.length) state[t.id] = {done:{}, right:0, total:t.q.length}; });
+  const mState = {};
 
   function topic(tid){ return D.topics.find(t=>t.id===tid); }
   function updScore(tid){
-    const s = state[tid];
-    const el = document.getElementById("score-"+tid);
+    const s = state[tid], el = document.getElementById("score-"+tid);
     el.textContent = s.right+" / "+s.total;
     if(Object.keys(s.done).length===s.total){
-      const pct = s.right/s.total;
-      el.style.background = pct>=0.8 ? "#e8fbee" : (pct>=0.5 ? "#fff8e6" : "#ffecea");
-      el.style.color = pct>=0.8 ? "#1a7a3a" : (pct>=0.5 ? "#9a7b00" : "#c22");
-      el.textContent = s.right+" / "+s.total+(pct>=0.8?"  ·  Sehr gut!":(pct>=0.5?"  ·  Weiter üben!":"  ·  Nochmal lesen!"));
+      const p = s.right/s.total;
+      el.style.background = p>=.8?"#e8fbee":(p>=.5?"#fff8e6":"#ffecea");
+      el.style.color      = p>=.8?"#1a7a3a":(p>=.5?"#9a7b00":"#c22");
+      el.textContent = s.right+" / "+s.total+(p>=.8?"  ·  Sehr gut!":(p>=.5?"  ·  Weiter üben!":"  ·  Nochmal lesen!"));
     }
   }
   function feedback(qid, good, hint){
@@ -60,66 +77,108 @@
     fb.className = "fb show "+(good?"good":"bad");
     fb.innerHTML = (good?"Richtig! ":"")+(hint||"");
   }
+  function finish(tid,i,good,qid,hint){
+    const s = state[tid];
+    if(s.done[i]!==undefined) return;
+    s.done[i]=good; if(good) s.right++;
+    feedback(qid,good,hint); updScore(tid);
+  }
 
+  /* --- Multiple Choice --- */
   window._chkMC = function(tid,i,j,btn){
-    const s = state[tid]; if(s.done[i]!==undefined) return;
-    const q = topic(tid).q[i];
-    const qid = tid+"-"+i;
-    const buttons = btn.parentElement.querySelectorAll("button");
-    buttons.forEach(b=>b.disabled=true);
+    if(state[tid].done[i]!==undefined) return;
+    const q = topic(tid).q[i], qid = tid+"-"+i;
+    const bs = btn.parentElement.querySelectorAll("button");
+    bs.forEach(b=>b.disabled=true);
     const good = (j===q.c);
-    if(good){ btn.classList.add("ok"); s.right++; }
-    else { btn.classList.add("err"); buttons[q.c].classList.add("ok"); }
-    s.done[i]=good;
-    feedback(qid, good, q.h);
-    updScore(tid);
+    btn.classList.add(good?"ok":"err");
+    if(!good) bs[q.c].classList.add("ok");
+    finish(tid,i,good,qid,q.h);
   };
 
+  /* --- Lückentext --- */
   window._chkGap = function(tid,i){
-    const s = state[tid]; if(s.done[i]!==undefined) return;
-    const q = topic(tid).q[i];
-    const qid = tid+"-"+i;
+    if(state[tid].done[i]!==undefined) return;
+    const q = topic(tid).q[i], qid = tid+"-"+i;
     const inp = document.getElementById("in-"+qid);
     const val = inp.value.trim().toLowerCase().replace(/\s+/g," ");
     const good = q.a.some(a=>a.toLowerCase()===val);
-    inp.classList.add(good?"ok":"err");
-    inp.disabled = true;
-    if(good){ s.right++; feedback(qid,true,q.h); }
-    else { feedback(qid,false,'Richtig wäre: <b>'+q.a[0]+'</b>. '+(q.h||"")); }
-    s.done[i]=good;
-    updScore(tid);
+    inp.classList.add(good?"ok":"err"); inp.disabled = true;
+    finish(tid,i,good,qid, good ? q.h : 'Richtig wäre: <b>'+q.a[0]+'</b>. '+(q.h||""));
+  };
+
+  /* --- Satz bauen --- */
+  window._ordMove = function(btn,qid){
+    const ans = document.getElementById("oa-"+qid), pool = document.getElementById("op-"+qid);
+    if(btn.disabled) return;
+    (btn.parentElement===pool ? ans : pool).appendChild(btn);
+  };
+  window._ordReset = function(qid){
+    const ans = document.getElementById("oa-"+qid), pool = document.getElementById("op-"+qid);
+    [...ans.children].forEach(b=>{ if(!b.disabled) pool.appendChild(b); });
+  };
+  window._chkOrder = function(tid,i){
+    if(state[tid].done[i]!==undefined) return;
+    const q = topic(tid).q[i], qid = tid+"-"+i;
+    const ans = document.getElementById("oa-"+qid);
+    const built = [...ans.children].map(b=>b.textContent).join(" ").trim();
+    const norm = s=>s.toLowerCase().replace(/\s+/g," ").replace(/\s+([,.!?])/g,"$1").trim();
+    const good = q.a.some(a=>norm(a)===norm(built));
+    ans.classList.add(good?"ok":"err");
+    [...ans.children].forEach(b=>b.disabled=true);
+    document.getElementById("op-"+qid).querySelectorAll("button").forEach(b=>b.disabled=true);
+    document.querySelector("#q-"+qid+" .ord-actions").style.display="none";
+    finish(tid,i,good,qid, good ? q.h : 'Richtig wäre: <b>'+q.a[0]+'</b>. '+(q.h||""));
+  };
+
+  /* --- Zuordnen --- */
+  window._mPick = function(qid,tid,i,btn,side){
+    if(state[tid].done[i]!==undefined || btn.disabled) return;
+    if(!mState[qid]) mState[qid] = {sel:null, ok:0, wrong:false};
+    const st = mState[qid], q = topic(tid).q[i];
+    if(side===0){
+      document.querySelectorAll("#q-"+qid+" .m-left").forEach(b=>b.classList.remove("sel"));
+      btn.classList.add("sel"); st.sel = btn; return;
+    }
+    if(!st.sel){ return; }
+    const good = st.sel.dataset.j === btn.dataset.j;
+    if(good){
+      st.sel.classList.remove("sel"); st.sel.classList.add("ok"); btn.classList.add("ok");
+      st.sel.disabled = true; btn.disabled = true; st.ok++;
+      st.sel = null;
+      if(st.ok === q.pairs.length){
+        finish(tid,i,!st.wrong,qid, st.wrong ? 'Alle Paare gefunden — schau dir die Tabelle oben nochmal an.' : (q.h||"Alle Paare korrekt."));
+      }
+    } else {
+      st.wrong = true;
+      const a = st.sel, b = btn;
+      a.classList.add("err"); b.classList.add("err");
+      setTimeout(()=>{ a.classList.remove("err","sel"); b.classList.remove("err"); },600);
+      st.sel = null;
+    }
   };
 
   document.addEventListener("keydown",function(e){
     if(e.key==="Enter" && e.target.tagName==="INPUT" && e.target.id.startsWith("in-")){
-      const parts = e.target.id.slice(3).split("-");
-      const i = parseInt(parts.pop(),10);
-      const tid = parts.join("-");
-      window._chkGap(tid,i);
+      const p = e.target.id.slice(3).split("-"); const i = parseInt(p.pop(),10);
+      window._chkGap(p.join("-"), i);
     }
   });
 
-  const order = {"A1":["a2","A2"],"A2":["b1","B1"],"B1":["b2","B2"],"B2":null};
-  const nx = order[D.level];
-  const el = document.getElementById("nextlvl");
-  if(el) el.innerHTML = nx
-    ? '<a class="cta" href="'+nx[0]+'.html">Weiter zu '+nx[1]+' →</a>'
-    : '<a class="cta" href="index.html">Zurück zur Übersicht</a>';
+  const order = {"A1":["a2","A2"],"A2":["b1","B1"],"B1":["b2","B2"],"B2":["c1","C1"],"C1":null};
+  const nx = order[D.level], nl = document.getElementById("nextlvl");
+  if(nl) nl.innerHTML = nx ? '<a class="cta" href="'+nx[0]+'.html">Weiter zu '+nx[1]+' →</a>'
+                           : '<a class="cta" href="index.html">Zurück zur Übersicht</a>';
 
-  // Direkt zum Thema springen, wenn ein Anker in der URL steht
   if(location.hash){
     const jump = ()=>{
-      const el = document.querySelector(location.hash);
-      if(!el) return;
-      const root = document.documentElement;
-      const prev = root.style.scrollBehavior;
-      root.style.scrollBehavior = "auto";
+      const el = document.querySelector(location.hash); if(!el) return;
+      const r = document.documentElement, prev = r.style.scrollBehavior;
+      r.style.scrollBehavior = "auto";
       window.scrollTo(0, el.getBoundingClientRect().top + window.pageYOffset - 58);
-      root.style.scrollBehavior = prev;
+      r.style.scrollBehavior = prev;
     };
-    jump();
-    setTimeout(jump, 120);
-    setTimeout(jump, 500);
-    window.addEventListener("load", ()=>setTimeout(jump, 60));
+    jump(); setTimeout(jump,120); setTimeout(jump,500);
+    window.addEventListener("load",()=>setTimeout(jump,60));
   }
 })();

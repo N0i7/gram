@@ -27,7 +27,8 @@ q:[
 {q:"Das ist ein ___ Haus.", o:["schönes","schöne","schönen"], c:0, h:"Nach ein zeigt das Adjektiv das Geschlecht: das → -es."},
 {q:"Ich fahre mit dem ___ Bus.", o:["neue","neuen","neuem"], c:1, h:"Dativ → immer -en."},
 {q:"Die ___ Schüler lernen schnell.", o:["fleißige","fleißigen","fleißiger"], c:1, h:"Plural mit Artikel → -en."},
-{type:"gap", q:"eine ___ Frau (nett)", a:["nette"], h:"feminin nach eine: -e."}
+{type:"gap", q:"eine ___ Frau (nett)", a:["nette"], h:"feminin nach eine: -e."},
+{type:"match", q:"Ordne Artikel und Adjektivendung zu (nett):", pairs:[["der ___ Mann","nette"],["ein ___ Mann","netter"],["dem ___ Mann","netten"],["ein ___ Kind","nettes"]], h:"Nach der: -e. Nach ein zeigt das Adjektiv das Geschlecht. Dativ: immer -en."}
 ]},
 
 {id:"relativ", chip:"Relativsätze", title:"Relativsätze", titleEn:"Relative clauses — who/which/that",
@@ -40,7 +41,8 @@ q:[
 {q:"Die Frau, ___ das Auto gehört, ist nett.", o:["die","der","den"], c:1, h:"gehören + Dativ: der."},
 {q:"Die Stadt, ___ ich wohne, heißt Cebu.", o:["in der","in die","wo die"], c:0, h:"wohnen in + Dativ: in der. (Auch möglich: wo)"},
 {q:"Die Leute, ___ ich arbeite, sind freundlich.", o:["mit denen","mit den","mit die"], c:0, h:"Plural-Dativ: denen."},
-{type:"gap", q:"Das Buch, ___ auf dem Tisch liegt, ist neu.", a:["das"], h:"es liegt → Nominativ neutral: das."}
+{type:"gap", q:"Das Buch, ___ auf dem Tisch liegt, ist neu.", a:["das"], h:"es liegt → Nominativ neutral: das."},
+{type:"order", q:"Baue den Relativsatz:", w:["Das","ist","der","Film,","den","ich","gestern","gesehen","habe"], a:["Das ist der Film, den ich gestern gesehen habe"], h:"ich sehe ihn → Akkusativ → den. Verb ans Ende."}
 ]},
 
 {id:"passiv", chip:"Passiv", title:"Das Passiv", titleEn:"The passive voice",
@@ -53,7 +55,9 @@ q:[
 {q:"Das Auto ist repariert ___.", o:["geworden","worden","werden"], c:1, h:"Passiv Perfekt: worden."},
 {q:"Die Hausaufgabe muss bis morgen gemacht ___.", o:["werden","worden","wird"], c:0, h:"Modal + Partizip II + werden."},
 {q:"Der Brief wurde ___ meiner Freundin geschrieben.", o:["bei","von","durch"], c:1, h:"Täter → von + Dativ."},
-{type:"gap", q:"Aktiv → Passiv: Man trennt hier den Müll. → Der Müll ___ hier getrennt.", a:["wird"], h:"Präsens Passiv: wird getrennt."}
+{type:"gap", q:"Aktiv → Passiv: Man trennt hier den Müll. → Der Müll ___ hier getrennt.", a:["wird"], h:"Präsens Passiv: wird getrennt."},
+{type:"match", q:"Ordne Zeit und Passivform zu:", pairs:[["Präsens","wird gebaut"],["Präteritum","wurde gebaut"],["Perfekt","ist gebaut worden"],["mit Modalverb","muss gebaut werden"]], h:"Perfekt Passiv endet auf worden."},
+{type:"order", q:"Baue den Passivsatz:", w:["Das","Formular","muss","bis","Freitag","ausgefüllt","werden"], a:["Das Formular muss bis Freitag ausgefüllt werden"], h:"Modalverb Position 2, dann Partizip II + werden am Ende."}
 ]},
 
 {id:"konj2", chip:"Konjunktiv II", title:"Konjunktiv II", titleEn:"Would, could, should — unreal & polite",
@@ -66,7 +70,8 @@ q:[
 {q:"___ Sie mir bitte helfen?", o:["Können","Könnten","Konnten"], c:1, h:"Höflich → könnten."},
 {q:"Wenn er reich wäre, ___ er nicht mehr arbeiten.", o:["wird","würde","wurde"], c:1, h:"würde + Infinitiv."},
 {q:"Ich wünschte, ich ___ fliegen.", o:["kann","konnte","könnte"], c:2, h:"irrealer Wunsch → könnte."},
-{type:"gap", q:"Ich ___ gern einen Kaffee. <span class='en'>(polite: would have)</span>", a:["hätte","haette"], h:"haben → hätte."}
+{type:"gap", q:"Ich ___ gern einen Kaffee. <span class='en'>(polite: would have)</span>", a:["hätte","haette"], h:"haben → hätte."},
+{type:"order", q:"Baue den irrealen Satz:", w:["Wenn","ich","reich","wäre,","würde","ich","reisen"], a:["Wenn ich reich wäre, würde ich reisen"], h:"wäre ans Ende des Nebensatzes, würde direkt nach dem Komma."}
 ]},
 
 {id:"nebensatz2", chip:"obwohl · damit …", title:"Nebensätze: obwohl, damit, als, nachdem", titleEn:"More subordinate clauses",
@@ -79,7 +84,8 @@ q:[
 {q:"Er arbeitet viel, ___ seine Familie ein besseres Leben hat.", o:["damit","um","weil"], c:0, h:"Ziel + anderes Subjekt → damit."},
 {q:"Ich lerne Deutsch, ___ in Deutschland zu arbeiten.", o:["damit","um","dass"], c:1, h:"gleiches Subjekt → um … zu."},
 {q:"___ er gegessen hatte, machte er die Hausaufgaben.", o:["Bevor","Nachdem","Während"], c:1, h:"Reihenfolge: erst essen, dann … → nachdem + Plusquamperfekt."},
-{type:"gap", q:"Ich bleibe hier, ___ du zurückkommst. <span class='en'>(until)</span>", a:["bis"], h:"bis = until."}
+{type:"gap", q:"Ich bleibe hier, ___ du zurückkommst. <span class='en'>(until)</span>", a:["bis"], h:"bis = until."},
+{type:"order", q:"Baue den Satz mit obwohl:", w:["Obwohl","er","müde","war,","hat","er","trainiert"], a:["Obwohl er müde war, hat er trainiert"], h:"war ans Ende des Nebensatzes, Hauptsatz beginnt mit dem Verb."}
 ]},
 
 {id:"infinitiv", chip:"zu + Infinitiv", title:"Infinitiv mit zu", titleEn:"Infinitive with zu",
@@ -104,7 +110,8 @@ q:[
 {q:"Er interessiert sich ___ Geschichte.", o:["für","über","an"], c:0, h:"sich interessieren für."},
 {q:"___ denkst du? — An meine Familie.", o:["Woran","Worauf","Wovon"], c:0, h:"denken an → woran."},
 {q:"Ich habe Angst ___ der Prüfung.", o:["von","vor","über"], c:1, h:"Angst haben vor + Dativ."},
-{type:"gap", q:"Träumst du von Deutschland? — Ja, ich träume ___. (da + Präposition)", a:["davon"], h:"von → davon."}
+{type:"gap", q:"Träumst du von Deutschland? — Ja, ich träume ___. (da + Präposition)", a:["davon"], h:"von → davon."},
+{type:"match", q:"Ordne Verb und Präposition zu:", pairs:[["warten","auf + A"],["träumen","von + D"],["sich interessieren","für + A"],["teilnehmen","an + D"],["Angst haben","vor + D"]], h:"Verb + Präposition + Kasus immer zusammen lernen."}
 ]},
 
 {id:"zweiteilig", chip:"je … desto", title:"Zweiteilige Konnektoren", titleEn:"Two-part connectors",
@@ -168,5 +175,132 @@ q:[
 {q:"Welcher Satz ist korrekt?", o:["Nachdem ich aufstehe, frühstückte ich.","Nachdem ich aufgestanden war, frühstückte ich.","Nachdem ich aufgestanden bin, frühstückte ich."], c:1, h:"nachdem + Plusquamperfekt, Hauptsatz Präteritum."},
 {q:"Wir ___ die Wohnung gefunden, bevor wir umzogen.", o:["haben","hatten","waren"], c:1, h:"finden → haben → hatten gefunden."},
 {type:"gap", q:"Nachdem sie das Zertifikat bekommen ___, bewarb sie sich. <span class='en'>(had received)</span>", a:["hatte"], h:"bekommen → haben → hatte bekommen."}
+]}
+,
+{id:"kommab1", chip:"Komma fein", title:"Komma: die Feinheiten", titleEn:"Commas: the finer points",
+explain:"<p>Drei Regeln decken die gesamte deutsche Kommasetzung ab:</p><table class='wide'><tr><th>Regel</th><th>Kurz</th><th>Beispiel</th></tr><tr><td><b>1 · Haupt- + Nebensatz</b></td><td>Nebensatz (Verb am Ende) immer abtrennen — auch eingeschoben.</td><td>Elefanten<b>,</b> die grau sind<b>,</b> sind freundlich.</td></tr><tr><td><b>2 · Aufzählung</b></td><td>Komma zwischen den Teilen, <b>nicht</b> vor und/oder/sowie.</td><td>groß<b>,</b> grau<b>,</b> freundlich sowie hungrig</td></tr><tr><td><b>3 · Zusätze</b></td><td>Einschübe ohne Verb — oft mit <i>und zwar, nämlich, das heißt</i> — in Kommas.</td><td>Frau Schober<b>,</b> die Stallmeisterin<b>,</b> ist nett.</td></tr></table><p><b>Infinitivgruppen:</b> Komma bei <b>um, ohne, statt, anstatt</b> + zu: <i>Er ging<b>,</b> ohne zu grüßen.</i></p><p><b>Kein Komma</b> vor „und“ zwischen zwei Hauptsätzen mit gleichem Subjekt: <i>Ich stehe auf und gehe zur Arbeit.</i></p><p class='en'>Three rules cover all German commas: subordinate clauses, lists, insertions. Plus infinitive groups with um/ohne/statt.</p>",
+merk:"Drei Gründe für ein Komma: Nebensatz, Aufzählung, Zusatz. Mehr gibt es nicht.",
+merkEn:"Three reasons for a comma: subordinate clause, list, insertion.",
+q:[
+{q:"Welcher Satz ist korrekt?", o:["Der Mann der dort steht ist mein Chef.","Der Mann, der dort steht, ist mein Chef.","Der Mann, der dort steht ist mein Chef."], c:1, h:"Eingeschobener Relativsatz: Komma davor UND danach."},
+{q:"„Er ging ohne sich zu verabschieden.“ Wo fehlt das Komma?", o:["vor „ohne“","vor „zu“","nirgends"], c:0, h:"Infinitivgruppe mit ohne … zu → Komma davor."},
+{q:"Welcher Satz braucht KEIN Komma?", o:["Ich komme später weil ich arbeite.","Ich stehe auf und gehe zur Arbeit.","Er sagte dass er kommt."], c:1, h:"Zwei Hauptsätze mit und, gleiches Subjekt → kein Komma."},
+{type:"match", q:"Ordne Satz und Komma-Grund zu:", pairs:[["Ich bleibe, weil es regnet.","Nebensatz"],["Brot, Milch, Käse","Aufzählung"],["Herr Franz, der Hausmeister, kam.","Zusatz"],["Sie kam, um zu helfen.","Infinitivgruppe"]], h:"Vier typische Komma-Situationen."},
+{type:"gap", q:"„Ich weiß nicht ___ ob er kommt.“ — Komma oder nicht? Antworte „Komma“ oder „kein Komma“.", a:["komma"], h:"ob leitet einen Nebensatz ein → Komma."}
+]}
+,
+{id:"pronominaladverb", chip:"dafür · worauf", title:"Pronominaladverbien: dafür, worauf, damit", titleEn:"Pronominal adverbs — da(r)- and wo(r)-",
+explain:"<p>Wenn ein Verb eine feste Präposition hat und du auf eine <b>Sache</b> verweist, benutzt du nicht „auf es“, sondern <b>darauf</b>.</p><table class='wide'><tr><th></th><th>Sache</th><th>Person</th></tr><tr><td><b>Frage</b></td><td><b>wo(r)</b> + Präposition<br><i>Worauf wartest du?</i></td><td>Präposition + <b>wen/wem</b><br><i>Auf wen wartest du?</i></td></tr><tr><td><b>Antwort</b></td><td><b>da(r)</b> + Präposition<br><i>Darauf.</i></td><td>Präposition + Pronomen<br><i>Auf ihn.</i></td></tr></table><p><b>Das r kommt dazu</b>, wenn die Präposition mit einem Vokal beginnt: <b>wor</b>auf, <b>dar</b>an, <b>wor</b>über — aber <b>wo</b>von, <b>da</b>mit, <b>da</b>für.</p><div class='ex'>Ich freue mich <b>darauf</b>. · <b>Womit</b> fährst du? — <b>Damit</b>. · Ich denke oft <b>daran</b>.</div><p><b>Vorausweisend</b> vor einem Nebensatz: <i>Ich freue mich <b>darauf</b>, dass du kommst.</i> · <i>Es kommt <b>darauf</b> an, ob …</i></p><p class='en'>For things use wo(r)+preposition to ask and da(r)+preposition to answer. For people use the plain preposition + pronoun. An r is inserted before vowels.</p>",
+merk:"Sache → darauf. Person → auf ihn. Nie „auf es“.",
+merkEn:"Thing → darauf. Person → auf ihn. Never say auf es.",
+q:[
+{q:"„Ich warte auf den Bus.“ → Ich warte ___.", o:["auf ihn","darauf","worauf"], c:1, h:"Bus = Sache → darauf."},
+{q:"„Ich warte auf meinen Bruder.“ → Ich warte ___.", o:["darauf","auf ihn","worauf"], c:1, h:"Person → auf ihn."},
+{q:"Frage nach einer Sache: „___ denkst du?“", o:["An wen","Woran","Daran"], c:1, h:"denken an + Sache → woran."},
+{q:"Welche Form ist richtig?", o:["woauf","worauf","wourauf"], c:1, h:"Vokal am Anfang → r einschieben: worauf."},
+{type:"match", q:"Ordne Verb und Pronominaladverb zu:", pairs:[["warten auf","darauf"],["denken an","daran"],["träumen von","davon"],["sprechen über","darüber"]], h:"da + Präposition, mit r vor Vokal."},
+{type:"gap", q:"„Interessierst du dich für Politik?“ — „Ja, ich interessiere mich sehr ___.“", a:["dafür"], h:"für + Sache → dafür."}
+]},
+
+{id:"platzhalteres", chip:"es", title:"Das Wörtchen „es“", titleEn:"The many uses of es",
+explain:"<p><b>es</b> ist mehr als nur ein Pronomen. Vier Funktionen:</p><table class='wide'><tr><th>Funktion</th><th>Beispiel</th></tr><tr><td><b>1 · Pronomen</b> (ersetzt ein Nomen)</td><td>Das Buch? <b>Es</b> liegt dort.</td></tr><tr><td><b>2 · Wetter &amp; Zeit</b> (unpersönliche Verben)</td><td><b>Es</b> regnet. <b>Es</b> ist kalt. <b>Es</b> ist drei Uhr.</td></tr><tr><td><b>3 · Feste Ausdrücke</b></td><td><b>Es</b> gibt … · <b>Es</b> geht mir gut. · <b>Es</b> tut mir leid. · <b>Es</b> handelt sich um …</td></tr><tr><td><b>4 · Platzhalter</b> (steht für einen späteren Satz)</td><td><b>Es</b> ist wichtig, dass du übst.<br><b>Es</b> freut mich, dich zu sehen.</td></tr></table><p><b>Wichtig:</b> In Funktion 4 verschwindet das <i>es</i>, wenn der Nebensatz nach vorn kommt: <i><b>Dass</b> du übst, ist wichtig.</i></p><p><b>Unpersönliches Passiv:</b> <i><b>Es</b> wird getanzt.</i> — hier hat der Satz gar kein echtes Subjekt.</p><p class='en'>es works as a pronoun, as a dummy subject for weather and time, in fixed expressions, and as a placeholder announcing a following clause.</p>",
+merk:"Wetter und Uhrzeit brauchen immer „es“: Es regnet. Es ist spät.",
+merkEn:"Weather and time always need es.",
+q:[
+{q:"„___ regnet seit zwei Stunden.“", o:["Er","Es","Das"], c:1, h:"Wetter → immer es."},
+{q:"Welche Funktion hat es hier? „Es ist wichtig, dass du kommst.“", o:["Pronomen","Platzhalter für den Nebensatz","Wetter"], c:1, h:"es kündigt den dass-Satz an."},
+{q:"„___ gibt hier einen Supermarkt.“", o:["Es","Er","Da"], c:0, h:"es gibt + Akkusativ."},
+{type:"gap", q:"„Wie geht ___ dir?“", a:["es"], h:"Fester Ausdruck: Es geht mir gut."}
+]},
+
+{id:"temporalsatz", chip:"Temporalsätze", title:"Temporalsätze: wann passiert was?", titleEn:"Time clauses",
+explain:"<table class='wide'><tr><th>Konnektor</th><th>Bedeutung</th><th>Beispiel</th></tr><tr><td><b>als</b></td><td>einmal in der Vergangenheit</td><td><b>Als</b> ich Kind war, wohnte ich in Berlin.</td></tr><tr><td><b>wenn</b></td><td>immer / Zukunft</td><td><b>Wenn</b> ich Zeit habe, rufe ich dich an.</td></tr><tr><td><b>während</b></td><td>gleichzeitig</td><td><b>Während</b> ich koche, hört er Musik.</td></tr><tr><td><b>bevor</b></td><td>davor</td><td><b>Bevor</b> ich esse, wasche ich die Hände.</td></tr><tr><td><b>nachdem</b></td><td>danach (Zeiten verschieben!)</td><td><b>Nachdem</b> ich gegessen <b>hatte</b>, ging ich.</td></tr><tr><td><b>seit(dem)</b></td><td>ab einem Zeitpunkt bis jetzt</td><td><b>Seitdem</b> ich hier wohne, bin ich glücklich.</td></tr><tr><td><b>bis</b></td><td>Endpunkt</td><td>Ich warte, <b>bis</b> du kommst.</td></tr><tr><td><b>sobald</b></td><td>sofort danach</td><td><b>Sobald</b> ich fertig bin, melde ich mich.</td></tr></table><p><b>Die zwei klassischen Fehler:</b> <i>als</i> nur für einmalige Ereignisse in der Vergangenheit — alles andere <i>wenn</i>. Und nach <i>nachdem</i> steht immer eine Zeitstufe weiter zurück (Plusquamperfekt + Präteritum).</p><p class='en'>als = one single past event; wenn = repeated or future. After nachdem the tenses always shift one step back.</p>",
+merk:"als = einmal, damals. wenn = immer oder später.",
+merkEn:"als = once in the past. wenn = always or in the future.",
+q:[
+{q:"„___ ich 18 wurde, bekam ich ein Auto.“", o:["Wenn","Als","Während"], c:1, h:"Einmaliges Ereignis in der Vergangenheit → als."},
+{q:"„___ ich Zeit habe, lese ich.“ (immer)", o:["Als","Wenn","Nachdem"], c:1, h:"Wiederholung → wenn."},
+{q:"„Nachdem er gegessen ___, ging er.“", o:["hat","hatte","ist"], c:1, h:"nachdem + Plusquamperfekt."},
+{q:"„Ich bleibe, ___ du zurückkommst.“", o:["bis","seit","bevor"], c:0, h:"Endpunkt → bis."},
+{type:"match", q:"Ordne Konnektor und Bedeutung zu:", pairs:[["bevor","davor"],["nachdem","danach"],["während","gleichzeitig"],["sobald","sofort danach"],["seitdem","ab damals bis jetzt"]], h:"Fünf Zeitverhältnisse."},
+{type:"order", q:"Baue den Temporalsatz:", w:["Bevor","ich","schlafe,","lese","ich","ein","Buch"], a:["Bevor ich schlafe, lese ich ein Buch"], h:"Verb ans Ende des Nebensatzes, Hauptsatz beginnt mit dem Verb."}
+]},
+
+{id:"konditional", chip:"Konditionalsätze", title:"Konditionalsätze: wenn und falls", titleEn:"Conditional clauses",
+explain:"<p>Bedingungen: <b>wenn</b> (normal), <b>falls</b> (weniger sicher), <b>sofern</b> (formell).</p><table class='wide'><tr><th>Typ</th><th>Form</th><th>Beispiel</th></tr><tr><td><b>real</b> (möglich)</td><td>Präsens + Präsens</td><td><b>Wenn</b> es regnet, bleiben wir zu Hause.</td></tr><tr><td><b>irreal</b> (Gegenwart)</td><td>Konjunktiv II</td><td><b>Wenn</b> ich Zeit <b>hätte</b>, <b>würde</b> ich kommen.</td></tr><tr><td><b>irreal</b> (Vergangenheit)</td><td>hätte/wäre + Partizip</td><td><b>Wenn</b> ich das <b>gewusst hätte</b>, <b>wäre</b> ich <b>gekommen</b>.</td></tr></table><p><b>Ohne „wenn“:</b> Das Verb rückt auf Position 1 — sehr elegant:</p><div class='ex'><b>Hätte</b> ich Zeit, würde ich kommen. <span class='small'>(= Wenn ich Zeit hätte …)</span><br><b>Regnet</b> es morgen, bleiben wir zu Hause.</div><p><b>sonst</b> nennt die Folge, wenn die Bedingung nicht erfüllt wird: <i>Beeil dich, <b>sonst</b> verpasst du den Bus.</i></p><p class='en'>wenn = if (real or unreal), falls = in case. You can drop wenn and start with the verb instead. sonst = otherwise.</p>",
+merk:"Kein „wenn“? Dann steht das Verb vorn: Hätte ich Zeit, …",
+merkEn:"Drop wenn and the verb moves to first position.",
+q:[
+{q:"Real: „___ es regnet, nehme ich einen Schirm.“", o:["Wenn","Als","Obwohl"], c:0, h:"Bedingung → wenn."},
+{q:"Irreal: „Wenn ich reich ___, würde ich reisen.“", o:["bin","wäre","war"], c:1, h:"Irreal → Konjunktiv II: wäre."},
+{q:"„___ ich das gewusst hätte!“ — welcher Typ?", o:["real","irreal Gegenwart","irreal Vergangenheit"], c:2, h:"hätte + Partizip = irreal Vergangenheit."},
+{q:"„Beeil dich, ___ verpasst du den Zug.“", o:["falls","sonst","wenn"], c:1, h:"Negative Folge → sonst."},
+{type:"order", q:"Baue den Satz ohne „wenn“:", w:["Hätte","ich","Zeit,","würde","ich","kommen"], a:["Hätte ich Zeit, würde ich kommen"], h:"Verb auf Position 1 ersetzt wenn."}
+]},
+
+{id:"konsekutiv", chip:"sodass · indem", title:"Folge & Art: sodass, indem, ohne dass", titleEn:"Consecutive and modal clauses",
+explain:"<table class='wide'><tr><th>Typ</th><th>Konnektor</th><th>Beispiel</th></tr><tr><td><b>Folge</b><span class='en'>result</span></td><td><b>sodass</b></td><td>Er sprach leise, <b>sodass</b> ich nichts verstand.</td></tr><tr><td><b>Folge (verstärkt)</b></td><td><b>so … dass</b></td><td>Er sprach <b>so</b> leise, <b>dass</b> ich nichts verstand.</td></tr><tr><td><b>Art &amp; Weise</b><span class='en'>how?</span></td><td><b>indem</b></td><td>Man lernt Deutsch, <b>indem</b> man täglich spricht.</td></tr><tr><td><b>fehlender Umstand</b></td><td><b>ohne dass / ohne … zu</b></td><td>Er ging, <b>ohne dass</b> ich es merkte.<br>Er ging, <b>ohne</b> sich <b>zu</b> verabschieden.</td></tr><tr><td><b>Ersatz</b></td><td><b>statt dass / statt … zu</b></td><td>Er spielt, <b>statt</b> zu lernen.</td></tr></table><p><b>Merkregel für indem:</b> Es antwortet auf die Frage <b>Wie?</b> — <i>Wie lernt man? Indem man übt.</i> Verwechsle es nicht mit <i>in dem</i> (Präposition + Artikel).</p><p><b>ohne … zu / statt … zu</b> nur bei <b>gleichem Subjekt</b>. Sonst: ohne dass / statt dass.</p><p class='en'>sodass = so that (result). indem = by doing (method). ohne…zu / statt…zu only when both clauses share the same subject.</p>",
+merk:"indem antwortet auf „Wie?“ — es beschreibt die Methode.",
+merkEn:"indem answers How? — it describes the method.",
+q:[
+{q:"„Er lernt viel, ___ er die Prüfung besteht.“ (Folge)", o:["indem","sodass","ohne dass"], c:1, h:"Folge → sodass."},
+{q:"„Man verbessert sein Deutsch, ___ man viel liest.“", o:["sodass","indem","statt dass"], c:1, h:"Methode → indem."},
+{q:"„Er verließ den Raum, ohne ___.“ (gleiches Subjekt)", o:["dass er etwas sagte","etwas zu sagen","er etwas sagt"], c:1, h:"Gleiches Subjekt → ohne … zu."},
+{type:"match", q:"Ordne Konnektor und Frage zu:", pairs:[["sodass","Was ist die Folge?"],["indem","Wie macht man das?"],["ohne dass","Was fehlt dabei?"],["statt dass","Was macht er nicht?"]], h:"Folge, Methode, fehlender Umstand, Ersatz."}
+]},
+
+{id:"adjektivnomen", chip:"das Gute", title:"Adjektive als Nomen", titleEn:"Adjectives used as nouns",
+explain:"<p>Fast jedes Adjektiv kann zum Nomen werden. Es wird <b>großgeschrieben</b> und behält die <b>Adjektivendung</b>.</p><table class='wide'><tr><th>Adjektiv</th><th>Person</th><th>Sache (immer neutral)</th></tr><tr><td>alt</td><td>der Alt<b>e</b>, die Alt<b>e</b>, ein Alt<b>er</b></td><td>—</td></tr><tr><td>deutsch</td><td>der Deutsch<b>e</b>, ein Deutsch<b>er</b></td><td>—</td></tr><tr><td>gut</td><td>—</td><td>das Gut<b>e</b>, etwas Gut<b>es</b></td></tr><tr><td>neu</td><td>—</td><td>das Neu<b>e</b>, nichts Neu<b>es</b></td></tr></table><p><b>Nach etwas, nichts, viel, wenig</b> steht die Endung <b>-es</b>: <i>etwas Schön<b>es</b>, nichts Neu<b>es</b>, viel Interessant<b>es</b></i>.</p><p><b>Auch Partizipien</b> werden zu Nomen: der <b>Angestellte</b> (angestellt), der <b>Reisende</b> (reisend), der <b>Verletzte</b>, die <b>Erwachsenen</b>.</p><p><b>Auch Verben:</b> das <b>Lernen</b>, das <b>Essen</b>, beim <b>Schwimmen</b>.</p><p class='en'>Adjectives become nouns: capitalized, but they keep their adjective endings. After etwas/nichts/viel the ending is -es.</p>",
+merk:"Groß geschrieben, aber Adjektivendung: der Deutsche, ein Deutscher.",
+merkEn:"Capitalized but still declined like an adjective.",
+q:[
+{q:"„Ich habe ___ gehört.“ (etwas + neu)", o:["etwas Neu","etwas Neues","etwas neues"], c:1, h:"Nach etwas: -es und groß."},
+{q:"„Er ist ___.“ (ein + deutsch)", o:["ein Deutsche","ein Deutscher","ein deutscher"], c:1, h:"Nach ein: maskuline Endung -er, groß."},
+{q:"Nominalisiertes Verb: „Das ___ macht Spaß.“ (schwimmen)", o:["Schwimmen","schwimmen","Schwimm"], c:0, h:"Verb als Nomen → Infinitiv, groß."},
+{type:"gap", q:"„Ich wünsche dir alles ___!“ (gut)", a:["gute"], h:"alles Gute — großgeschrieben mit -e."}
+]},
+
+{id:"lassen", chip:"lassen", title:"Das Verb „lassen“", titleEn:"The verb lassen — have something done",
+explain:"<p><b>lassen</b> hat drei Bedeutungen, die man streng trennen muss:</p><table class='wide'><tr><th>Bedeutung</th><th>Beispiel</th></tr><tr><td><b>1 · etwas machen lassen</b> (nicht selbst tun)</td><td>Ich <b>lasse</b> mein Auto reparieren.<br>Ich <b>lasse</b> mir die Haare schneiden.</td></tr><tr><td><b>2 · erlauben</b></td><td>Meine Eltern <b>lassen</b> mich ausgehen.</td></tr><tr><td><b>3 · zurücklassen / liegen lassen</b></td><td>Ich habe mein Handy zu Hause <b>gelassen</b>.</td></tr></table><p><b>Perfekt:</b> Bei Bedeutung 1 und 2 steht ein <b>doppelter Infinitiv</b>: <i>Ich habe mein Auto reparieren <b>lassen</b></i> (nicht „gelassen“).</p><p><b>sich lassen = Passiversatz:</b> <i>Das Problem <b>lässt sich</b> lösen.</i> = Das Problem kann gelöst werden.</p><p>Konjugation: ich lasse, du <b>lässt</b>, er <b>lässt</b>, wir lassen.</p><p class='en'>lassen means: have something done by someone else, allow, or leave behind. In the perfect tense it uses a double infinitive.</p>",
+merk:"„Ich lasse mein Auto reparieren“ heißt: eine Werkstatt macht es, nicht ich.",
+merkEn:"lassen = have it done by someone else.",
+q:[
+{q:"„Ich lasse meine Haare schneiden.“ Wer schneidet?", o:["ich selbst","der Friseur","niemand"], c:1, h:"lassen = jemand anders macht es."},
+{q:"Perfekt: „Ich habe das Auto reparieren ___.“", o:["gelassen","lassen","lässt"], c:1, h:"Doppelter Infinitiv: reparieren lassen."},
+{q:"„Das Problem lässt sich lösen“ bedeutet:", o:["muss gelöst werden","kann gelöst werden","wurde gelöst"], c:1, h:"sich lassen = können."},
+{type:"gap", q:"„Meine Mutter ___ mich nicht allein reisen.“ (erlauben, er/sie-Form)", a:["lässt","laesst"], h:"er/sie lässt."}
+]},
+
+{id:"futur2", chip:"Futur II", title:"Futur II: die Vorzukunft", titleEn:"Future perfect",
+explain:"<p><b>werden + Partizip II + haben/sein</b> — die seltenste Zeitform, aber du solltest sie erkennen.</p><table class='wide'><tr><th>Gebrauch</th><th>Beispiel</th></tr><tr><td><b>1 · abgeschlossen bis zu einem Zeitpunkt</b></td><td>Bis Freitag <b>werde</b> ich alles <b>erledigt haben</b>.<br>Nächstes Jahr <b>wird</b> er sein Studium <b>beendet haben</b>.</td></tr><tr><td><b>2 · Vermutung über Vergangenes</b></td><td>Er <b>wird</b> den Zug <b>verpasst haben</b>. <span class='small'>(= wahrscheinlich hat er ihn verpasst)</span></td></tr></table><p><b>haben oder sein?</b> Gleiche Regel wie beim Perfekt: Bewegung und Veränderung nehmen <i>sein</i>.</p><div class='ex'>Ich werde gelernt <b>haben</b>. · Er wird angekommen <b>sein</b>.</div><p><b>Im Alltag</b> ersetzt man Futur II fast immer durch Perfekt + Zeitangabe: <i>Bis Freitag habe ich alles erledigt.</i></p><p class='en'>werden + participle + haben/sein. Used for something completed by a future point, or as an assumption about the past. Rare in speech.</p>",
+merk:"Futur II = fertig bis dann. Im Alltag reicht das Perfekt.",
+merkEn:"Futur II = finished by then. In speech, use the perfect instead.",
+q:[
+{q:"„Bis morgen ___ ich den Text gelesen haben.“", o:["werde","habe","bin"], c:0, h:"werden + Partizip + haben."},
+{q:"„Er wird wohl krank gewesen sein.“ Was bedeutet das?", o:["Er wird krank.","Ich vermute, er war krank.","Er ist sicher krank."], c:1, h:"Vermutung über die Vergangenheit."},
+{q:"Welche Form ist richtig? (ankommen)", o:["wird angekommen haben","wird angekommen sein","wird ankommen haben"], c:1, h:"Bewegung → sein."},
+{type:"gap", q:"„Nächste Woche ___ wir umgezogen sein.“", a:["werden"], h:"wir werden + Partizip + sein."}
+]},
+
+{id:"attribute", chip:"Attribute", title:"Attribute: Wörter, die Nomen genauer beschreiben", titleEn:"Attributes — modifying the noun",
+explain:"<p>Ein <b>Attribut</b> beschreibt ein Nomen genauer. Es gibt mehrere Arten:</p><table class='wide'><tr><th>Art</th><th>Position</th><th>Beispiel</th></tr><tr><td><b>Adjektivattribut</b></td><td>davor</td><td>das <b>neue</b> Auto</td></tr><tr><td><b>Genitivattribut</b></td><td>dahinter</td><td>das Auto <b>des Lehrers</b></td></tr><tr><td><b>Präpositionalattribut</b></td><td>dahinter</td><td>das Buch <b>über Deutschland</b></td></tr><tr><td><b>Relativsatz</b></td><td>dahinter</td><td>das Auto, <b>das dort steht</b></td></tr><tr><td><b>Apposition</b></td><td>dahinter, in Kommas</td><td>Herr Müller, <b>mein Chef</b>, kommt.</td></tr><tr><td><b>Partizipattribut</b></td><td>davor</td><td>das <b>reparierte</b> Auto</td></tr></table><p><b>Genitivattribut ersetzen:</b> Umgangssprachlich sagt man oft <i>von + Dativ</i>: <i>das Auto <b>von dem Lehrer</b></i>. Bei Namen reicht ein <b>-s</b>: <i><b>Marias</b> Auto</i> (ohne Apostroph!).</p><p class='en'>Attributes describe a noun more precisely. Adjectives and participles come before it; genitives, prepositions, relative clauses and appositions come after it.</p>",
+merk:"Genitiv steht hinter dem Nomen, Adjektiv davor: das neue Auto des Lehrers.",
+merkEn:"Adjectives before the noun, genitive after it.",
+q:[
+{q:"Welches ist ein Genitivattribut?", o:["das schnelle Auto","das Auto meines Vaters","das Auto dort"], c:1, h:"Genitiv: meines Vaters."},
+{q:"„Herr Weber, unser Lehrer, ist krank.“ — was ist „unser Lehrer“?", o:["Genitivattribut","Apposition","Relativsatz"], c:1, h:"Erklärender Einschub in Kommas = Apposition."},
+{q:"Wie schreibt man den Namen-Genitiv richtig?", o:["Marias Auto","Maria's Auto","Marias' Auto"], c:0, h:"Im Deutschen ohne Apostroph."},
+{type:"match", q:"Ordne Attributart und Beispiel zu:", pairs:[["Adjektivattribut","das neue Haus"],["Genitivattribut","das Haus der Familie"],["Relativsatz","das Haus, das ich kaufe"],["Apposition","Herr Meier, mein Nachbar"]], h:"Vier Wege, ein Nomen zu beschreiben."}
+]},
+
+{id:"valenz", chip:"Verbvalenz", title:"Verbvalenz: welche Ergänzungen braucht ein Verb?", titleEn:"Verb valency — which complements a verb needs",
+explain:"<p>Jedes Verb legt fest, wie viele und welche Ergänzungen es braucht. Das nennt man <b>Valenz</b>.</p><table class='wide'><tr><th>Typ</th><th>Verben</th><th>Beispiel</th></tr><tr><td><b>nur Subjekt</b></td><td>schlafen, arbeiten, regnen</td><td>Das Kind schläft.</td></tr><tr><td><b>+ Akkusativ</b> <span class='small'>(die meisten)</span></td><td>sehen, kaufen, haben, brauchen</td><td>Ich kaufe <span class='wa'>ein Buch</span>.</td></tr><tr><td><b>+ Dativ</b></td><td>helfen, danken, gefallen, gehören</td><td>Ich helfe <span class='wd'>dem Kind</span>.</td></tr><tr><td><b>+ Dativ + Akkusativ</b></td><td>geben, zeigen, schenken, erklären</td><td>Ich gebe <span class='wd'>dem Kind</span> <span class='wa'>ein Buch</span>.</td></tr><tr><td><b>+ Präposition</b></td><td>warten auf, denken an</td><td>Ich warte <b>auf</b> <span class='wa'>den Bus</span>.</td></tr><tr><td><b>+ Genitiv</b> <span class='small'>(selten, formell)</span></td><td>gedenken, beschuldigen, bedürfen</td><td>Man beschuldigt ihn <span class='wg'>des Diebstahls</span>.</td></tr></table><p><b>Praktisch:</b> Lerne jedes neue Verb zusammen mit seiner Ergänzung — <i>helfen + Dativ</i>, <i>warten auf + Akkusativ</i>. Das erspart dir später hunderte Fehler.</p><p class='en'>Every verb determines which complements it needs. Learn each new verb together with its case or preposition.</p>",
+merk:"Nicht das Wort allein lernen, sondern das Muster: helfen + Dativ.",
+merkEn:"Learn the pattern, not just the word: helfen + dative.",
+q:[
+{q:"Welches Verb braucht den Dativ?", o:["sehen","helfen","kaufen"], c:1, h:"helfen + Dativ."},
+{q:"„Ich schenke ___ ___.“ (mein Bruder / ein Buch)", o:["meinen Bruder ein Buch","meinem Bruder ein Buch","meinem Bruder einem Buch"], c:1, h:"schenken: Dativ (Person) + Akkusativ (Sache)."},
+{q:"Welches Verb braucht KEINE Ergänzung?", o:["brauchen","schlafen","geben"], c:1, h:"schlafen kommt mit dem Subjekt aus."},
+{type:"match", q:"Ordne Verb und Ergänzung zu:", pairs:[["helfen","+ Dativ"],["kaufen","+ Akkusativ"],["geben","+ Dativ + Akkusativ"],["warten","+ auf (Akkusativ)"]], h:"Jedes Verb hat sein festes Muster."}
 ]}
 ]};
