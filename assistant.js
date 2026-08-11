@@ -138,17 +138,67 @@
     [/du oder sie|sie oder du|siezen|duzen/, ["hoeflichkeit"]]
   ];
 
+
+  /* Tippfehler-Toleranz: Levenshtein-Distanz */
+  function lev(a,b){
+    if(a===b) return 0;
+    if(Math.abs(a.length-b.length)>3) return 99;
+    const m=a.length,n=b.length;
+    let prev=Array.from({length:n+1},(_,j)=>j), cur=new Array(n+1);
+    for(let i=1;i<=m;i++){
+      cur[0]=i;
+      for(let j=1;j<=n;j++){
+        cur[j]=Math.min(prev[j]+1, cur[j-1]+1, prev[j-1]+(a[i-1]===b[j-1]?0:1));
+      }
+      [prev,cur]=[cur,prev];
+    }
+    return prev[n];
+  }
+  const tol = w => w.length<=3 ? 0 : (w.length<=4 ? 1 : (w.length<=8 ? 2 : 3));
+  /* alle bekannten Suchwörter (Titel, Chips, IDs, Synonyme) */
+  const VOCAB = (()=>{
+    const set = new Set();
+    IDX.forEach(e=>{ e.tok.forEach(t=>set.add(t)); set.add(e.fid.replace(/ /g,"")); });
+    Object.keys(SYN).forEach(k=>set.add(k));
+    return [...set].filter(w=>w.length>3);
+  })();
+  /* korrigiert ein Wort auf das nächstliegende bekannte Wort */
+  function correct(w){
+    if(w.length<4) return null;
+    let best=null, bd=99;
+    const t = tol(w);
+    for(const c of VOCAB){
+      if(Math.abs(c.length-w.length)>t) continue;
+      if(c[0]!==w[0] && lev(c.slice(0,3),w.slice(0,3))>1) continue;
+      const d = lev(w,c);
+      if(d<bd){ bd=d; best=c; if(d===0) break; }
+    }
+    return (bd<=t && bd>0) ? best : null;
+  }
+  window._correct = correct;
+
   function score(q){
     const fq = fold(q);
     if(!fq) return [];
     const compact = fq.replace(/ /g,"");
     const all = fq.split(" ").filter(Boolean);
-    const words = all.filter(w => (w.length>2 || /^(ii|iv|[0-9])$/.test(w)) && !STOP.has(w));
+    let words = all.filter(w => (w.length>2 || /^(ii|iv|[0-9])$/.test(w)) && !STOP.has(w));
+    /* Tippfehler korrigieren, wenn ein Wort nirgends vorkommt */
+    const fixed = [];
+    words = words.map(w=>{
+      const known = IDX.some(e=>e.ftitle.includes(w)||e.ftext.includes(w)) || SYN[w];
+      if(known) return w;
+      const c = correct(w);
+      if(c){ fixed.push([w,c]); return c; }
+      return w;
+    });
+    window._lastFix = fixed;
     if(!words.length && !compact) return [];
     const boost = {};
     const bump = (ids,n) => ids.forEach(id => boost[id] = (boost[id]||0)+n);
-    all.forEach(w => { if(SYN[w]) bump(SYN[w], 40); });
-    PHRASE.forEach(([re_,ids]) => { if(re_.test(fq)) bump(ids, 120); });
+    all.concat(words).forEach(w => { if(SYN[w]) bump(SYN[w], 40); });
+    const fqc = words.join(' ') + ' ' + fq;
+    PHRASE.forEach(([re_,ids]) => { if(re_.test(fq) || re_.test(fqc)) bump(ids, 120); });
     const res = IDX.map(e=>{
       let s = 0;
       const fidc = e.fid.replace(/ /g,"");
@@ -182,7 +232,7 @@
     const box = document.createElement("div");
     box.className = "as-searchbox";
     box.innerHTML = '<input type="search" id="as-q" placeholder="Grammatik suchen …" '+
-      'autocomplete="off" aria-label="Grammatik suchen"><div class="as-results" id="as-res" hidden></div>';
+      'autocomplete="off" aria-label="Grammatik suchen"><div class="as-results" id="as-res" style="display:none"></div>';
     navInner.appendChild(box);
   }
   const fab = document.createElement("button");
@@ -192,7 +242,8 @@
   document.body.appendChild(fab);
 
   const panel = document.createElement("div");
-  panel.className = "as-panel"; panel.id = "as-panel"; panel.hidden = true;
+  panel.className = "as-panel"; panel.id = "as-panel";
+  panel.style.display = "none";
   panel.innerHTML =
     '<div class="as-head"><div><strong>Grammatik-Assistent</strong>'+
     '<span class="as-sub">Frag mich etwas über deutsche Grammatik</span></div>'+
@@ -204,27 +255,60 @@
     '<button type="submit" aria-label="Senden">→</button></form>';
   document.body.appendChild(panel);
 
+  /* Vorschläge schon ab dem ersten Buchstaben */
+  function prefixHits(v){
+    const f = fold(v);
+    const out = [];
+    IDX.forEach(e=>{
+      const words = (e.ftitle+" "+e.fid).split(/[ \-]/);
+      if(words.some(w=>w.startsWith(f))) out.push({t:e.t, s:100});
+    });
+    return out.sort((a,b)=>a.t.lvl.localeCompare(b.t.lvl) || a.t.chip.localeCompare(b.t.chip));
+  }
+  /* Hauptthemen als Vorschlag */
+  function mainHits(v){
+    const f = fold(v); if(!f) return [];
+    return (window.MAIN_TOPICS||[]).filter(m=>{
+      const n = fold(m.name+" "+m.en+" "+m.id);
+      return n.includes(f) || n.split(" ").some(w=>w.startsWith(f));
+    }).slice(0,3);
+  }
+
   /* ---------- Suche in der Navigation ---------- */
   const qEl = document.getElementById("as-q"), resEl = document.getElementById("as-res");
   if(qEl){
-    const render = list => {
-      if(!list.length){ resEl.innerHTML = '<div class="as-empty">Nichts gefunden. Versuch ein anderes Wort.</div>'; resEl.hidden=false; return; }
-      resEl.innerHTML = list.slice(0,8).map(r =>
+    const render = (list, q) => {
+      let vhtml = "";
+      if(window.findVerb){
+        const o = window.findVerb(q) || window.findVerb("sich "+q);
+        if(o) vhtml = '<button class="as-hit as-verb" onclick="window.showVerb(\''+o.v+'\')">'+
+          '<span class="as-lv" style="background:#0f766e">VERB</span>'+
+          '<span class="as-hit-t">'+o.v+' — Konjugation</span>'+
+          '<span class="as-hit-c">Präsens · Präteritum · Perfekt</span></button>';
+      }
+      const mains = mainHits(q).map(m=>
+        '<a class="as-hit as-main" href="index.html#thema-'+m.id+'">'+
+        '<span class="as-lv" style="background:'+m.color+'">'+m.icon+'</span>'+
+        '<span class="as-hit-t">'+m.name+'</span>'+
+        '<span class="as-hit-c">Hauptthema · '+m.subs.length+' Unterthemen</span></a>').join("");
+      vhtml = mains + vhtml;
+      if(!list.length && !vhtml){ resEl.innerHTML = '<div class="as-empty">Nichts gefunden. Versuch ein anderes Wort.</div>'; resEl.style.display="block"; return; }
+      resEl.innerHTML = vhtml + list.slice(0,8).map(r =>
         '<a class="as-hit" href="'+link(r.t)+'">'+badge(r.t)+
         '<span class="as-hit-t">'+r.t.title+'</span>'+
         '<span class="as-hit-c">'+r.t.chip+(r.t.nq?' · '+r.t.nq+' Übungen':' · Nachschlagen')+'</span></a>').join("");
-      resEl.hidden = false;
+      resEl.style.display = "block";
     };
     qEl.addEventListener("input", ()=>{
       const v = qEl.value.trim();
-      if(v.length<2){ resEl.hidden = true; return; }
-      render(score(v));
+      if(v.length<1){ resEl.style.display = "none"; return; }
+      render(v.length===1 ? prefixHits(v) : score(v), v.toLowerCase().trim());
     });
     qEl.addEventListener("keydown", e=>{
-      if(e.key==="Escape"){ qEl.value=""; resEl.hidden=true; qEl.blur(); }
+      if(e.key==="Escape"){ qEl.value=""; resEl.style.display="none"; qEl.blur(); }
       if(e.key==="Enter"){ const a = resEl.querySelector(".as-hit"); if(a){ e.preventDefault(); location.href = a.getAttribute("href"); } }
     });
-    document.addEventListener("click", e=>{ if(!e.target.closest(".as-searchbox")) resEl.hidden = true; });
+    document.addEventListener("click", e=>{ if(!e.target.closest(".as-searchbox")) resEl.style.display = "none"; });
     document.addEventListener("keydown", e=>{
       if(e.key==="/" && document.activeElement.tagName!=="INPUT" && document.activeElement.tagName!=="TEXTAREA"){
         e.preventDefault(); qEl.focus();
@@ -257,6 +341,23 @@
   const THANKS = /(danke|thanks|dankeschoen|vielen dank)/i;
   const HELP = /(was kannst du|hilfe|help|wie funktioniert)/i;
 
+  /* Verb erkannt? Dann direkt die Konjugation zeigen */
+  function verbHit(raw){
+    if(!window.findVerb) return null;
+    const cleaned = raw.toLowerCase()
+      .replace(/[?!.,]/g," ")
+      .replace(/\b(konjugation|konjugiere|konjugier|von|die|das|der|wie|was|ist|bilde|bilden|formen|verb|zeig|zeige|mir|bitte|ich)\b/g," ")
+      .replace(/\s+/g," ").trim();
+    if(!cleaned) return null;
+    const parts = cleaned.split(" ");
+    for(let i=0;i<parts.length;i++){
+      const two = parts[i]+" "+(parts[i+1]||"");
+      const o = window.findVerb(two.trim()) || window.findVerb(parts[i]);
+      if(o) return o;
+    }
+    return null;
+  }
+
   function answer(q){
     const raw = q.trim();
     if(!raw) return;
@@ -264,7 +365,16 @@
     if(THANKS.test(raw)) return add("bot","Gern! Wenn du noch etwas wissen willst, frag einfach.");
     if(HELP.test(raw)) return add("bot","Ich kenne alle "+DATA.length+" Grammatikthemen dieser Seite von A1 bis C2. Stell mir eine Frage wie <i>„Was ist der Unterschied zwischen als und wenn?“</i> — ich erkläre es einfach und zeige dir die passenden Übungen.");
 
+    const vb = verbHit(raw);
+    if(vb && window.verbCard){
+      add("bot",'<p class="as-lead">Hier ist die komplette Konjugation:</p>'+window.verbCard(vb));
+      return;
+    }
     const hits = score(raw);
+    const fx = window._lastFix || [];
+    if(fx.length){
+      add("bot",'<span class="as-fix">Ich lese das als <b>'+fx.map(p=>p[1]).join(", ")+'</b>.</span>');
+    }
     if(!hits.length){
       return add("bot","Dazu habe ich leider nichts gefunden. Versuch es mit einem Grammatikwort — zum Beispiel <b>Dativ</b>, <b>Perfekt</b>, <b>Passiv</b>, <b>Relativsatz</b> oder <b>Komma</b>.");
     }
@@ -283,8 +393,16 @@
     add("bot", html);
   }
 
+  const isOpen = () => panel.style.display !== "none";
+  function closePanel(){
+    panel.style.display = "none";
+    fab.classList.remove("open");
+    fab.setAttribute("aria-label","Grammatik-Assistent öffnen");
+  }
   function openPanel(){
-    panel.hidden = false; fab.classList.add("open");
+    panel.style.display = "flex";
+    fab.classList.add("open");
+    fab.setAttribute("aria-label","Grammatik-Assistent schließen");
     if(!log.children.length){
       add("bot","Hallo! Ich bin dein Grammatik-Assistent. Ich kenne alle <b>"+DATA.length+" Themen</b> dieser Seite und erkläre sie dir in einfacher Sprache.<br>Stell mir einfach eine Frage.");
       chips.innerHTML = SUGG.map(s=>'<button class="as-chip">'+s+'</button>').join("");
@@ -292,10 +410,15 @@
         add("me", b.textContent); answer(b.textContent); chips.innerHTML="";
       }));
     }
-    setTimeout(()=>document.getElementById("as-in").focus(),80);
+    setTimeout(()=>{ const i=document.getElementById("as-in"); if(i) i.focus(); },80);
   }
-  fab.addEventListener("click", ()=> panel.hidden ? openPanel() : (panel.hidden=true, fab.classList.remove("open")));
-  document.getElementById("as-close").addEventListener("click", ()=>{ panel.hidden=true; fab.classList.remove("open"); });
+  fab.addEventListener("click", e => { e.stopPropagation(); isOpen() ? closePanel() : openPanel(); });
+  document.getElementById("as-close").addEventListener("click", e => { e.stopPropagation(); closePanel(); });
+  // Escape schließt, Klick außerhalb schließt
+  document.addEventListener("keydown", e => { if(e.key==="Escape" && isOpen()) closePanel(); });
+  document.addEventListener("click", e => {
+    if(isOpen() && !e.target.closest("#as-panel") && !e.target.closest("#as-fab")) closePanel();
+  });
   document.getElementById("as-form").addEventListener("submit", e=>{
     e.preventDefault();
     const inp = document.getElementById("as-in");

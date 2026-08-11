@@ -1,0 +1,26 @@
+/* ===== Erklärvideo: Vorschaubild, lädt erst beim Klick ===== */
+.vid{position:relative;border-radius:16px;overflow:hidden;margin:0 0 18px;cursor:pointer;
+  background:#000;aspect-ratio:16/9;max-width:560px;box-shadow:0 3px 16px rgba(0,0,0,.14);
+  transition:transform .18s,box-shadow .18s}
+.vid:hover{transform:translateY(-2px);box-shadow:0 10px 28px rgba(0,0,0,.24)}
+.vid-thumb{width:100%;height:100%;object-fit:cover;display:block;opacity:.88}
+.vid:hover .vid-thumb{opacity:1}
+.vid-play{position:absolute;left:50%;top:44%;transform:translate(-50%,-50%);
+  width:64px;height:45px;border:none;border-radius:12px;background:rgba(220,0,0,.92);cursor:pointer;
+  transition:background .16s,transform .16s}
+.vid-play::after{content:"";position:absolute;left:52%;top:50%;transform:translate(-50%,-50%);
+  border-style:solid;border-width:9px 0 9px 15px;border-color:transparent transparent transparent #fff}
+.vid:hover .vid-play{background:#f00;transform:translate(-50%,-50%) scale(1.08)}
+.vid-cap{position:absolute;left:0;right:0;bottom:0;padding:26px 14px 11px;color:#fff;
+  background:linear-gradient(transparent,rgba(0,0,0,.85));font-size:14px;line-height:1.35}
+.vid-cap b{display:block}
+.vid-sub{display:block;font-size:11.5px;opacity:.8;font-weight:400;margin-top:1px}
+.vid iframe{width:100%;height:100%;border:0;display:block}
+.vid-link{display:flex;align-items:center;gap:11px;text-decoration:none;background:var(--bg2);
+  border-radius:14px;padding:13px 16px;margin:0 0 18px;max-width:560px;color:var(--text);
+  transition:background .15s}
+.vid-link:hover{background:#ececef}
+.vid-ico{width:34px;height:24px;border-radius:7px;background:#dc0000;color:#fff;font-size:11px;
+  display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.vid-link b{font-size:14px;display:block}
+@media(max-width:600px){.vid,.vid-link{max-width:100%}.vid-cap{font-size:13px;padding:22px 12px 10px}}

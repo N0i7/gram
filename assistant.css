@@ -75,3 +75,12 @@
   .as-panel{right:10px;left:10px;width:auto;bottom:74px;height:70vh}
   .as-fab{right:12px;bottom:12px;padding:11px 18px;font-size:13.5px}
 }
+.as-fix{font-size:12.5px;color:var(--sec);font-style:italic}
+.as-fix b{color:var(--text);font-style:normal}
+.as-verb{width:100%;text-align:left;font-family:inherit;border:none;background:#f0fdfa;cursor:pointer;
+  display:grid;grid-template-columns:auto 1fr;gap:3px 9px;padding:10px 14px;align-items:center;
+  border-bottom:1px solid var(--bg2)}
+.as-verb:hover{background:#ccfbf1}
+.as-main{background:#fafafa}
+.as-main:hover{background:var(--bg2)}
+.as-main .as-lv{font-size:13px;min-width:24px;text-align:center}

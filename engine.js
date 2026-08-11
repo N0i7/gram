@@ -14,6 +14,26 @@
   function shuffle(a){ a=a.slice(); for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]];} return a; }
   function esc(s){ return String(s).replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/"/g,"&quot;"); }
 
+
+  /* Video des zugehörigen Hauptthemas */
+  const VMAP = {};
+  (window.MAIN_TOPICS||[]).forEach(m=>m.subs.forEach(([l,t])=>{ VMAP[l+"/"+t] = m; }));
+  function videoBlock(tid){
+    const m = VMAP[D.level.toLowerCase()+"/"+tid];
+    if(!m) return "";
+    if(!m.yt){
+      const q = encodeURIComponent(m.ytSearch || ("Deutsch "+m.name+" erklärt"));
+      return '<a class="vid-link" href="https://www.youtube.com/results?search_query='+q+'" target="_blank" rel="noopener">'+
+        '<span class="vid-ico">▶</span><span><b>Videos zum Thema '+m.name+'</b>'+
+        '<span class="vid-sub">auf YouTube suchen · search on YouTube</span></span></a>';
+    }
+    return '<div class="vid" data-yt="'+m.yt+'">'+
+      '<img class="vid-thumb" loading="lazy" src="https://i.ytimg.com/vi/'+m.yt+'/hqdefault.jpg" alt="">'+
+      '<button class="vid-play" aria-label="Video abspielen"></button>'+
+      '<div class="vid-cap"><b>'+(m.ytTitle||m.name)+'</b>'+
+      '<span class="vid-sub">Erklärvideo zu '+m.name+' · explanatory video (YouTube)</span></div></div>';
+  }
+
   const root = document.getElementById("topics");
   root.innerHTML = D.topics.map(t=>{
     const merk = t.merk ? '<div class="merk"><b>Merke:</b> '+t.merk+(t.merkEn?'<br><span class="en">'+t.merkEn+'</span>':'')+'</div>' : '';
@@ -27,7 +47,7 @@
       : '';
     return '<section class="topic" id="'+t.id+'">'+
       '<h2>'+t.title+badge+'</h2><p class="ten">'+t.titleEn+'</p>'+
-      '<div class="card">'+t.explain+merk+'</div>'+quiz+'</section>';
+      '<div class="card">'+t.explain+merk+'</div>'+videoBlock(t.id)+quiz+'</section>';
   }).join("");
 
   function renderQ(tid,q,i){
@@ -157,6 +177,17 @@
       st.sel = null;
     }
   };
+
+  /* Video erst beim Klick laden — hält die Seite schnell */
+  document.addEventListener("click", function(e){
+    const box = e.target.closest(".vid");
+    if(!box || box.dataset.on) return;
+    box.dataset.on = "1";
+    const id = box.dataset.yt;
+    box.innerHTML = '<iframe src="https://www.youtube-nocookie.com/embed/'+id+'?autoplay=1&rel=0" '+
+      'title="Erklärvideo" frameborder="0" allow="accelerometer; autoplay; encrypted-media; picture-in-picture" '+
+      'allowfullscreen></iframe>';
+  });
 
   document.addEventListener("keydown",function(e){
     if(e.key==="Enter" && e.target.tagName==="INPUT" && e.target.id.startsWith("in-")){

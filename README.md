@@ -1,31 +1,26 @@
 # FLOß Grammatik — die komplette deutsche Grammatik A1–C2
 
-Statische Website ohne Server: HTML + CSS + Vanilla-JS. 121 Themen, 534 interaktive Übungen.
+Statische Website ohne Server. 28 Hauptthemen, 121 Unterthemen, 534 interaktive Übungen,
+197 Verbkonjugationen, 27 Erklärvideos, Suche und Grammatik-Assistent.
 
 ## Aufbau
-- `index.html` — Startseite: Lernpfad A1–C2 und Themen-Ansicht (12 Kategorien), umschaltbar
-- `a1.html` … `c2.html` — Level-Seiten
-- `data-a1.js` … `data-c2.js` — alle Inhalte und Übungen (hier ergänzt man neue Themen)
+- `index.html` — Startseite: Ansicht nach Thema (28 Hauptthemen) oder nach Level (A1–C2)
+- `a1.html` … `c2.html` — Level-Seiten mit Erklärungen, Videos und Übungen
+- `data-a1.js` … `data-c2.js` — alle Inhalte und Übungen
+- `topics-map.js` — Zuordnung Hauptthema → Unterthemen + YouTube-Video
+- `verbs.js` + `verbcard.js` — Verbdatenbank und Konjugations-Popup
 - `engine.js` — Übungs-Engine: Multiple Choice, Lückentext, Satz bauen, Zuordnen
-- `assistant.js` + `search-index.js` — Suche und Grammatik-Assistent (läuft offline im Browser)
-- `styles.css`, `roadmap.css`, `assistant.css` — Design
+- `assistant.js` + `search-index.js` — Suche und Assistent (mit Tippfehler-Toleranz)
+- `styles.css`, `roadmap.css`, `assistant.css`, `verbcard.css`, `video.css`
 
-## Aktualisieren
-Nach inhaltlichen Änderungen an `data-*.js` muss der Suchindex neu gebaut werden,
-sonst kennt der Assistent die neuen Themen nicht.
+## Wichtig beim Aktualisieren
+Nach Änderungen an `data-*.js` muss `search-index.js` neu erzeugt werden,
+sonst kennt der Assistent die neuen Inhalte nicht.
 
-## Online stellen (GitHub Pages)
-Alle Dateien ins Repository hochladen → Settings → Pages → Branch `main`, Ordner `/ (root)` → Save.
-Wichtig: Das Repository muss **öffentlich** sein, sonst schaltet GitHub Pages ab.
+## Online stellen
+Alle Dateien ins GitHub-Repository hochladen → Settings → Pages → Branch `main`, Ordner `/ (root)`.
+Das Repository muss **öffentlich** sein, sonst schaltet GitHub Pages ab.
 
-## Neues Thema anlegen
-```js
-{id:"meinthema", chip:"Kurzname", title:"Titel", titleEn:"English title",
- explain:"<p>Erklärung …</p>", merk:"Merksatz", merkEn:"Memory line",
- q:[
-   {q:"Frage?", o:["A","B","C"], c:1, h:"Hinweis"},                    // Multiple Choice
-   {type:"gap", q:"Lücke ___", a:["antwort"], h:"Hinweis"},            // Lückentext
-   {type:"order", q:"Baue den Satz:", w:["Ich","lerne"], a:["Ich lerne"], h:"Hinweis"},
-   {type:"match", q:"Ordne zu:", pairs:[["links","rechts"]], h:"Hinweis"}
- ]}
-```
+## Videos austauschen
+In `topics-map.js` beim jeweiligen Hauptthema das Feld `yt:"VIDEO-ID"` ändern.
+Die ID steht in der YouTube-Adresse hinter `watch?v=`.
