@@ -1,0 +1,176 @@
+/* ============================================================
+   FLOß — Login, Konto, Fortschrittsanzeige
+   Übernimmt die Farbvariablen aus styles.css
+   ============================================================ */
+
+/* ---------- Leiste in der Navigation ---------- */
+.floss-userbar{display:flex;align-items:center;margin-left:18px}
+.floss-loginbtn{
+  background:var(--blue);color:#fff;border:0;border-radius:980px;
+  padding:6px 16px;font-size:13.5px;font-weight:500;cursor:pointer;
+  font-family:inherit;transition:transform .15s,opacity .15s}
+.floss-loginbtn:hover{transform:scale(1.04)}
+.floss-avatar{
+  width:30px;height:30px;border-radius:50%;border:0;cursor:pointer;
+  background:linear-gradient(135deg,#0a84ff,#bf5af2);color:#fff;
+  font-weight:700;font-size:14px;font-family:inherit;
+  display:flex;align-items:center;justify-content:center;
+  transition:transform .15s}
+.floss-avatar:hover{transform:scale(1.08)}
+
+@media(max-width:560px){
+  .nav-links{gap:14px;font-size:13px}
+  .floss-userbar{margin-left:10px}
+  .floss-loginbtn{padding:5px 12px;font-size:12.5px}
+}
+
+/* ---------- Dialog ---------- */
+.floss-overlay{
+  position:fixed;inset:0;z-index:2000;background:rgba(0,0,0,.42);
+  backdrop-filter:blur(6px);-webkit-backdrop-filter:blur(6px);
+  display:flex;align-items:center;justify-content:center;padding:20px;
+  animation:floss-fade .18s ease}
+@keyframes floss-fade{from{opacity:0}to{opacity:1}}
+
+.floss-modal{
+  position:relative;background:#fff;border-radius:22px;width:100%;max-width:420px;
+  max-height:90vh;overflow-y:auto;padding:34px 32px 28px;
+  box-shadow:0 24px 70px rgba(0,0,0,.28);
+  animation:floss-up .22s cubic-bezier(.2,.8,.3,1)}
+@keyframes floss-up{from{opacity:0;transform:translateY(14px) scale(.98)}to{opacity:1;transform:none}}
+
+.floss-x{
+  position:absolute;top:14px;right:16px;background:none;border:0;
+  font-size:26px;line-height:1;color:var(--sec);cursor:pointer;
+  padding:4px 8px;border-radius:8px;font-family:inherit}
+.floss-x:hover{background:var(--bg2);color:var(--text)}
+
+.floss-modal h2{font-size:25px;font-weight:700;letter-spacing:-.02em;margin-bottom:6px}
+.floss-sub{color:var(--sec);font-size:14.5px;line-height:1.45;margin-bottom:20px}
+.floss-sub .en{display:block;font-size:12.5px;opacity:.8;margin-top:2px}
+
+.floss-modal label{
+  display:block;font-size:13px;font-weight:600;color:var(--sec);
+  margin-bottom:13px}
+.floss-modal label .hint{font-weight:400;opacity:.75}
+.floss-modal input[type=email],
+.floss-modal input[type=text],
+.floss-modal input[type=password]{
+  display:block;width:100%;margin-top:5px;padding:11px 14px;
+  border:1px solid var(--line);border-radius:12px;font-size:16px;
+  font-family:inherit;color:var(--text);background:#fff;
+  transition:border-color .15s,box-shadow .15s}
+.floss-modal input:focus{
+  outline:0;border-color:var(--blue);box-shadow:0 0 0 3px rgba(0,113,227,.14)}
+
+.floss-row{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+
+.floss-primary,.floss-ghost,.floss-danger{
+  width:100%;padding:12px;border-radius:12px;font-size:15.5px;font-weight:500;
+  cursor:pointer;font-family:inherit;border:1px solid transparent;
+  transition:transform .12s,opacity .15s}
+.floss-primary{background:var(--blue);color:#fff;margin-top:6px}
+.floss-primary:hover:not(:disabled){transform:scale(1.015)}
+.floss-primary:disabled{opacity:.55;cursor:default}
+.floss-ghost{background:var(--bg2);color:var(--text);border-color:var(--line)}
+.floss-ghost:hover{background:#ececef}
+.floss-danger{background:#fff;color:var(--err);border-color:#ffd0cc}
+.floss-danger:hover:not(:disabled){background:#fff5f4}
+.floss-danger:disabled{opacity:.55;cursor:default}
+
+.floss-alt{
+  display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap;
+  margin-top:16px;font-size:13.5px}
+.floss-alt a{color:var(--blue);text-decoration:none}
+.floss-alt a:hover{text-decoration:underline}
+
+/* ---------- Meldungen ---------- */
+.floss-msg{
+  display:none;padding:10px 14px;border-radius:12px;font-size:13.5px;
+  margin-bottom:14px;line-height:1.4}
+.floss-msg.info{background:var(--bg2);color:var(--sec)}
+.floss-msg.good{background:#e8fbee;color:#1a7a3a}
+.floss-msg.bad {background:#ffecea;color:#c22}
+
+/* ---------- Einwilligung ---------- */
+.floss-consent{
+  background:var(--bg2);border-radius:14px;padding:14px 16px;margin:4px 0 16px}
+.floss-consent .cb{
+  display:flex;gap:10px;align-items:flex-start;font-size:12.8px;
+  font-weight:400;color:var(--text);line-height:1.45;margin:0 0 12px;
+  cursor:pointer}
+.floss-consent .cb:last-child{margin-bottom:0}
+.floss-consent .cb input{
+  flex:0 0 auto;width:17px;height:17px;margin-top:1px;accent-color:var(--blue);cursor:pointer}
+.floss-consent .cb .en{display:block;color:var(--sec);font-size:11.5px;margin-top:2px}
+.floss-consent a{color:var(--blue)}
+
+.floss-rechtsfuss{
+  margin-top:18px;padding-top:14px;border-top:1px solid var(--bg2);
+  font-size:12px;color:var(--sec);line-height:1.5}
+.floss-rechtsfuss a{color:var(--blue);text-decoration:none}
+
+/* ---------- Kontobereich ---------- */
+.floss-stat{font-size:13.5px;color:var(--sec);margin-bottom:18px;min-height:40px}
+.floss-kacheln{display:grid;grid-template-columns:repeat(4,1fr);gap:8px}
+.floss-kacheln>div{
+  background:var(--bg2);border-radius:12px;padding:12px 6px;text-align:center}
+.floss-kacheln b{display:block;font-size:21px;color:var(--text);font-weight:700;letter-spacing:-.02em}
+.floss-kacheln span{display:block;font-size:10.5px;color:var(--sec);margin-top:3px;line-height:1.25}
+.floss-chips{display:flex;flex-wrap:wrap;gap:6px;margin-top:10px}
+.floss-chip{
+  background:var(--bg2);border-radius:980px;padding:3px 11px;font-size:11.5px;color:var(--sec)}
+.floss-konto-aktionen{display:flex;flex-direction:column;gap:8px}
+
+/* ---------- Fortschritts-Badge am Thema ---------- */
+.floss-fortschritt{
+  display:inline-block;vertical-align:middle;margin-left:10px;
+  background:var(--bg2);color:var(--sec);border-radius:980px;
+  padding:3px 11px;font-size:12.5px;font-weight:600;letter-spacing:0}
+.floss-fortschritt.fertig{background:#e8fbee;color:#1a7a3a}
+
+/* ---------- Levelweite Fortschrittsleiste ---------- */
+.floss-levelbar{
+  max-width:900px;margin:0 auto 26px;padding:14px 20px;
+  background:var(--bg2);border-radius:16px;
+  display:flex;align-items:center;gap:16px;flex-wrap:wrap}
+.flb-text{flex:1 1 180px;min-width:0}
+.flb-text b{display:block;font-size:14.5px;font-weight:600}
+.flb-text span{display:block;font-size:12px;color:var(--sec);margin-top:1px}
+.flb-rail{
+  flex:2 1 220px;height:8px;background:#dcdce1;border-radius:980px;overflow:hidden}
+.flb-fill{
+  height:100%;border-radius:980px;
+  background:linear-gradient(90deg,#0a84ff,#bf5af2);
+  transition:width .5s cubic-bezier(.2,.8,.3,1)}
+.flb-cta{
+  flex:0 0 auto;background:var(--blue);color:#fff;border:0;border-radius:980px;
+  padding:7px 17px;font-size:13px;font-weight:500;cursor:pointer;font-family:inherit}
+.flb-cta:hover{transform:scale(1.04)}
+
+@media(max-width:560px){
+  .floss-levelbar{margin:0 16px 22px;padding:12px 16px}
+  .floss-kacheln{grid-template-columns:repeat(2,1fr)}
+  .floss-modal{padding:28px 22px 22px}
+  .floss-row{grid-template-columns:1fr}
+}
+
+/* ---------- Hinweis unten ---------- */
+.floss-toast{
+  position:fixed;left:50%;bottom:22px;transform:translateX(-50%);
+  z-index:1800;background:#1d1d1f;color:#fff;border-radius:16px;
+  padding:15px 44px 15px 20px;font-size:13.5px;line-height:1.5;
+  max-width:min(430px,calc(100vw - 32px));
+  box-shadow:0 12px 40px rgba(0,0,0,.3);
+  animation:floss-toast-in .28s cubic-bezier(.2,.8,.3,1)}
+@keyframes floss-toast-in{from{opacity:0;transform:translate(-50%,14px)}to{opacity:1;transform:translate(-50%,0)}}
+.floss-toast.good{background:#1a7a3a}
+.floss-toast .ft-x{
+  position:absolute;top:8px;right:10px;background:none;border:0;color:#fff;
+  opacity:.6;font-size:20px;line-height:1;cursor:pointer;padding:4px 7px;font-family:inherit}
+.floss-toast .ft-x:hover{opacity:1}
+.fh-btn{
+  display:block;margin-top:11px;background:var(--blue);color:#fff;border:0;
+  border-radius:980px;padding:8px 18px;font-size:13px;font-weight:500;
+  cursor:pointer;font-family:inherit}
+.fh-btn:hover{transform:scale(1.03)}

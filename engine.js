@@ -102,6 +102,12 @@
     if(s.done[i]!==undefined) return;
     s.done[i]=good; if(good) s.right++;
     feedback(qid,good,hint); updScore(tid);
+    /* FLOß Backend: jede gelöste Aufgabe melden.
+       Schlägt still fehl, wenn kein Backend eingebunden ist —
+       die Übungen laufen dann wie vorher, nur ohne Speicherung. */
+    if(window.FLOSS_PROGRESS && window.FLOSS_PROGRESS.aufgabeGeloest){
+      try{ window.FLOSS_PROGRESS.aufgabeGeloest(D.level, tid, i, good); }catch(e){}
+    }
   }
 
   /* --- Multiple Choice --- */
