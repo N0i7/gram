@@ -1,0 +1,44 @@
+name: Supabase wachhalten
+
+# Verhindert, dass das kostenlose Supabase-Projekt nach 7 Tagen
+# ohne Zugriff pausiert. Läuft montags, mittwochs und freitags.
+# Das reicht mit großem Sicherheitsabstand.
+
+on:
+  schedule:
+    - cron: "17 3 * * 1,3,5"     # 03:17 UTC = 11:17 Uhr auf den Philippinen
+  workflow_dispatch:              # erlaubt manuelles Auslösen im Actions-Tab
+
+jobs:
+  ping:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Datenbank anpingen
+        env:
+          URL:  ${{ secrets.SUPABASE_URL }}
+          KEY:  ${{ secrets.SUPABASE_ANON_KEY }}
+        run: |
+          if [ -z "$URL" ] || [ -z "$KEY" ]; then
+            echo "::error::SUPABASE_URL oder SUPABASE_ANON_KEY fehlt."
+            echo "Anlegen unter: Settings -> Secrets and variables -> Actions"
+            exit 1
+          fi
+
+          # Eine harmlose Leseanfrage auf eine leere Auswahl.
+          # Zaehlt als Aktivitaet, liefert aber keine Daten zurueck.
+          CODE=$(curl -s -o /tmp/antwort.txt -w "%{http_code}" \
+            "$URL/rest/v1/profiles?select=id&limit=1" \
+            -H "apikey: $KEY" \
+            -H "Authorization: Bearer $KEY")
+
+          echo "HTTP-Status: $CODE"
+
+          # 200 = alles gut. 401/403 = RLS greift, das Projekt lebt trotzdem.
+          if [ "$CODE" = "200" ] || [ "$CODE" = "401" ] || [ "$CODE" = "403" ]; then
+            echo "Projekt ist wach."
+            exit 0
+          fi
+
+          echo "::error::Unerwartete Antwort $CODE"
+          cat /tmp/antwort.txt
+          exit 1
