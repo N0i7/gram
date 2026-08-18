@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Modelltests – FLOß Grammatik</title>
+<link rel="stylesheet" href="styles.css">
+<link rel="stylesheet" href="floss-auth.css">
+<link rel="stylesheet" href="modelltest.css">
+<meta name="description" content="160 kostenlose Modelltests A1–B2 für FLOß-Schüler: Lesen, Sprachbausteine und Schreiben im telc-Format üben.">
+<meta name="robots" content="index,follow">
+<link rel="canonical" href="https://n0i7.github.io/gram/modelltests.html">
+<link rel="icon" type="image/x-icon" href="favicon.ico">
+<link rel="icon" type="image/png" sizes="32x32" href="favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="favicon-16x16.png">
+<link rel="apple-touch-icon" sizes="180x180" href="apple-touch-icon.png">
+<link rel="manifest" href="site.webmanifest">
+</head>
+<body>
+<nav><div class="nav-inner">
+  <a class="nav-logo" href="index.html">FLO<span>ß</span> Grammatik</a>
+  <ul class="nav-links">
+    <li><a href="a1.html">A1</a></li>
+    <li><a href="a2.html">A2</a></li>
+    <li><a href="b1.html">B1</a></li>
+    <li><a href="b2.html">B2</a></li>
+    <li><a href="c1.html">C1</a></li>
+    <li><a href="c2.html">C2</a></li>
+    <li><a href="modelltests.html" class="active">Modelltests</a></li>
+  </ul>
+</div></nav>
+
+<header class="lvl-hero">
+  <span class="badge" style="background:var(--blue)">Neu</span>
+  <h1>Modelltests</h1>
+  <p>160 Übungstests A1–B2 im Prüfungsformat<br><span class="en">160 practice tests A1–B2 in exam format</span></p>
+</header>
+
+<main class="wrap" id="mt-index" style="padding-bottom:70px"></main>
+
+<footer>
+  <div class="flogo">FLO<span>ß</span> — Fides Lingua Ortus Solertia</div>
+  <p>Deutschschule · Intensivkurse A1–B2 · Prüfungsvorbereitung telc</p>
+  <p class="en">German language school — intensive courses A1–B2, telc exam preparation</p>
+  <p>Kontakt: <a href="mailto:fideslinguaortussolertia@gmail.com">fideslinguaortussolertia@gmail.com</a></p>
+<p><a href="karteikarten.html">Karteikarten</a> · <a href="datenschutz.html">Datenschutz</a> · <a href="agb.html">AGB</a> · <a href="impressum.html">Impressum</a></p>
+</footer>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="floss-config.js"></script>
+<script src="floss-auth.js"></script>
+<script>
+(function(){
+  var LEVELS = [
+    {id:"a1", name:"A1", color:"var(--a1)", desc:"Sehr einfach · 3 Lese-Teile, Sprachbausteine, kurze Nachricht (min. 20 Wörter)"},
+    {id:"a2", name:"A2", color:"var(--a2)", desc:"Einfach · 3 Lese-Teile, Sprachbausteine, Nachricht (min. 40 Wörter)"},
+    {id:"b1", name:"B1", color:"var(--b1)", desc:"Mittel · 3 Lese-Teile, Sprachbausteine, Brief/Aufsatz (min. 80 Wörter)"},
+    {id:"b2", name:"B2", color:"var(--b2)", desc:"Schwierig · 3 Lese-Teile, Sprachbausteine, Stellungnahme (min. 200 Wörter)"}
+  ];
+
+  function doneSet(){
+    try{
+      var raw = JSON.parse(localStorage.getItem("floss.modelltests.ergebnisse")||"{}");
+      return raw;
+    }catch(e){ return {}; }
+  }
+  var erg = doneSet();
+
+  var root = document.getElementById("mt-index");
+  root.innerHTML = LEVELS.map(function(lvl){
+    var grid = "";
+    for(var n=1;n<=40;n++){
+      var nr = n<10?"0"+n:""+n;
+      var key = lvl.id+"-"+nr;
+      var done = erg[key];
+      var cls = done ? "done" : "";
+      var label = done ? (n+" ✓") : n;
+      grid += '<a class="'+cls+'" href="modelltest.html?niveau='+lvl.id+'&nr='+nr+'" title="'+(done?("Letztes Ergebnis: "+done.punkte+"/"+done.max):"Noch nicht gemacht")+'">'+label+'</a>';
+    }
+    return '<section class="topic" id="'+lvl.id+'">'+
+      '<h2><span class="badge" style="background:'+lvl.color+'">'+lvl.name+'</span> Modelltests</h2>'+
+      '<p class="ten">'+lvl.desc+'</p>'+
+      '<div class="mt-index-grid">'+grid+'</div>'+
+      '</section>';
+  }).join("");
+})();
+</script>
+</body>
+</html>
