@@ -96,7 +96,10 @@ Deno.serve(async (req) => {
   let antwort: string;
   try {
     antwort = await gemini(frage, verlauf.slice(-VERLAUF_KONTEXT));
-  } catch (_err) {
+  } catch (err) {
+    // Loggen, damit die echte Ursache in Supabase -> Edge Functions -> tutor -> Logs sichtbar ist,
+    // statt nur der Sammelmeldung "gemini-fehler" im Frontend.
+    console.error("tutor gemini-fehler:", err instanceof Error ? err.message : err);
     return json({ ok: false, grund: "gemini-fehler" }, 200);
   }
   if (!antwort) return json({ ok: false, grund: "gemini-leere-antwort" }, 200);
@@ -163,9 +166,16 @@ Stil-Regeln (verbindlich):
     clearTimeout(timer);
   }
 
-  if (!res.ok) throw new Error("gemini-http-" + res.status);
+  if (!res.ok) {
+    const fehlertext = await res.text().catch(() => "");
+    throw new Error("gemini-http-" + res.status + ": " + fehlertext.slice(0, 500));
+  }
   const data = await res.json();
   const raw = data?.candidates?.[0]?.content?.parts?.[0]?.text;
-  if (!raw || typeof raw !== "string") throw new Error("gemini-keine-antwort");
+  if (!raw || typeof raw !== "string") {
+    // finishReason zeigt oft an, WARUM keine Antwort kam (z.B. "SAFETY", "MAX_TOKENS").
+    const finishReason = data?.candidates?.[0]?.finishReason;
+    throw new Error("gemini-keine-antwort (finishReason=" + finishReason + ") " + JSON.stringify(data).slice(0, 400));
+  }
   return raw.trim();
 }
