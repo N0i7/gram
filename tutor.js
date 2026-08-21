@@ -69,7 +69,7 @@
       '<div class="tutor-chat">' +
         '<div class="tutor-verlauf" id="tutor-verlauf"><p class="tutor-hinweis">Frag mich etwas zur deutschen Grammatik — z.B. „Wann benutze ich Dativ statt Akkusativ?“</p></div>' +
         '<div class="tutor-eingabe">' +
-          '<textarea id="tutor-eingabefeld" placeholder="Deine Frage…" maxlength="600" rows="2"></textarea>' +
+          '<textarea id="tutor-eingabefeld" placeholder="Deine Frage…" maxlength="600" rows="4"></textarea>' +
           '<button class="floss-primary" id="tutor-senden">Fragen</button>' +
         '</div>' +
         '<p class="tutor-fuss" id="tutor-fuss">Der Tutor kann sich irren — bei wichtigen Prüfungsfragen frag zusätzlich im Unterricht nach.</p>' +
