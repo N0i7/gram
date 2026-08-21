@@ -1,0 +1,275 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Karteikarten – FLOß Grammatik</title>
+<link rel="stylesheet" href="styles.css">
+<link rel="stylesheet" href="floss-auth.css">
+<style>
+.kk{max-width:640px;margin:0 auto;padding:44px 22px 90px}
+.kk-kopf{text-align:center;margin-bottom:30px}
+.kk-kopf h1{font-size:clamp(28px,5vw,42px);font-weight:700;letter-spacing:-.03em}
+.kk-kopf p{color:var(--sec);font-size:16px;margin-top:8px}
+
+.kk-setup{background:var(--bg2);border-radius:20px;padding:26px}
+.kk-setup h3{font-size:15px;font-weight:600;margin-bottom:12px}
+.kk-typen{display:grid;grid-template-columns:1fr 1fr;gap:9px;margin-bottom:20px}
+.kk-typen label{
+  display:flex;gap:9px;align-items:center;background:#fff;border:1px solid var(--line);
+  border-radius:12px;padding:11px 14px;font-size:14px;cursor:pointer;transition:border-color .15s}
+.kk-typen label:has(input:checked){border-color:var(--blue);background:#f2f8ff}
+.kk-typen input{width:16px;height:16px;accent-color:var(--blue);cursor:pointer}
+.kk-zahlen{display:flex;gap:14px;flex-wrap:wrap;margin-bottom:20px}
+.kk-zahlen label{flex:1 1 130px;font-size:12.5px;font-weight:600;color:var(--sec)}
+.kk-zahlen input{
+  display:block;width:100%;margin-top:5px;padding:9px 12px;border:1px solid var(--line);
+  border-radius:10px;font-size:15px;font-family:inherit}
+.kk-start{
+  width:100%;background:var(--blue);color:#fff;border:0;border-radius:12px;
+  padding:13px;font-size:16px;font-weight:500;cursor:pointer;font-family:inherit}
+.kk-start:hover{transform:scale(1.01)}
+.kk-start:disabled{opacity:.5;cursor:default}
+
+.kk-uebersicht{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-bottom:22px}
+.kk-uebersicht>div{background:var(--bg2);border-radius:14px;padding:16px 8px;text-align:center}
+.kk-uebersicht b{display:block;font-size:26px;font-weight:700;letter-spacing:-.02em}
+.kk-uebersicht span{display:block;font-size:11.5px;color:var(--sec);margin-top:3px}
+
+/* Karte */
+.kk-karte{
+  background:#fff;border:1px solid var(--line);border-radius:22px;
+  padding:40px 30px;text-align:center;min-height:230px;
+  display:flex;flex-direction:column;justify-content:center;
+  box-shadow:0 4px 24px rgba(0,0,0,.06);margin-bottom:16px}
+.kk-typ{
+  display:inline-block;align-self:center;background:var(--bg2);color:var(--sec);
+  border-radius:980px;padding:4px 13px;font-size:11.5px;font-weight:600;margin-bottom:18px}
+.kk-frage{font-size:clamp(26px,5vw,36px);font-weight:700;letter-spacing:-.02em;line-height:1.2}
+.kk-antwort{
+  font-size:clamp(21px,4vw,28px);font-weight:600;color:var(--blue);
+  margin-top:20px;padding-top:20px;border-top:1px solid var(--bg2)}
+.kk-extra{font-size:14px;color:var(--sec);margin-top:8px}
+
+.kk-zeigen{
+  width:100%;background:var(--bg2);color:var(--text);border:1px solid var(--line);
+  border-radius:12px;padding:14px;font-size:16px;cursor:pointer;font-family:inherit;font-weight:500}
+.kk-zeigen:hover{background:#ececef}
+
+.kk-noten{display:grid;grid-template-columns:repeat(4,1fr);gap:8px}
+.kk-noten button{
+  border:0;border-radius:12px;padding:13px 6px;cursor:pointer;font-family:inherit;
+  font-size:13.5px;font-weight:600;color:#fff;transition:transform .12s}
+.kk-noten button:hover{transform:translateY(-2px)}
+.kk-noten button small{display:block;font-size:10px;font-weight:400;opacity:.85;margin-top:2px}
+.n0{background:#ff453a}.n3{background:#ff9f0a}.n4{background:#0a84ff}.n5{background:#30d158}
+
+.kk-leiste{margin:0 0 18px}
+.kk-rail{height:6px;background:var(--bg2);border-radius:980px;overflow:hidden}
+.kk-fill{height:100%;background:linear-gradient(90deg,#0a84ff,#bf5af2);
+  border-radius:980px;transition:width .35s}
+.kk-zaehler{display:flex;justify-content:space-between;font-size:12.5px;color:var(--sec);margin-top:7px}
+
+.kk-fertig{text-align:center;padding:44px 20px}
+.kk-fertig h2{font-size:30px;font-weight:700;letter-spacing:-.02em;margin-bottom:10px}
+.kk-fertig p{color:var(--sec);font-size:15.5px;margin-bottom:22px}
+
+.kk-warnung{
+  background:#fff8e6;border-left:4px solid #ffcc00;border-radius:0 12px 12px 0;
+  padding:13px 17px;font-size:13.5px;line-height:1.5;margin-bottom:22px}
+.kk-warnung button{
+  background:var(--blue);color:#fff;border:0;border-radius:980px;padding:6px 15px;
+  font-size:12.5px;cursor:pointer;font-family:inherit;margin-top:9px;font-weight:500}
+
+@media(max-width:520px){
+  .kk-typen{grid-template-columns:1fr}
+  .kk-uebersicht{grid-template-columns:1fr 1fr}
+  .kk-noten{grid-template-columns:1fr 1fr}
+}
+</style>
+<meta name="description" content="Karteikarten zum Wiederholen von Vokabeln und Grammatik – FLOß Grammatik.">
+<meta name="robots" content="index,follow">
+<link rel="canonical" href="https://n0i7.github.io/gram/karteikarten.html">
+<link rel="icon" type="image/x-icon" href="favicon.ico">
+<link rel="icon" type="image/png" sizes="32x32" href="favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="favicon-16x16.png">
+<link rel="apple-touch-icon" sizes="180x180" href="apple-touch-icon.png">
+<link rel="manifest" href="site.webmanifest">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="FLOß Grammatik">
+<meta property="og:title" content="Karteikarten – FLOß Grammatik">
+<meta property="og:description" content="Karteikarten zum Wiederholen von Vokabeln und Grammatik – FLOß Grammatik.">
+<meta property="og:url" content="https://n0i7.github.io/gram/karteikarten.html">
+<meta property="og:image" content="https://n0i7.github.io/gram/assets/og-image.jpg">
+<meta property="og:locale" content="de_DE">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Karteikarten – FLOß Grammatik">
+<meta name="twitter:description" content="Karteikarten zum Wiederholen von Vokabeln und Grammatik – FLOß Grammatik.">
+<meta name="twitter:image" content="https://n0i7.github.io/gram/assets/og-image.jpg">
+<!-- Analytics: kostenlos & datenschutzfreundlich via GoatCounter (goatcounter.com). Account anlegen, DEINCODE ersetzen, Zeile aktivieren. -->
+<script data-goatcounter="https://no17.goatcounter.com/count" async src="//gc.zgo.at/count.js"></script>
+</head>
+<body>
+<nav><div class="nav-inner">
+  <a class="nav-logo" href="index.html">FLO<span>ß</span> Grammatik</a>
+  <ul class="nav-links">
+    <li><a href="a1.html">A1</a></li>
+    <li><a href="a2.html">A2</a></li>
+    <li><a href="b1.html">B1</a></li>
+    <li><a href="b2.html">B2</a></li>
+    <li><a href="karteikarten.html" class="active">Karten</a></li>
+    <li><a href="modelltests.html">Modelltests</a></li>
+    <li><a href="wiederholen.html">Wiederholen</a></li>
+    <li><a href="tutor.html">Tutor</a></li>
+    <li><a href="referenz.html">Referenz</a></li>
+  </ul>
+</div></nav>
+
+<main class="kk">
+  <div class="kk-kopf">
+    <h1>Karteikarten</h1>
+    <p>Verteilte Wiederholung — du siehst jede Karte genau dann wieder,
+       wenn du sie zu vergessen beginnst.</p>
+  </div>
+  <div id="kk-inhalt"></div>
+</main>
+
+<footer>
+  <div class="flogo">FLO<span>ß</span> — Fides Lingua Ortus Solertia</div>
+  <p><a href="index.html">Startseite</a> · <a href="datenschutz.html">Datenschutz</a> · <a href="agb.html">AGB</a> · <a href="impressum.html">Impressum</a></p>
+</footer>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="floss-config.js"></script>
+<script src="floss-auth.js"></script>
+<script src="badges.js"></script>
+<script src="verbs.js"></script>
+<script src="floss-cards.js"></script>
+<script>
+(function(){
+  var box = document.getElementById("kk-inhalt");
+  var stapel = [], pos = 0, richtig = 0;
+  var typen = ["bedeutung","perfekt"];
+
+  function esc(s){return String(s==null?"":s).replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;");}
+
+  function setup(){
+    window.FLOSS_CARDS.stapelBauen(typen,15,60).then(function(info){
+      var gast = !(window.FLOSS && window.FLOSS.user);
+      box.innerHTML =
+        (gast ? '<div class="kk-warnung">Du bist nicht angemeldet. Dein Kartenstand '+
+                'bleibt nur in diesem Browser und geht verloren, wenn du den '+
+                'Verlauf löschst oder das Gerät wechselst.'+
+                '<br><button id="kk-login">Kostenlos speichern</button></div>' : '') +
+        '<div class="kk-uebersicht">'+
+          '<div><b>'+info.offenFaellig+'</b><span>heute fällig</span></div>'+
+          '<div><b>'+info.offenNeu+'</b><span>noch neu</span></div>'+
+          '<div><b>'+info.gelernt+'</b><span>angefangen</span></div>'+
+        '</div>'+
+        '<div class="kk-setup">'+
+          '<h3>Was möchtest du üben?</h3>'+
+          '<div class="kk-typen">'+
+            typBox("bedeutung","Verb → Bedeutung")+
+            typBox("ruecksatz","Bedeutung → Verb")+
+            typBox("perfekt","Perfektform")+
+            typBox("praet","Präteritum")+
+          '</div>'+
+          '<div class="kk-zahlen">'+
+            '<label>Neue Karten heute<input type="number" id="kk-neu" value="15" min="0" max="60"></label>'+
+            '<label>Wiederholungen max.<input type="number" id="kk-wdh" value="60" min="5" max="200"></label>'+
+          '</div>'+
+          '<button class="kk-start" id="kk-go">Lernen starten</button>'+
+        '</div>';
+
+      var lg = document.getElementById("kk-login");
+      if(lg) lg.onclick = function(){ window.FLOSS.loginDialog(); };
+
+      document.querySelectorAll(".kk-typen input").forEach(function(i){
+        i.onchange = function(){
+          typen = [...document.querySelectorAll(".kk-typen input:checked")].map(x=>x.value);
+          document.getElementById("kk-go").disabled = !typen.length;
+        };
+      });
+      document.getElementById("kk-go").onclick = starten;
+    });
+  }
+
+  function typBox(wert,text){
+    return '<label><input type="checkbox" value="'+wert+'"'+
+           (typen.indexOf(wert)>=0?' checked':'')+'>'+text+'</label>';
+  }
+
+  function starten(){
+    var neu = parseInt(document.getElementById("kk-neu").value,10)||0;
+    var wdh = parseInt(document.getElementById("kk-wdh").value,10)||60;
+    box.innerHTML = '<p style="text-align:center;color:var(--sec);padding:40px">Karten werden gemischt…</p>';
+    window.FLOSS_CARDS.stapelBauen(typen,neu,wdh).then(function(info){
+      stapel = info.stapel; pos = 0; richtig = 0;
+      if(!stapel.length){
+        box.innerHTML = '<div class="kk-fertig"><h2>Nichts zu tun</h2>'+
+          '<p>Für heute ist alles wiederholt. Komm morgen wieder — '+
+          'genau das ist der Sinn der Methode.</p>'+
+          '<button class="kk-start" onclick="location.reload()">Zurück</button></div>';
+        return;
+      }
+      karteZeigen();
+    });
+  }
+
+  function karteZeigen(){
+    if(pos >= stapel.length) return fertig();
+    var c = stapel[pos];
+    var pct = Math.round(pos/stapel.length*100);
+    box.innerHTML =
+      '<div class="kk-leiste"><div class="kk-rail"><div class="kk-fill" style="width:'+pct+'%"></div></div>'+
+        '<div class="kk-zaehler"><span>Karte '+(pos+1)+' von '+stapel.length+'</span>'+
+        '<span>'+richtig+' gewusst</span></div></div>'+
+      '<div class="kk-karte"><span class="kk-typ">'+esc(c.typTitel)+'</span>'+
+        '<div class="kk-frage">'+esc(c.frage)+'</div>'+
+        '<div id="kk-loesung"></div></div>'+
+      '<button class="kk-zeigen" id="kk-auf">Antwort zeigen</button>';
+    document.getElementById("kk-auf").onclick = aufdecken;
+  }
+
+  function aufdecken(){
+    var c = stapel[pos];
+    document.getElementById("kk-loesung").innerHTML =
+      '<div class="kk-antwort">'+esc(c.antwort)+'</div>'+
+      (c.typ!=="bedeutung" ? '<div class="kk-extra">'+esc(c.extra)+'</div>' : '');
+    document.getElementById("kk-auf").outerHTML =
+      '<div class="kk-noten">'+
+        '<button class="n0" data-n="0">Nicht gewusst<small>morgen wieder</small></button>'+
+        '<button class="n3" data-n="3">Mit Mühe<small>bald wieder</small></button>'+
+        '<button class="n4" data-n="4">Gut<small>später</small></button>'+
+        '<button class="n5" data-n="5">Sofort<small>viel später</small></button>'+
+      '</div>';
+    document.querySelectorAll(".kk-noten button").forEach(function(b){
+      b.onclick = function(){ bewerten(parseInt(b.dataset.n,10)); };
+    });
+  }
+
+  function bewerten(note){
+    var c = stapel[pos];
+    if(note>=3) richtig++;
+    window.FLOSS_CARDS.bewerten(c.key,null,note);
+    if(note<3) stapel.push(c);       // nicht gewusst → am Ende nochmal
+    pos++;
+    karteZeigen();
+  }
+
+  function fertig(){
+    var quote = stapel.length ? Math.round(richtig/stapel.length*100) : 0;
+    box.innerHTML =
+      '<div class="kk-fertig"><h2>Durch.</h2>'+
+      '<p>'+stapel.length+' Karten, '+quote+' Prozent auf Anhieb gewusst.<br>'+
+      'Die schwierigen Karten kommen morgen wieder.</p>'+
+      '<button class="kk-start" onclick="location.reload()">Nochmal</button></div>';
+  }
+
+  if(window.FLOSS && window.FLOSS.bereit) window.FLOSS.bereit.then(setup);
+  else setup();
+})();
+</script>
+<script src="sw-register.js"></script>
+</body>
+</html>

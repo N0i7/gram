@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Neues Passwort – FLOß</title>
+<meta name="robots" content="noindex">
+<link rel="stylesheet" href="styles.css">
+<link rel="stylesheet" href="floss-auth.css">
+<style>
+.pw{max-width:400px;margin:0 auto;padding:80px 22px 90px}
+.pw h1{font-size:30px;font-weight:700;letter-spacing:-.02em;margin-bottom:8px}
+.pw p.sub{color:var(--sec);font-size:15px;margin-bottom:24px}
+.pw label{display:block;font-size:13px;font-weight:600;color:var(--sec);margin-bottom:14px}
+.pw input{
+  display:block;width:100%;margin-top:5px;padding:11px 14px;border:1px solid var(--line);
+  border-radius:12px;font-size:16px;font-family:inherit}
+.pw input:focus{outline:0;border-color:var(--blue);box-shadow:0 0 0 3px rgba(0,113,227,.14)}
+</style>
+<link rel="icon" type="image/x-icon" href="favicon.ico">
+<link rel="icon" type="image/png" sizes="32x32" href="favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="favicon-16x16.png">
+<link rel="apple-touch-icon" sizes="180x180" href="apple-touch-icon.png">
+<link rel="manifest" href="site.webmanifest">
+<!-- Analytics: kostenlos & datenschutzfreundlich via GoatCounter (goatcounter.com). Account anlegen, DEINCODE ersetzen, Zeile aktivieren. -->
+<script data-goatcounter="https://no17.goatcounter.com/count" async src="//gc.zgo.at/count.js"></script>
+</head>
+<body>
+<nav><div class="nav-inner">
+  <a class="nav-logo" href="index.html">FLO<span>ß</span> Grammatik</a>
+  <ul class="nav-links"><li><a href="index.html">Übersicht</a></li></ul>
+</div></nav>
+
+<main class="pw">
+  <h1>Neues Passwort</h1>
+  <p class="sub" id="pw-sub">Wird geprüft…</p>
+  <div class="floss-msg" id="pw-msg"></div>
+  <div id="pw-form" style="display:none">
+    <label>Neues Passwort <span class="hint">mindestens 6 Zeichen</span>
+      <input type="password" id="pw1" autocomplete="new-password"></label>
+    <label>Noch einmal
+      <input type="password" id="pw2" autocomplete="new-password"></label>
+    <button class="floss-primary" id="pw-go">Passwort speichern</button>
+  </div>
+</main>
+
+<footer>
+  <div class="flogo">FLO<span>ß</span> — Fides Lingua Ortus Solertia</div>
+  <p><a href="index.html">Startseite</a> · <a href="datenschutz.html">Datenschutz</a> · <a href="agb.html">AGB</a></p>
+</footer>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="floss-config.js"></script>
+<script src="floss-auth.js"></script>
+<script src="badges.js"></script>
+<script>
+(function(){
+  var sub = document.getElementById("pw-sub");
+  var msg = document.getElementById("pw-msg");
+  var frm = document.getElementById("pw-form");
+
+  function zeigen(text, art){
+    msg.className = "floss-msg " + (art||"info");
+    msg.textContent = text; msg.style.display = "block";
+  }
+
+  if(!window.FLOSS || !window.FLOSS.bereit){
+    sub.textContent = "Die Seite ist noch nicht eingerichtet.";
+    return;
+  }
+
+  window.FLOSS.bereit.then(function(){
+    // Supabase legt beim Klick auf den Link aus der E-Mail eine
+    // Sitzung an. Ohne diese Sitzung kann hier nichts gesetzt werden.
+    if(!window.FLOSS.user){
+      sub.textContent = "Dieser Link ist abgelaufen oder wurde schon benutzt.";
+      zeigen("Fordere auf der Startseite einen neuen Link an.", "bad");
+      return;
+    }
+    sub.textContent = "Für " + window.FLOSS.user.email;
+    frm.style.display = "block";
+
+    document.getElementById("pw-go").onclick = function(){
+      var a = document.getElementById("pw1").value;
+      var b = document.getElementById("pw2").value;
+      if(a.length < 6) return zeigen("Mindestens 6 Zeichen.", "bad");
+      if(a !== b)      return zeigen("Die beiden Eingaben stimmen nicht überein.", "bad");
+      this.disabled = true;
+      zeigen("Wird gespeichert…", "info");
+      window.FLOSS.passwortSetzen(a).then(function(){
+        frm.style.display = "none";
+        sub.textContent = "";
+        zeigen("Erledigt. Du wirst weitergeleitet…", "good");
+        setTimeout(function(){ location.href = "index.html"; }, 1600);
+      }).catch(function(e){
+        document.getElementById("pw-go").disabled = false;
+        zeigen((e && e.message) || "Das hat nicht geklappt.", "bad");
+      });
+    };
+  });
+})();
+</script>
+<script src="sw-register.js"></script>
+</body>
+</html>

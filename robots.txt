@@ -1,0 +1,5 @@
+User-agent: *
+Allow: /
+Disallow: /passwort-neu.html
+
+Sitemap: https://n0i7.github.io/gram/sitemap.xml
