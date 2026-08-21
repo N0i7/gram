@@ -21,7 +21,7 @@
 
 import { createClient } from "https://esm.sh/@supabase/supabase-js@2";
 
-const GEMINI_MODEL = Deno.env.get("GEMINI_MODEL") || "gemini-2.0-flash";
+const GEMINI_MODEL = Deno.env.get("GEMINI_MODEL") || "gemini-3.6-flash";
 const GEMINI_API_KEY = Deno.env.get("GEMINI_API_KEY") || "";
 const TAGES_LIMIT = 20; // Tutor-Fragen pro Nutzer und Tag — kürzere Antworten als die Korrektur, daher etwas großzügiger
 const MAX_FRAGE_LAENGE = 600;
