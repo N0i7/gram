@@ -143,3 +143,16 @@ footer p{margin-bottom:5px}
 .m-left.ok,.m-right.ok{background:#e8fbee;border-color:var(--ok);color:#1a7a3a;font-weight:600}
 .m-left.err,.m-right.err{background:#ffecea;border-color:var(--err);color:#c22}
 .m-left:disabled,.m-right:disabled{cursor:default}
+
+/* ===== Referenz-Tabellen (referenz.html + ausklappbare Volltabellen) ===== */
+.ref-h{font-size:15px;font-weight:600;margin:16px 0 8px;color:#1d1d1f}
+.card .ref-h:first-child{margin-top:0}
+details.ref-full{margin-top:14px;border-top:1px solid var(--line);padding-top:12px}
+details.ref-full summary{cursor:pointer;font-size:14px;font-weight:600;color:var(--blue);list-style:none;display:flex;align-items:center;gap:6px;user-select:none}
+details.ref-full summary::-webkit-details-marker{display:none}
+details.ref-full summary::before{content:"▸";display:inline-block;transition:transform .15s}
+details.ref-full[open] summary::before{transform:rotate(90deg)}
+details.ref-full summary .en{color:var(--sec);font-weight:400}
+details.ref-full .ref-body{margin-top:14px}
+.ref-group{margin:44px 0 4px;font-size:12.5px;font-weight:700;text-transform:uppercase;letter-spacing:.05em;color:var(--sec)}
+.ref-group:first-of-type{margin-top:6px}

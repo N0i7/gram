@@ -5,7 +5,8 @@
    window.MODELLTEST_<NIVEAU>_<NR> interaktiv, mit Sofort-Feedback
    nach genau einem Versuch pro Aufgabe (wie das bestehende engine.js
    auf den Grammatik-Seiten). Schreiben wird angezeigt und lokal
-   entworfen; die automatische Korrektur folgt in einem späteren Schritt.
+   entworfen; die Korrektur läuft über modelltest-korrektur.js
+   (window.FlossKorrektur) — muss VOR dieser Datei eingebunden sein.
 
    Design bewusst additiv: nutzt ausschließlich vorhandene CSS-Variablen
    und die neuen, eigenständigen Klassen aus modelltest.css. Keine
@@ -208,9 +209,13 @@
       return '<div class="mt-schreiben-body" id="mt-sw-body-'+i+'" style="'+(i===0?"":"display:none")+'">'+
         '<p class="mt-text">'+esc(a.situation)+'</p>'+punkte+
         '<textarea id="mt-sw-ta-'+i+'" data-draftkey="'+draftKey+'" placeholder="Hier schreiben … / Write here …" oninput="window._mtSchreibenCount('+i+')"></textarea>'+
-        '<p class="mt-wordcount" id="mt-sw-count-'+i+'"></p></div>';
+        '<p class="mt-wordcount" id="mt-sw-count-'+i+'"></p>'+
+        '<button type="button" class="mt-korrigieren-btn" id="mt-sw-korr-btn-'+i+'" onclick="window._mtSchreibenKorrigieren('+i+')" disabled>Text prüfen</button>'+
+        '<div class="mt-korrektur-status" id="mt-sw-korr-status-'+i+'"></div>'+
+        '<div class="mt-korrektur-ergebnis" id="mt-sw-korr-ergebnis-'+i+'"></div>'+
+        '</div>';
     }).join("");
-    var note = '<p class="mt-note">Automatische Korrektur folgt (KI-Korrektur-Tool in Vorbereitung). Dein Text wird lokal in diesem Browser zwischengespeichert, solange du hier weiterschreibst.</p>';
+    var note = '<p class="mt-note">Die Korrektur prüft Grammatik/Rechtschreibung, Wortschatz/Ausdruck und ob du alle Punkte der Aufgabe behandelt hast — wie drei Lehrer, die sich abstimmen. Kein System erkennt jeden Fehler; sieh das Ergebnis als Hilfe, nicht als letztes Wort. Dein Text wird lokal in diesem Browser zwischengespeichert, solange du hier weiterschreibst.</p>';
     sections.push(part("schreiben", "Schreiben", sw.anleitung+" (mindestens "+sw.mindestwoerter+" Wörter)", tabs+bodies+note, null));
 
     window._mtSchreibenTab = function(i){
@@ -228,7 +233,76 @@
       var el = document.getElementById("mt-sw-count-"+i);
       el.textContent = words + " / " + sw.mindestwoerter + " Wörter";
       el.className = "mt-wordcount" + (words>=sw.mindestwoerter ? " ok" : "");
+      var btn = document.getElementById("mt-sw-korr-btn-"+i);
+      if(btn) btn.disabled = words < 5;
     };
+
+    /* ---- Korrektur: 3 Regelmodule (immer) + optional Gemini-Bündelung (nur eingeloggt) ---- */
+    window._mtSchreibenKorrigieren = function(i){
+      var a = sw.aufgaben[i];
+      var ta = document.getElementById("mt-sw-ta-"+i);
+      var btn = document.getElementById("mt-sw-korr-btn-"+i);
+      var statusEl = document.getElementById("mt-sw-korr-status-"+i);
+      var ergebnisEl = document.getElementById("mt-sw-korr-ergebnis-"+i);
+      if(!ta || !ta.value.trim()) return;
+      if(!window.FlossKorrektur){
+        statusEl.textContent = "Korrektur-Modul konnte nicht geladen werden.";
+        return;
+      }
+      btn.disabled = true;
+      statusEl.textContent = "Wird geprüft … (Grammatik, Wortschatz, Aufgabenerfüllung)";
+      ergebnisEl.innerHTML = "";
+
+      window.FlossKorrektur.korrigiere({
+        text: ta.value,
+        niveau: niveau,
+        testKey: testKey,
+        aufgabeNr: a.nr,
+        aufgabe: a,
+        mindestwoerter: sw.mindestwoerter
+      }).then(function(ergebnis){
+        statusEl.textContent = "";
+        btn.disabled = ta.value.trim().split(/\s+/).length < 5;
+        btn.textContent = "Nochmal prüfen";
+        renderKorrekturErgebnis(ergebnisEl, ergebnis);
+      }).catch(function(){
+        statusEl.textContent = "Die Korrektur ist gerade nicht erreichbar. Versuch es später nochmal — dein Text bleibt gespeichert.";
+        btn.disabled = false;
+      });
+    };
+
+    function kriterienListe(k){
+      // Nimmt sowohl das Array-Format ([{name,punkte}]) als auch, falls Gemini
+      // mal ein Objekt liefert, ein einfaches {name:punkte}-Objekt an.
+      if(Array.isArray(k)) return k;
+      if(k && typeof k==="object") return Object.keys(k).map(function(n){ return {name:n, punkte:k[n]}; });
+      return [];
+    }
+
+    function renderKorrekturErgebnis(el, erg){
+      if(!erg){ el.innerHTML = ""; return; }
+      var quelleLabel = erg.quelle==="gemini" ? "verfeinert (KI-Bündelung)" : "regelbasiert";
+      var badges = kriterienListe(erg.kriterien).map(function(k){
+        return '<span class="mt-krit-badge"><b>'+Math.round(k.punkte)+'%</b> '+esc(k.name)+'</span>';
+      }).join("");
+      var gruppen = (erg.fehlergruppen||[]).map(function(g){
+        var beispiele = (g.beispiele||[]).map(function(b){ return '<li>'+esc(b)+'</li>'; }).join("");
+        var hinweis = g.hinweis ? '<p class="mt-korr-hinweis">'+esc(g.hinweis)+'</p>' : "";
+        return '<div class="mt-korr-gruppe"><b>'+esc(g.typ)+'</b>'+(g.anzahl?' ('+g.anzahl+')':'')+
+          (beispiele?'<ul>'+beispiele+'</ul>':"")+hinweis+'</div>';
+      }).join("");
+      el.innerHTML =
+        '<div class="mt-korr-box">'+
+          '<div class="mt-korr-kopf"><span class="mt-korr-gesamt">'+(erg.gesamtprozent!=null?erg.gesamtprozent+"%":"")+'</span>'+
+          '<span class="mt-korr-quelle">'+quelleLabel+'</span></div>'+
+          '<div class="mt-krit-liste">'+badges+'</div>'+
+          '<p class="mt-korr-lob">'+esc(erg.lob||"")+'</p>'+
+          (gruppen?'<div class="mt-korr-gruppen">'+gruppen+'</div>':"")+
+          '<p class="mt-korr-lernsatz">'+esc(erg.lernsatz||"")+'</p>'+
+          '<p class="mt-korr-schluss">'+esc(erg.schlusssatz||"")+'</p>'+
+        '</div>';
+    }
+
     /* Entwürfe beim Laden wiederherstellen */
     setTimeout(function(){
       sw.aufgaben.forEach(function(a,i){

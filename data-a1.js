@@ -58,6 +58,7 @@ q:[
 ]},
 
 {id:"fragen", chip:"Fragen", title:"Fragen stellen", titleEn:"Asking questions",
+ref:"pronomen_interrogativ",
 explain:"<p><b>W-Fragen:</b> Fragewort + Verb + Subjekt. <b>Ja/Nein-Fragen:</b> Verb zuerst!</p><div class='ex'><b>Wo</b> wohnst du? · <b>Was</b> machst du? · <b>Wann</b> kommt er?<br><b>Wohnst</b> du in Cebu? — Ja. / Nein.</div><p>Die Fragewörter: <b>wer</b> (who), <b>was</b> (what), <b>wo</b> (where), <b>wohin</b> (where to), <b>woher</b> (where from), <b>wann</b> (when), <b>wie</b> (how), <b>warum</b> (why), <b>wie viel</b> (how much).</p><p class='en'>W-questions start with the question word, then the verb. Yes/no questions start with the verb itself. The question words are: wer, was, wo, wohin, woher, wann, wie, warum, wie viel.</p>",
 merk:"Ja/Nein-Frage? Verb an den Anfang: „Kommst du mit?“",
 merkEn:"Yes/no question? Verb goes first.",
@@ -107,6 +108,7 @@ q:[
 ]},
 
 {id:"possessiv", chip:"mein · dein", title:"Possessivartikel: mein, dein, sein …", titleEn:"Possessive articles — my, your, his …",
+ref:"pronomen_possessiv",
 explain:"<p><b>mein</b> (ich), <b>dein</b> (du), <b>sein</b> (er/es), <b>ihr</b> (sie), <b>unser</b> (wir), <b>euer</b> (ihr), <b>ihr/Ihr</b> (sie/Sie). Endungen wie bei <b>ein</b>: mein Bruder, mein<b>e</b> Schwester, mein Kind.</p><div class='ex'>Das ist <b>meine</b> Familie. · <b>Sein</b> Auto ist neu. (das Auto von ihm) · <b>Ihre</b> Tochter lernt Deutsch. (von ihr)</div><p class='en'>Endings work like ein/eine. sein = his, ihr = her — look at the OWNER.</p>",
 merk:"sein = von ihm, ihr = von ihr. Die Endung kommt vom Nomen dahinter.",
 merkEn:"sein = his, ihr = her. The ending comes from the noun that follows.",
@@ -119,11 +121,13 @@ q:[
 ]}
 ,
 {id:"verbtabellen", chip:"Konjugation", title:"Konjugationstabellen", titleEn:"Conjugation tables — your reference",
+ref:"verbkonjugation",
 explain:"<p><b>Regelmäßig</b> und die wichtigsten <b>unregelmäßigen</b> Verben im Präsens:</p><table class='wide'><tr><th></th><th>wohnen</th><th>arbeiten*</th><th>fahren</th><th>essen</th><th>nehmen</th><th>lesen</th></tr><tr><td><b>ich</b></td><td>wohne</td><td>arbeite</td><td>fahre</td><td>esse</td><td>nehme</td><td>lese</td></tr><tr><td><b>du</b></td><td>wohnst</td><td>arbeit<b>e</b>st</td><td>f<b>ä</b>hrst</td><td><b>i</b>sst</td><td>n<b>imm</b>st</td><td>l<b>ie</b>st</td></tr><tr><td><b>er/sie/es</b></td><td>wohnt</td><td>arbeit<b>e</b>t</td><td>f<b>ä</b>hrt</td><td><b>i</b>sst</td><td>n<b>imm</b>t</td><td>l<b>ie</b>st</td></tr><tr><td><b>wir</b></td><td>wohnen</td><td>arbeiten</td><td>fahren</td><td>essen</td><td>nehmen</td><td>lesen</td></tr><tr><td><b>ihr</b></td><td>wohnt</td><td>arbeit<b>e</b>t</td><td>fahrt</td><td>esst</td><td>nehmt</td><td>lest</td></tr><tr><td><b>sie/Sie</b></td><td>wohnen</td><td>arbeiten</td><td>fahren</td><td>essen</td><td>nehmen</td><td>lesen</td></tr></table><p class='en'>*Verbs ending in -t/-d insert an e: du arbeitest. Irregular verbs change their vowel only for du and er/sie/es.</p><p>Die drei Superstars — komplett unregelmäßig:</p><table class='wide'><tr><th></th><th>sein <span class='en'>to be</span></th><th>haben <span class='en'>to have</span></th><th>werden <span class='en'>to become</span></th></tr><tr><td><b>ich</b></td><td>bin</td><td>habe</td><td>werde</td></tr><tr><td><b>du</b></td><td>bist</td><td>hast</td><td>wirst</td></tr><tr><td><b>er/sie/es</b></td><td>ist</td><td>hat</td><td>wird</td></tr><tr><td><b>wir</b></td><td>sind</td><td>haben</td><td>werden</td></tr><tr><td><b>ihr</b></td><td>seid</td><td>habt</td><td>werdet</td></tr><tr><td><b>sie/Sie</b></td><td>sind</td><td>haben</td><td>werden</td></tr></table>",
 merk:"du → -st, er → -t. Vokalwechsel nur bei du und er/sie/es.",
 merkEn:"du → -st, er → -t. Vowel change only for du and er/sie/es."},
 
 {id:"deklination", chip:"Deklination", title:"Deklinationstabelle: Nominativ & Akkusativ", titleEn:"Declension table — color-coded",
+ref:"artikel",
 explain:"<table class='wide'><tr><th></th><th>maskulin<span class='en'>masculine</span></th><th>feminin<span class='en'>feminine</span></th><th>neutral<span class='en'>neuter</span></th><th>Plural<span class='en'>plural</span></th></tr><tr><td class='thn'>Nominativ<br><span style='font-weight:400;font-size:11px'>wer? was?</span></td><td class='tdn'><b>der</b> / ein Mann</td><td class='tdn'><b>die</b> / eine Frau</td><td class='tdn'><b>das</b> / ein Kind</td><td class='tdn'><b>die</b> Leute</td></tr><tr><td class='tha'>Akkusativ<br><span style='font-weight:400;font-size:11px'>wen? was?</span></td><td class='tda'><b>den / einen</b> Mann</td><td class='tda'>die / eine Frau</td><td class='tda'>das / ein Kind</td><td class='tda'>die Leute</td></tr></table><p>Personalpronomen:</p><table class='wide'><tr><th></th><th>ich</th><th>du</th><th>er</th><th>sie</th><th>es</th><th>wir</th><th>ihr</th><th>sie/Sie</th></tr><tr><td class='thn'>Nom.</td><td class='tdn'>ich</td><td class='tdn'>du</td><td class='tdn'>er</td><td class='tdn'>sie</td><td class='tdn'>es</td><td class='tdn'>wir</td><td class='tdn'>ihr</td><td class='tdn'>sie/Sie</td></tr><tr><td class='tha'>Akk.</td><td class='tda'>mich</td><td class='tda'>dich</td><td class='tda'><b>ihn</b></td><td class='tda'>sie</td><td class='tda'>es</td><td class='tda'>uns</td><td class='tda'>euch</td><td class='tda'>sie/Sie</td></tr></table><p class='en'>Only masculine changes in the accusative: der→den, ein→einen, er→ihn. Everything else stays identical.</p>",
 merk:"Rot = Akkusativ: Nur der Mann wird zu den Mann, er wird zu ihn.",
 merkEn:"Red = accusative: only masculine changes."},
@@ -198,6 +202,7 @@ q:[
 ]},
 
 {id:"verschmelzung", chip:"im · zum · ans", title:"Präposition + Artikel verschmelzen", titleEn:"Contractions of preposition and article",
+ref:"praepositionen",
 explain:"<p>Im Deutschen verschmelzen viele Präpositionen mit dem Artikel. Das klingt natürlicher — benutze es!</p><table class='wide'><tr><th>Dativ<span class='en'>dative</span></th><th>Akkusativ<span class='en'>accusative</span></th></tr><tr><td>in dem → <b>im</b><br>an dem → <b>am</b><br>bei dem → <b>beim</b><br>von dem → <b>vom</b><br>zu dem → <b>zum</b><br>zu der → <b>zur</b></td><td>in das → <b>ins</b><br>an das → <b>ans</b><br>auf das → <b>aufs</b><br>durch das → <b>durchs</b><br>für das → <b>fürs</b><br>um das → <b>ums</b></td></tr></table><div class='ex'>Ich gehe <b>zum</b> Arzt. · Ich bin <b>im</b> Büro. · Wir fahren <b>ans</b> Meer. · <b>Am</b> Montag habe ich frei.</div><p><b>Nicht verschmelzen</b>, wenn du das Nomen betonst: <i>Ich gehe in <b>das</b> Haus dort drüben.</i></p><p class='en'>Contractions are the normal spoken form. Only keep them separate when you emphasize which one you mean.</p>",
 merk:"zu dem = zum, zu der = zur — die zwei brauchst du täglich.",
 merkEn:"zum and zur are the two you need every day.",
@@ -232,6 +237,7 @@ q:[
 ]},
 
 {id:"personalpronomen", chip:"ich · du · er", title:"Personalpronomen", titleEn:"Personal pronouns — replacing the noun",
+ref:"pronomen_personal",
 explain:"<p>Pronomen ersetzen ein Nomen, damit man es nicht ständig wiederholt.</p><table class='wide'><tr><th></th><th>ich</th><th>du</th><th>er</th><th>sie</th><th>es</th><th>wir</th><th>ihr</th><th>sie/Sie</th></tr><tr><td class='thn'>Nominativ<span class='en'>wer?</span></td><td class='tdn'>ich</td><td class='tdn'>du</td><td class='tdn'>er</td><td class='tdn'>sie</td><td class='tdn'>es</td><td class='tdn'>wir</td><td class='tdn'>ihr</td><td class='tdn'>sie/Sie</td></tr><tr><td class='tha'>Akkusativ<span class='en'>wen?</span></td><td class='tda'>mich</td><td class='tda'>dich</td><td class='tda'><b>ihn</b></td><td class='tda'>sie</td><td class='tda'>es</td><td class='tda'>uns</td><td class='tda'>euch</td><td class='tda'>sie/Sie</td></tr></table><p><b>Wichtig:</b> Das Pronomen richtet sich nach dem <b>Geschlecht des Nomens</b>, nicht nach der Bedeutung:</p><div class='ex'>Der Tisch ist neu. → <b>Er</b> ist neu.<br>Die Lampe ist schön. → <b>Sie</b> ist schön.<br>Das Buch ist gut. → <b>Es</b> ist gut.</div><p class='en'>The pronoun follows the grammatical gender of the noun: der Tisch → er (not \"it\").</p>",
 merk:"Der Tisch = er. Ein Ding kann „er“ oder „sie“ sein — das Geschlecht entscheidet.",
 merkEn:"Objects can be er or sie — grammatical gender decides, not meaning.",

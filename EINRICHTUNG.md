@@ -213,6 +213,97 @@ Alternative: **„Wir bereiten dich sprachlich auf Deutschland vor.“**
 
 ---
 
+## Schritt 9 — Schreiben-Korrektur einrichten (20–30 Minuten)
+
+Das ist Schritt 4 aus dem Modelltest-Plan: automatische Korrektur des freien
+Schreiben-Teils. Funktioniert gestaffelt:
+
+- **Ohne diesen Schritt** läuft die Korrektur trotzdem — rein regelbasiert
+  (Grammatikprüfung + eigene Heuristiken), ohne KI, für jeden Nutzer, auch ohne
+  Login. Kostet nichts, brauch nichts extra.
+- **Mit diesem Schritt** bekommen angemeldete Schüler zusätzlich ein von
+  Gemini zu echtem Fließtext gebündeltes Feedback (wie eine persönliche
+  Nachricht, nicht nur Stichpunkte).
+
+Du kannst Schritt 9 also auch erstmal auslassen und später nachholen — nichts
+ist kaputt, wenn du ihn überspringst.
+
+### 9.1 — Gemini-API-Key holen (5 Minuten)
+
+1. Gehe auf [aistudio.google.com](https://aistudio.google.com) und melde dich
+   mit einem Google-Konto an.
+2. **Get API key** → **Create API key**.
+3. Kopiere den Schlüssel, du brauchst ihn gleich noch einmal.
+
+> Das ist das kostenlose Kontingent von Google AI Studio, keine Kreditkarte
+> nötig. Bei deiner Schülerzahl wirst du das Limit nicht ausschöpfen — die
+> Edge Function begrenzt zusätzlich auf 12 Gemini-Korrekturen pro Schüler und
+> Tag, damit auch niemand aus Versehen das ganze Kontingent verbraucht.
+
+### 9.2 — Datenbank erweitern (5 Minuten)
+
+1. Supabase Dashboard → **SQL Editor** → **New query**.
+2. Inhalt von `supabase-migration-korrektur.sql` einfügen und **Run**.
+3. Unten muss wieder **Success** stehen.
+
+(Falls du `supabase-schema.sql` ohnehin komplett neu einspielst, ist der
+Inhalt dort schon mit drin — dann brauchst du diese Datei nicht separat.)
+
+### 9.3 — Edge Function anlegen (10–15 Minuten)
+
+**Einfachster Weg — direkt im Dashboard, ohne Installation:**
+
+1. Supabase Dashboard → **Edge Functions** → **Create a new function**.
+2. Name: `korrektur` (genau so, klein geschrieben).
+3. Öffne `supabase/functions/korrektur/index.ts` in einem Texteditor, kopiere
+   den kompletten Inhalt und füge ihn im Dashboard-Editor ein, wo der
+   Platzhalter-Code steht.
+4. **Deploy**.
+
+**Alternative — über die Kommandozeile** (falls du Node.js installiert hast
+und lieber im Terminal arbeitest):
+
+```
+npm install -g supabase
+supabase login
+supabase link --project-ref DEIN-PROJEKT-REF
+supabase functions deploy korrektur
+```
+
+Den Projekt-Ref findest du in der Project URL (`https://PROJEKT-REF.supabase.co`).
+
+### 9.4 — Gemini-Key als Secret hinterlegen (2 Minuten)
+
+Der Key darf niemals in eine Datei, die du hochlädst — nur als Supabase-Secret:
+
+1. Dashboard → **Edge Functions** → **Manage secrets** (oder **Project
+   Settings → Edge Functions**).
+2. Neues Secret: Name `GEMINI_API_KEY`, Wert der Schlüssel aus Schritt 9.1.
+3. Speichern.
+
+> Optional: ein zweites Secret `GEMINI_MODEL`, falls du ein anderes
+> Gemini-Modell als das Standard-Flash-Modell nutzen willst. Da sich
+> Modellnamen bei Google gelegentlich ändern, lohnt sich vor dem Livegang ein
+> kurzer Blick in die aktuelle Modell-Liste in Google AI Studio, ob
+> `gemini-2.0-flash` noch der empfohlene kostenlose Name ist.
+
+### 9.5 — Testen
+
+1. Auf der Website als Schüler-Account einloggen.
+2. Einen Modelltest öffnen, im Schreiben-Teil ein paar Sätze schreiben
+   (mindestens 5 Wörter, damit der Knopf aktiv wird).
+3. **Text prüfen** klicken.
+4. Nach ein paar Sekunden sollte ein Ergebnis mit Prozentangabe, Fehlergruppen
+   und einem persönlichen Feedback-Text erscheinen. Steht dort „regelbasiert“
+   statt „verfeinert (KI-Bündelung)“, ist entweder kein Nutzer eingeloggt oder
+   die Edge Function/der Key ist noch nicht korrekt eingerichtet — dann noch
+   einmal Schritt 9.3/9.4 prüfen. Die Seite bleibt so oder so benutzbar, das
+   ist Absicht.
+5. In Supabase unter **Table Editor → schreiben_korrektur** sollte danach eine
+   Zeile stehen.
+
+---
+
 ## Wichtige Regeln beim Weiterarbeiten
 
 Zusätzlich zu den Regeln aus `PROJEKT_STATUS_WEBSITE.md`:
@@ -251,19 +342,36 @@ Zusätzlich zu den Regeln aus `PROJEKT_STATUS_WEBSITE.md`:
 | `datenschutz.html` | Datenschutzhinweise nach RA 10173 |
 | `recht.css` | Gestaltung der Rechtstexte |
 | `.github/workflows/supabase-wachhalten.yml` | Hält das Projekt wach |
+| `modelltest.html` / `modelltests.html` | Übersicht und Runner-Seite für die 160 Modelltests |
+| `modelltest-engine.js` | Wertet Lesen/Sprachbausteine sofort aus, zeigt den Schreiben-Teil inkl. „Text prüfen“-Knopf |
+| `modelltest.css` | Gestaltung für Modelltests und die Korrektur-Ergebnisanzeige |
+| `modelltest-korrektur.js` | **Neu.** Die 3 Regelmodule („3 DaF-Lehrer“) + Aufruf der Edge Function |
+| `supabase/functions/korrektur/index.ts` | **Neu.** Edge Function: Gemini-Bündelung, Ratenbegrenzung, Speicherung |
+| `supabase-migration-korrektur.sql` | **Neu.** Nur die neuen Tabellen für die Korrektur, falls du nicht das komplette Schema neu laufen lassen willst |
 
-Geändert wurde nur `engine.js` (sechs Zeilen, die jede gelöste Aufgabe melden)
-sowie die sieben HTML-Dateien (Skripte und Fußzeilenlinks).
+Geändert wurde `engine.js` (sechs Zeilen, die jede gelöste Aufgabe melden),
+die sieben HTML-Dateien (Skripte und Fußzeilenlinks), `datenschutz.html`
+(neuer Abschnitt 4.4 zu LanguageTool/Gemini) sowie `supabase-schema.sql`
+(neuer Abschnitt 6 für die Korrektur-Tabellen).
 
 ---
 
 ## Was als Nächstes ansteht
 
-**Die Modelltests.** Die Datenbank ist vorbereitet (`test_durchlauf` speichert
-Punkte getrennt nach Prüfungsteil). Der Aufwand liegt nicht in der Technik,
-sondern im Inhalt:
+**Wichtige Lücke zuerst:** Beim Bauen der Korrektur-Engine ist aufgefallen,
+dass der Ordner `modelltest-data/` mit den 160 fertigen Testdateien weder im
+GitHub-Repo noch im lokal verbundenen Ordner liegt — nur `modelltest.html`,
+`modelltests.html`, `modelltest-engine.js` und `modelltest.css` wurden
+offenbar schon mal hochgeladen. Ohne diese Dateien zeigt jeder Testaufruf
+„Test nicht gefunden“. Du müsstest den Ordner `modelltest-data/` (die 160
+`data-modelltest-<niveau>-<nr>.js`-Dateien aus der ursprünglichen Lieferung)
+noch ins Repo hochladen, damit die Modelltests inklusive der neuen Korrektur
+tatsächlich nutzbar sind.
 
-- Lesen und Sprachbausteine lassen sich sofort bauen
+**Die Modelltests — Rest.** Die Datenbank ist vorbereitet (`test_durchlauf`
+speichert Punkte getrennt nach Prüfungsteil, `schreiben_korrektur` jetzt
+zusätzlich den Schreiben-Teil). Offen:
+
 - **Hören** braucht Audio. Realistische kostenlose Option: Text-to-Speech mit
   mehreren Stimmen erzeugen. Klingt nicht wie telc-Originale, ist aber für
   Übungszwecke brauchbar. Alternative: du und deine Lehrkräfte sprechen die
@@ -271,12 +379,6 @@ sondern im Inhalt:
 - **Sprechen** lässt sich nicht automatisch bewerten. Sinnvoll ist,
   Aufgabenstellungen und Bewertungsraster bereitzustellen, die Bewertung
   macht die Lehrkraft.
-- Alle Aufgaben müssen selbst geschrieben sein. telc-Originale sind
-  urheberrechtlich geschützt.
-
-Rechne für einen vollständigen Modelltest pro Niveau mit mehreren Tagen
-Arbeit. Fang mit **B1** an — das ist das Niveau, das für die
-Handwerks-Pipeline zählt.
 
 **Der eigentliche Engpass bleibt aber ein anderer:** ohne Anbindung an ein
 offizielles Prüfungszentrum (telc, Goethe, ÖSD) hilft der beste Modelltest

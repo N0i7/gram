@@ -37,6 +37,9 @@
   const root = document.getElementById("topics");
   root.innerHTML = D.topics.map(t=>{
     const merk = t.merk ? '<div class="merk"><b>Merke:</b> '+t.merk+(t.merkEn?'<br><span class="en">'+t.merkEn+'</span>':'')+'</div>' : '';
+    const refBlock = (t.ref && window.REF_TABLES && window.REF_TABLES[t.ref])
+      ? '<details class="ref-full"><summary>Vollständige Tabelle anzeigen <span class="en">\u00b7 show full table</span></summary><div class="ref-body">'+window.REF_TABLES[t.ref]+'</div></details>'
+      : '';
     const hasQ = t.q && t.q.length;
     const badge = hasQ ? '' : '<span class="ref-badge">Nachschlagen · reference</span>';
     const quiz = hasQ
@@ -47,7 +50,7 @@
       : '';
     return '<section class="topic" id="'+t.id+'">'+
       '<h2>'+t.title+badge+'</h2><p class="ten">'+t.titleEn+'</p>'+
-      '<div class="card">'+t.explain+merk+'</div>'+videoBlock(t.id)+quiz+'</section>';
+      '<div class="card">'+t.explain+merk+refBlock+'</div>'+videoBlock(t.id)+quiz+'</section>';
   }).join("");
 
   function renderQ(tid,q,i){

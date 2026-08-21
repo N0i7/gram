@@ -39,8 +39,8 @@
 .mt-total{background:linear-gradient(135deg,#0a5bd3,#4aa8ff);color:#fff;border-radius:var(--radius);padding:28px 30px;text-align:center;margin:30px 0}
 .mt-total .n{font-size:42px;font-weight:700;letter-spacing:-.02em}
 .mt-total .l{font-size:14px;opacity:.9;margin-top:4px}
-.mt-schreiben textarea{width:100%;font-family:inherit;font-size:15px;line-height:1.6;border:1.5px solid var(--line);border-radius:12px;padding:14px 16px;min-height:220px;resize:vertical;outline:none}
-.mt-schreiben textarea:focus{border-color:var(--blue)}
+.mt-schreiben-body textarea{width:100%;font-family:inherit;font-size:15px;line-height:1.6;border:1.5px solid var(--line);border-radius:12px;padding:14px 16px;min-height:220px;resize:vertical;outline:none}
+.mt-schreiben-body textarea:focus{border-color:var(--blue)}
 .mt-wordcount{font-size:13.5px;color:var(--sec);margin-top:8px}
 .mt-wordcount.ok{color:#1a7a3a;font-weight:600}
 .mt-aufgabe-tabs{display:flex;gap:8px;margin-bottom:14px}
@@ -52,3 +52,23 @@
 .mt-index-grid a:hover{border-color:var(--blue);color:var(--blue)}
 .mt-index-grid a.done{background:#e8fbee;border-color:var(--ok);color:#1a7a3a}
 .mt-note{font-size:13.5px;color:var(--sec);margin-top:14px}
+
+/* ---- Schreiben-Korrektur ("3 DaF-Lehrer") ---- */
+.mt-korrigieren-btn{font-family:inherit;font-size:14.5px;font-weight:600;padding:10px 20px;border-radius:980px;border:none;background:var(--blue);color:#fff;cursor:pointer;margin-top:14px;transition:opacity .15s}
+.mt-korrigieren-btn:hover:not(:disabled){opacity:.9}
+.mt-korrigieren-btn:disabled{background:var(--bg2);color:var(--sec);cursor:default}
+.mt-korrektur-status{font-size:13.5px;color:var(--sec);margin-top:10px;min-height:1em}
+.mt-korr-box{background:var(--bg2);border-radius:var(--radius);padding:20px 22px;margin-top:14px}
+.mt-korr-kopf{display:flex;align-items:center;gap:12px;margin-bottom:12px;flex-wrap:wrap}
+.mt-korr-gesamt{font-size:28px;font-weight:700;color:var(--blue)}
+.mt-korr-quelle{font-size:12px;color:var(--sec);background:#fff;border:1px solid var(--line);border-radius:980px;padding:3px 12px}
+.mt-krit-liste{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:14px}
+.mt-krit-badge{font-size:13.5px;background:#fff;border:1px solid var(--line);border-radius:980px;padding:6px 14px}
+.mt-krit-badge b{color:var(--blue);margin-right:4px}
+.mt-korr-lob{font-size:15px;margin-bottom:12px}
+.mt-korr-gruppen{margin-bottom:12px}
+.mt-korr-gruppe{background:#fff;border:1px solid var(--line);border-radius:12px;padding:12px 16px;margin-bottom:10px;font-size:14px}
+.mt-korr-gruppe ul{margin:8px 0 0 18px;line-height:1.7}
+.mt-korr-hinweis{color:var(--sec);font-size:13px;margin-top:6px}
+.mt-korr-lernsatz{font-weight:600;font-size:15px;margin-bottom:8px}
+.mt-korr-schluss{font-size:14.5px;color:var(--sec)}
