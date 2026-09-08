@@ -10,13 +10,16 @@ body{font-family:-apple-system,BlinkMacSystemFont,"SF Pro Display","SF Pro Text"
 
 /* Nav */
 nav{position:sticky;top:0;z-index:100;backdrop-filter:saturate(180%) blur(20px);-webkit-backdrop-filter:saturate(180%) blur(20px);background:rgba(251,251,253,.82);border-bottom:1px solid rgba(0,0,0,.08)}
-.nav-inner{max-width:1024px;margin:0 auto;display:flex;align-items:center;justify-content:space-between;padding:0 22px;height:48px}
-.nav-logo{font-weight:700;font-size:19px;letter-spacing:-.02em;text-decoration:none;color:var(--text)}
+.nav-inner{max-width:1024px;margin:0 auto;display:flex;align-items:center;justify-content:space-between;padding:0 22px;height:48px;gap:10px}
+.nav-logo{font-weight:700;font-size:19px;letter-spacing:-.02em;text-decoration:none;color:var(--text);flex-shrink:0}
 .nav-logo span{color:var(--blue)}
-.nav-links{display:flex;gap:26px;list-style:none}
+.nav-links{display:flex;flex-wrap:nowrap;gap:26px;list-style:none;flex:1 1 auto;min-width:0;overflow-x:auto;-webkit-overflow-scrolling:touch;scrollbar-width:none;-ms-overflow-style:none}
+.nav-links::-webkit-scrollbar{display:none}
+.nav-links li{flex-shrink:0}
 .nav-links a{text-decoration:none;color:var(--text);font-size:14px;opacity:.85}
 .nav-links a:hover{opacity:1;color:var(--blue)}
 .nav-links a.active{color:var(--blue);font-weight:600}
+.as-searchbox,#floss-userbar,.floss-userbar{flex-shrink:0}
 
 /* Hero */
 .hero{text-align:center;padding:96px 22px 72px}
@@ -96,7 +99,7 @@ footer .flogo span{color:var(--blue)}
 footer a{color:var(--blue);text-decoration:none}
 footer p{margin-bottom:5px}
 .next-level{text-align:center;margin:50px 0 20px}
-@media(max-width:640px){.nav-links{gap:14px}.nav-links a{font-size:12.5px}}
+@media(max-width:640px){.nav-inner{padding:0 14px}.nav-links{gap:14px}.nav-links a{font-size:12.5px}.card table{display:block;overflow-x:auto;-webkit-overflow-scrolling:touch;white-space:nowrap;border-radius:10px}.card table th,.card table td{white-space:normal;min-width:76px}.card table.wide th,.card table.wide td{min-width:60px}}
 
 /* Fall-Farben (Kasus) */
 .thn{background:#0071e3!important;color:#fff}.tha{background:#d70015!important;color:#fff}
