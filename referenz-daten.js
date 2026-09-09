@@ -18,6 +18,7 @@ function add(id, chip, title, titleEn, group, html){
 /* 1 · ARTIKEL & GRUNDDEKLINATION                             */
 /* ========================================================= */
 add("artikel", "Artikel", "Artikeldeklination: der/die/das, ein, kein", "Article declension — definite, indefinite, negative", "Artikel & Pronomen", `
+<div class='ex'><div style='display:flex;gap:8px;flex-wrap:wrap;justify-content:center;font-size:13px;text-align:center'><div style='background:#eaf3ff;border-radius:10px;padding:8px 12px;min-width:100px'><b style='color:#0071e3'>Nominativ</b><br>Wer? Was?<br><span style='font-size:12px;color:#6e6e73'>Subjekt</span></div><div style='background:#ffebe9;border-radius:10px;padding:8px 12px;min-width:100px'><b style='color:#d70015'>Akkusativ</b><br>Wen? Was?<br><span style='font-size:12px;color:#6e6e73'>direktes Objekt</span></div><div style='background:#e9f8ee;border-radius:10px;padding:8px 12px;min-width:100px'><b style='color:#248a3d'>Dativ</b><br>Wem?<br><span style='font-size:12px;color:#6e6e73'>indirektes Objekt</span></div><div style='background:#f5ebfa;border-radius:10px;padding:8px 12px;min-width:100px'><b style='color:#8944ab'>Genitiv</b><br>Wessen?<br><span style='font-size:12px;color:#6e6e73'>Besitz</span></div></div><p style='text-align:center;margin-top:8px;font-size:13px;color:#6e6e73'>Der Lehrer (<b style='color:#0071e3'>Nom.</b>) erklärt dem Schüler (<b style='color:#248a3d'>Dat.</b>) die Regel (<b style='color:#d70015'>Akk.</b>).</p></div>
 <p>Alle drei Artikel-Familien in allen vier Fällen. <b>mein/dein/sein…</b> (Possessivartikel) folgen exakt dem Muster von <b>ein/kein</b> — siehe die Possessivpronomen-Tabelle.</p>
 <h4 class="ref-h">Bestimmter Artikel (der/die/das)</h4>
 <table class="wide"><tr><th></th><th>maskulin</th><th>feminin</th><th>neutral</th><th>Plural</th></tr>
@@ -39,6 +40,7 @@ add("artikel", "Artikel", "Artikeldeklination: der/die/das, ein, kein", "Article
 /* ========================================================= */
 add("adjektivdeklination", "Adjektive", "Adjektivdeklination: alle 3 Systeme komplett", "Adjective endings — all 3 declension systems in full", "Adjektive", `
 <p>Es gibt genau <b>drei Systeme</b>, je nachdem was vor dem Adjektiv steht. Beispieladjektiv: <b>klein</b>.</p>
+<div class='ex' style='padding:16px'><div style='text-align:center;font-weight:700;margin-bottom:10px'>Welche Endung braucht das Adjektiv?</div><div style='display:flex;gap:10px;flex-wrap:wrap;justify-content:center'><div style='flex:1;min-width:150px;background:#eaf3ff;border-radius:12px;padding:10px 12px'><div style='font-weight:700;color:#0071e3;margin-bottom:4px'>Artikelwort zeigt Kasus schon klar</div><div style='font-size:13px'>der/die/das, dieser, jeder, welcher …</div><div style='margin-top:6px;font-weight:600'>→ schwach: -e oder -en</div><div style='font-size:13px;color:#6e6e73'>der klein<b>e</b> Mann</div></div><div style='flex:1;min-width:150px;background:#fff8e6;border-radius:12px;padding:10px 12px'><div style='font-weight:700;color:#9a7b00;margin-bottom:4px'>ein-Wörter (teilweise klar)</div><div style='font-size:13px'>ein, mein, dein, kein …</div><div style='margin-top:6px;font-weight:600'>→ gemischt: -er/-e/-es oder -en</div><div style='font-size:13px;color:#6e6e73'>ein klein<b>er</b> Mann</div></div><div style='flex:1;min-width:150px;background:#ffebe9;border-radius:12px;padding:10px 12px'><div style='font-weight:700;color:#d70015;margin-bottom:4px'>kein Artikelwort</div><div style='font-size:13px'>— (Nullartikel)</div><div style='margin-top:6px;font-weight:600'>→ stark: zeigt alles selbst</div><div style='font-size:13px;color:#6e6e73'>klein<b>er</b> Mann</div></div></div></div>
 <h4 class="ref-h">1 · Schwache Deklination — nach der/die/das, dieser, jeder, welcher, jener, derselbe</h4>
 <table class="wide"><tr><th></th><th>maskulin</th><th>feminin</th><th>neutral</th><th>Plural</th></tr>
 <tr><td class="thn">Nominativ</td><td class="tdn">der klein<b>e</b> Mann</td><td class="tdn">die klein<b>e</b> Frau</td><td class="tdn">das klein<b>e</b> Kind</td><td class="tdn">die klein<b>en</b> Leute</td></tr>
@@ -186,6 +188,43 @@ add("praepositionen", "Präpositionen", "Präpositionen nach Kasus — die kompl
 <p class="en">Nine prepositions switch between accusative (movement, "wohin?") and dative (static location, "wo?") depending on the verb's meaning in the sentence.</p>`);
 
 /* ========================================================= */
+/* 10b · PRÄPOSITIONEN NACH BEDEUTUNG                         */
+/* ========================================================= */
+add("praepositionen_bedeutung", "Präp. n. Bedeutung", "Präpositionen nach Bedeutung: Zeit, Ort, Art & Grund", "Prepositions by meaning — time, place, manner, cause", "Präpositionen", `
+<p>Die Kasus-Tabelle oben zeigt, welchen Fall eine Präposition braucht. Diese Tabelle zeigt etwas anderes: <b>welche</b> Präposition man für welche Bedeutung nimmt — die eigentliche Fehlerquelle im Alltag.</p>
+<h4 class="ref-h">Zeit: wann?</h4>
+<table class="wide"><tr><th>Präposition</th><th>Verwendung</th><th>Beispiel</th></tr>
+<tr><td><b>am</b></td><td>Wochentag, Tageszeit (außer Nacht), Datum</td><td>am Montag · am Morgen · am 3. Mai</td></tr>
+<tr><td><b>im</b></td><td>Monat, Jahreszeit</td><td>im Januar · im Sommer</td></tr>
+<tr><td><b>um</b></td><td>genaue Uhrzeit</td><td>um 8 Uhr · um Mitternacht</td></tr>
+<tr><td><b>in</b></td><td>Zeitraum in der Zukunft, Jahreszahl</td><td>in einer Woche · in 2027</td></tr>
+<tr><td><b>vor</b></td><td>Zeitraum in der Vergangenheit</td><td>vor zwei Jahren</td></tr>
+<tr><td><b>seit</b></td><td>Beginn bis jetzt (dauert an)</td><td>seit 2020 · seit einem Monat</td></tr>
+<tr><td><b>bis</b></td><td>Endpunkt</td><td>bis Freitag · bis 18 Uhr</td></tr>
+<tr><td><b>zwischen</b></td><td>zwei Zeitpunkte</td><td>zwischen 9 und 17 Uhr</td></tr>
+<tr><td><b>während</b></td><td>gleichzeitig, Dauer</td><td>während der Ferien</td></tr>
+<tr><td><b>ab</b></td><td>Beginn in Zukunft/Gegenwart</td><td>ab morgen · ab sofort</td></tr></table>
+<h4 class="ref-h">Ort &amp; Richtung: wo? wohin? woher?</h4>
+<table class="wide"><tr><th>Präposition</th><th>Verwendung</th><th>Beispiel</th></tr>
+<tr><td><b>in</b></td><td>innerhalb eines Raums/Gebiets</td><td>in der Schule · in Deutschland</td></tr>
+<tr><td><b>an</b></td><td>an einer Grenze/Fläche/einem Gewässer</td><td>am Meer · an der Wand</td></tr>
+<tr><td><b>auf</b></td><td>auf einer Fläche, offene Plätze/Ämter</td><td>auf dem Tisch · auf der Post</td></tr>
+<tr><td><b>bei</b></td><td>in der Nähe von, bei Personen</td><td>bei meiner Oma · bei München</td></tr>
+<tr><td><b>zu</b></td><td>Richtung zu einer Person/einem Ziel</td><td>zum Arzt · zur Arbeit</td></tr>
+<tr><td><b>nach</b></td><td>Richtung zu Städten/Ländern (ohne Artikel)</td><td>nach Berlin · nach Hause</td></tr>
+<tr><td><b>aus</b></td><td>Herkunft (von innen nach außen)</td><td>aus Deutschland · aus der Tasche</td></tr>
+<tr><td><b>von</b></td><td>Herkunft, Ausgangspunkt</td><td>von der Arbeit · von hier</td></tr></table>
+<h4 class="ref-h">Art &amp; Weise, Grund, Mittel</h4>
+<table class="wide"><tr><th>Präposition</th><th>Bedeutung</th><th>Beispiel</th></tr>
+<tr><td><b>mit</b></td><td>Mittel, Begleitung</td><td>mit dem Bus · mit Freunden</td></tr>
+<tr><td><b>ohne</b></td><td>Abwesenheit</td><td>ohne Zucker</td></tr>
+<tr><td><b>wegen</b></td><td>Grund</td><td>wegen des Regens</td></tr>
+<tr><td><b>trotz</b></td><td>Gegengrund</td><td>trotz der Kälte</td></tr>
+<tr><td><b>durch</b></td><td>Mittel/Ursache, Bewegung hindurch</td><td>durch harte Arbeit · durch den Park</td></tr>
+<tr><td><b>für</b></td><td>Zweck, Empfänger</td><td>ein Geschenk für dich</td></tr></table>
+<p class="en">Same prepositions often serve multiple meanings — this table groups them by the question they answer (when? where? how?) instead of by case.</p>
+`);
+
 /* 11 · VERBKONJUGATION — alle Zeiten                         */
 /* ========================================================= */
 add("verbkonjugation", "Verb-Zeiten", "Alle 6 Zeiten im Überblick + sein/haben/werden komplett", "All 6 tenses at a glance + sein/haben/werden fully conjugated", "Verben", `

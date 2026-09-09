@@ -246,5 +246,15 @@ q:[
 {q:"Umgangssprachlich: „Ich bin ___ Arbeiten.“", o:["am","an","beim"], c:0, h:"am-Progressiv: am Arbeiten (groß)."},
 {q:"Welche Zeit benutzt man in geschriebenen Geschichten?", o:["Perfekt","Präteritum","Futur I"], c:1, h:"Präteritum ist die Erzählzeit."},
 {type:"gap", q:"„Ich bin gerade dabei, den Text ___ lesen.“", a:["zu"], h:"dabei sein + zu + Infinitiv."}
+]},
+
+{id:"wechselpraefix", chip:"übersetzen / übersetzen", title:"Wechselpräfixe: trennbar UND untrennbar", titleEn:"Prefixes that can be both separable and inseparable",
+explain:"<p>Ein paar Vorsilben (<b>durch-, um-, über-, unter-, wieder-</b>) können <b>beides</b> sein — trennbar oder untrennbar, mit unterschiedlicher Bedeutung und Betonung.</p><table class='wide'><tr><th></th><th>trennbar <span class='en'>(betont, oft wörtlich)</span></th><th>untrennbar <span class='en'>(unbetont, oft übertragen)</span></th></tr><tr><td><b>übersetzen</b></td><td>Die Fähre <b>setzt</b> uns <b>über</b>. <span class='small'>(ans andere Ufer)</span></td><td>Sie <b>übersetzt</b> den Text. <span class='small'>(in eine andere Sprache)</span></td></tr><tr><td><b>umfahren</b></td><td>Er <b>fährt</b> das Schild <b>um</b>. <span class='small'>(fährt dagegen)</span></td><td>Er <b>umfährt</b> die Baustelle. <span class='small'>(fährt drumherum)</span></td></tr><tr><td><b>durchschauen</b></td><td>Ich schaue durchs Fenster <b>durch</b>.</td><td>Ich <b>durchschaue</b> den Trick. <span class='small'>(verstehe ihn)</span></td></tr></table><p>Im Perfekt: trennbar mit „ge-“ (über<b>ge</b>setzt), untrennbar ohne (über<b>setzt</b>).</p><p class='en'>A few prefixes work both ways with different meaning and stress: separable = literal/physical (stressed prefix), inseparable = figurative (stressed stem).</p>",
+merk:"Betonst du die Vorsilbe, ist die Bedeutung meist wörtlich und das Verb trennbar. Betonst du den Stamm, ist sie meist übertragen und untrennbar.",
+merkEn:"Stressed prefix = literal, separable. Stressed stem = figurative, inseparable.",
+q:[
+{q:"„Sie übersetzt das Buch ins Englische.“ Wie wird betont?", o:["ÜBERsetzt","überSETZT"], c:1, h:"Übertragene Bedeutung (Sprache) → untrennbar, Stamm betont."},
+{q:"Partizip II von „umfahren“ (= drumherum fahren):", o:["umgefahren","umfahren"], c:1, h:"Nicht-wörtliche Bedeutung → untrennbar, kein ge-."},
+{type:"gap", q:"Die Fähre setzt die Passagiere ___. (ans andere Ufer bringen)", a:["über"], h:"Wörtliche Bedeutung → trennbar: setzt über."}
 ]}
 ]};

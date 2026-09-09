@@ -226,14 +226,15 @@ q:[
 ]},
 
 {id:"adverbien", chip:"oft · immer · nie", title:"Adverbien: wann und wie oft?", titleEn:"Adverbs of time and frequency",
-explain:"<p>Adverbien beschreiben, <b>wann</b>, <b>wie oft</b>, <b>wo</b> oder <b>wie</b> etwas passiert. Sie verändern sich nie.</p><table class='wide'><tr><th>Wie oft?<span class='en'>how often</span></th><th>Wann?<span class='en'>when</span></th><th>Wo?<span class='en'>where</span></th></tr><tr><td>immer <span class='small'>(100 %)</span><br>meistens<br>oft<br>manchmal<br>selten<br>nie <span class='small'>(0 %)</span></td><td>heute, morgen, gestern<br>jetzt, gleich, später<br>früh, spät<br>montags, abends<br>zuerst, dann, danach</td><td>hier, dort, da<br>oben, unten<br>links, rechts<br>drinnen, draußen<br>überall, nirgendwo</td></tr></table><p><b>Position:</b> meist direkt nach dem Verb oder auf Position 1.</p><div class='ex'>Ich gehe <b>oft</b> ins Gym. · <b>Morgen</b> habe ich frei. · Er wohnt <b>hier</b>.</div><p class='en'>Adverbs never change their form. Frequency adverbs usually come right after the verb.</p>",
+explain:"<p>Adverbien beschreiben, <b>wann</b>, <b>wie oft</b>, <b>wo</b> oder <b>wie</b> etwas passiert. Sie verändern sich nie.</p><table class='wide'><tr><th>Wie oft?<span class='en'>how often</span></th><th>Wann?<span class='en'>when</span></th><th>Wo?<span class='en'>where</span></th></tr><tr><td>immer <span class='small'>(100 %)</span><br>meistens<br>oft<br>manchmal<br>selten<br>nie <span class='small'>(0 %)</span></td><td>heute, morgen, gestern<br>jetzt, gleich, später<br>früh, spät<br>montags, abends<br>zuerst, dann, danach</td><td>hier, dort, da<br>oben, unten<br>links, rechts<br>drinnen, draußen<br>überall, nirgendwo</td></tr></table><p><b>Position:</b> meist direkt nach dem Verb oder auf Position 1.</p><div class='ex'>Ich gehe <b>oft</b> ins Gym. · <b>Morgen</b> habe ich frei. · Er wohnt <b>hier</b>.</div><p><b>Adjektive als Adverbien:</b> Ein Adjektiv, das ein Verb beschreibt, bekommt im Deutschen KEINE Endung — anders als im Englischen (-ly).</p><div class='ex'>Er fährt <b>schnell</b>. <span class='small'>(nicht: schnelly)</span><br>Sie singt <b>schön</b>. · Das hast du <b>gut</b> gemacht.</div><p class='en'>German adjectives used as adverbs take no ending — no equivalent to English -ly (schnell = fast/quickly, same word). Adverbs never change their form. Frequency adverbs usually come right after the verb.</p>",
 merk:"Adverbien bekommen nie eine Endung — sie bleiben immer gleich.",
 merkEn:"Adverbs never take endings.",
 q:[
 {q:"Welches Wort bedeutet 0 %?", o:["selten","nie","manchmal"], c:1, h:"nie = niemals, 0 %."},
 {q:"„Ich gehe ___ ins Gym.“ (3x pro Woche)", o:["nie","oft","selten"], c:1, h:"3x pro Woche ist oft."},
 {q:"Welcher Satz ist richtig?", o:["Ich immer trinke Kaffee.","Ich trinke immer Kaffee.","Immer ich trinke Kaffee."], c:1, h:"Adverb nach dem Verb, Verb bleibt Position 2."},
-{type:"match", q:"Ordne Adverb und Bedeutung zu:", pairs:[["immer","100 %"],["oft","viele Male"],["manchmal","ab und zu"],["nie","0 %"]], h:"Von 100 % bis 0 %."}
+{type:"match", q:"Ordne Adverb und Bedeutung zu:", pairs:[["immer","100 %"],["oft","viele Male"],["manchmal","ab und zu"],["nie","0 %"]], h:"Von 100 % bis 0 %."},
+{q:"„Sie spricht sehr gut Deutsch.“ Wie hängt man das englische -ly hier an?", o:["goodly","gar nicht — gut bleibt gut"], c:1, h:"Deutsche Adjektive als Adverb bekommen keine Endung."}
 ]},
 
 {id:"personalpronomen", chip:"ich · du · er", title:"Personalpronomen", titleEn:"Personal pronouns — replacing the noun",
@@ -247,5 +248,17 @@ q:[
 {q:"„Ich sehe den Mann.“ → Ich sehe ___.", o:["er","ihn","ihm"], c:1, h:"Akkusativ maskulin → ihn."},
 {type:"match", q:"Ordne Nomen und Pronomen zu:", pairs:[["der Stuhl","er"],["die Tür","sie"],["das Fenster","es"],["die Kinder","sie"]], h:"Das grammatische Geschlecht bestimmt das Pronomen."},
 {type:"gap", q:"„Wo ist das Buch?“ — „___ liegt auf dem Tisch.“", a:["es"], h:"das Buch → es."}
+]},
+
+{id:"wissenkennen", chip:"wissen · kennen", title:"wissen oder kennen?", titleEn:"wissen vs. kennen — two ways to say 'to know'",
+explain:"<p>Beide heißen auf Englisch „to know“, sind aber nicht austauschbar.</p><table class='wide'><tr><th>kennen</th><th>wissen</th></tr><tr><td>+ <b>Akkusativobjekt</b> <span class='small'>(Person, Ort, Sache)</span></td><td>+ <b>dass-Satz, W-Frage, „es“</b> <span class='small'>(Fakten)</span></td></tr><tr><td>Ich <b>kenne</b> <span class='wa'>diese Stadt</span>.<br>Ich <b>kenne</b> <span class='wa'>ihn</span> gut.</td><td>Ich <b>weiß</b>, <b>dass</b> er in Cebu wohnt.<br>Ich <b>weiß</b> nicht, <b>wo</b> er wohnt.<br>Ich <b>weiß es</b> nicht.</td></tr></table><p>Konjugation: <b>ich weiß, du weißt, er weiß</b>, wir wissen, ihr wisst, sie wissen (unregelmäßig!). <b>kennen</b> ist regelmäßig: ich kenne, du kennst, er kennt.</p><p>Kleine Ausnahme: bei Fakten wie <b>die Antwort, die Lösung, das Ergebnis</b> sagt man trotzdem „wissen“, nicht „kennen“ — es ist Wissen, keine Bekanntschaft.</p><p class='en'>kennen = to be familiar with (person, place, thing) + accusative object. wissen = to know a fact, used with dass/W-question/es — or with abstract facts like \"die Antwort\".</p>",
+merk:"Folgt ein Nomen, mit dem man vertraut ist (Person, Ort, Sache)? → kennen. Folgt ein Satz, eine Frage, „es“ oder ein Fakt wie „die Antwort“? → wissen.",
+merkEn:"kennen + familiar noun object. wissen + clause, question, 'es', or a fact-noun.",
+q:[
+{q:"Ich ___ diesen Film schon.", o:["weiß","kenne"], c:1, h:"Film = vertraute Sache → kennen."},
+{q:"Ich ___ nicht, wann der Bus kommt.", o:["weiß","kenne"], c:0, h:"W-Frage folgt → wissen."},
+{q:"___ du meine Schwester?", o:["Weißt","Kennst"], c:1, h:"Person als Objekt → kennen."},
+{type:"gap", q:"„Kommt er heute?“ — „Ich ___ es nicht.“", a:["weiß"], h:"„es“ als Objekt → immer wissen."},
+{type:"match", q:"Ordne kennen/wissen richtig zu:", pairs:[["___ du Berlin?","Kennst"],["___ du, wie spät es ist?","Weißt"],["Ich ___ die Antwort nicht.","weiß"],["Ich ___ deinen Bruder.","kenne"]], h:"Person/Ort/Sache → kennen. Frage/Satz/es/Fakt → wissen."}
 ]}
 ]};

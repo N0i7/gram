@@ -43,7 +43,7 @@ window.MAIN_TOPICS = [
 {id:"trennbare", name:"Trennbare Verben", en:"Separable verbs", icon:"⇄", color:"#dc2626",
  desc:"Verben, die sich im Satz teilen — die Vorsilbe fliegt ans Ende.",
  yt:"B0uUDrhC690", ytTitle:"Trennbare und untrennbare Verben",
- subs:[["a1","trennbar"],["b2","wortbildungb2"]]},
+ subs:[["a1","trennbar"],["a2","untrennbar"],["b2","wortbildungb2"],["b2","wechselpraefix"]]},
 {id:"reflexive", name:"Reflexive Verben", en:"Reflexive verbs", icon:"⟲", color:"#dc2626",
  desc:"Verben mit sich — echt reflexiv, teilreflexiv oder mit Dativ.",
  yt:"m_nPdA8l7K4", ytTitle:"Reflexive Verben — A2 bis B2",
@@ -67,7 +67,7 @@ window.MAIN_TOPICS = [
 {id:"praepositionen", name:"Präpositionen", en:"Prepositions", icon:"⇢", color:"#0d9488",
  desc:"Welcher Fall folgt? Feste Präpositionen, Wechselpräpositionen und Verschmelzungen.",
  yt:"LdIQBJ_k2vo", ytTitle:"Alles über Wechselpräpositionen in 15 Minuten",
- subs:[["a2","wechsel"],["a1","verschmelzung"]]},
+ subs:[["a2","wechsel"],["a2","wechselverben"],["a2","praepzeit"],["a1","verschmelzung"]]},
 {id:"verbpraep", name:"Verben mit Präposition", en:"Verbs with prepositions", icon:"⚯", color:"#0d9488",
  desc:"warten auf, denken an, bestehen aus — Verb, Präposition und Fall als Einheit.",
  yt:"Yh96nluPR5M", ytTitle:"Verben mit Präpositionen endlich verstehen",
@@ -111,5 +111,5 @@ window.MAIN_TOPICS = [
 {id:"wortschatz", name:"Wortschatz & Redemittel", en:"Vocabulary & phrases", icon:"✦", color:"#64748b",
  desc:"Kein Grammatikthema, aber unverzichtbar: Wörter, Wendungen und fertige Sätze.",
  yt:"", ytSearch:"Deutsch Redemittel Diskussion Meinung äußern",
- subs:[["a1","zahlen"],["a1","adverbien"],["a1","wortschatz"],["a1","redemittel"],["a2","haeufigeverben2"],["a2","wortschatz2"],["a2","redemittel2"],["b1","wortschatz3"],["b1","redemittel3"],["b2","haeufigeverben4"],["b2","wortschatz4"],["b2","redemittel4"],["c1","wortschatzc1"],["c1","redemittelc1"],["c2","idiomatik"],["c2","redemittelc2"],["b1","lassen"]]}
+ subs:[["a1","zahlen"],["a1","adverbien"],["a1","wortschatz"],["a1","redemittel"],["a1","wissenkennen"],["a2","haeufigeverben2"],["a2","wortschatz2"],["a2","redemittel2"],["b1","wortschatz3"],["b1","redemittel3"],["b2","haeufigeverben4"],["b2","wortschatz4"],["b2","redemittel4"],["c1","wortschatzc1"],["c1","redemittelc1"],["c2","idiomatik"],["c2","redemittelc2"],["b1","lassen"]]}
 ];
