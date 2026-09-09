@@ -5,7 +5,7 @@
 }
 *{margin:0;padding:0;box-sizing:border-box}
 html{scroll-behavior:smooth}
-body{font-family:-apple-system,BlinkMacSystemFont,"SF Pro Display","SF Pro Text","Segoe UI",Roboto,Helvetica,Arial,sans-serif;background:var(--bg);color:var(--text);-webkit-font-smoothing:antialiased;line-height:1.5}
+body{font-family:-apple-system,BlinkMacSystemFont,"SF Pro Display","SF Pro Text","Segoe UI",Roboto,Helvetica,Arial,sans-serif;background:var(--bg);color:var(--text);-webkit-font-smoothing:antialiased;line-height:1.5;overflow-wrap:break-word}
 .en{color:var(--sec);font-size:.85em}
 
 /* Nav */
@@ -99,7 +99,7 @@ footer .flogo span{color:var(--blue)}
 footer a{color:var(--blue);text-decoration:none}
 footer p{margin-bottom:5px}
 .next-level{text-align:center;margin:50px 0 20px}
-@media(max-width:640px){.nav-inner{padding:0 14px}.nav-links{gap:14px}.nav-links a{font-size:12.5px}.card table{display:block;overflow-x:auto;-webkit-overflow-scrolling:touch;white-space:nowrap;border-radius:10px}.card table th,.card table td{white-space:normal;min-width:76px}.card table.wide th,.card table.wide td{min-width:60px}}
+@media(max-width:640px){.nav-inner{padding:0 14px}.nav-links{gap:14px;min-width:40px}.nav-links a{font-size:12.5px}.card table{display:block;overflow-x:auto;-webkit-overflow-scrolling:touch;white-space:nowrap;border-radius:10px}.card table th,.card table td{white-space:normal;min-width:76px}.card table.wide th,.card table.wide td{min-width:60px}}@media(max-width:480px){.nav-logo{font-size:15px}.nav-inner{padding:0 10px;gap:6px}}@media(max-width:370px){.nav-logo{font-size:13.5px}.nav-inner{padding:0 8px;gap:4px}.nav-links{min-width:20px}}
 
 /* Fall-Farben (Kasus) */
 .thn{background:#0071e3!important;color:#fff}.tha{background:#d70015!important;color:#fff}
