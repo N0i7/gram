@@ -1,0 +1,27 @@
+
+/* ===== Burger-Menü (Seiten-Navigation) ===== */
+.burger-btn{flex-shrink:0;width:34px;height:34px;border:none;background:transparent;cursor:pointer;display:flex;flex-direction:column;justify-content:center;align-items:center;gap:5px;padding:0;margin-right:2px;border-radius:8px;transition:background .15s}
+.burger-btn:hover{background:var(--bg2)}
+.burger-btn span{display:block;width:19px;height:2px;border-radius:2px;background:var(--text);transition:transform .2s,opacity .2s}
+.burger-btn[aria-expanded="true"] span:nth-child(1){transform:translateY(7px) rotate(45deg)}
+.burger-btn[aria-expanded="true"] span:nth-child(2){opacity:0}
+.burger-btn[aria-expanded="true"] span:nth-child(3){transform:translateY(-7px) rotate(-45deg)}
+
+.burger-overlay{position:fixed;inset:0;background:rgba(0,0,0,.35);opacity:0;pointer-events:none;transition:opacity .25s ease;z-index:199}
+.burger-overlay.open{opacity:1;pointer-events:auto}
+
+.burger-panel{position:fixed;top:0;left:0;bottom:0;width:290px;max-width:86vw;background:#fff;box-shadow:2px 0 28px rgba(0,0,0,.16);transform:translateX(-100%);transition:transform .28s cubic-bezier(.32,.72,0,1);z-index:200;overflow-y:auto;display:flex;flex-direction:column;-webkit-overflow-scrolling:touch}
+.burger-panel.open{transform:translateX(0)}
+.burger-panel-head{display:flex;align-items:center;justify-content:space-between;padding:0 10px 0 22px;height:48px;border-bottom:1px solid var(--bg2);flex-shrink:0;position:sticky;top:0;background:#fff}
+.burger-close{width:34px;height:34px;border:none;background:transparent;font-size:22px;line-height:1;color:var(--sec);cursor:pointer;border-radius:8px}
+.burger-close:hover{background:var(--bg2);color:var(--text)}
+.burger-panel-nav{padding:6px 0 30px}
+.burger-panel-nav > a{display:block;padding:13px 22px;font-size:16px;font-weight:600;color:var(--text);text-decoration:none;border-bottom:1px solid var(--bg2)}
+.burger-panel-nav > a:hover,.burger-panel-nav > a.active{color:var(--blue)}
+.burger-section{padding:16px 22px 4px}
+.burger-section h3{font-size:11.5px;font-weight:700;text-transform:uppercase;letter-spacing:.06em;color:var(--sec);margin-bottom:4px}
+.burger-section a{display:block;padding:8px 0;font-size:15.5px;color:var(--text);text-decoration:none}
+.burger-section a:hover{color:var(--blue)}
+.burger-section a.active{color:var(--blue);font-weight:600}
+body.burger-lock{overflow:hidden}
+@media(max-width:480px){.burger-btn{width:30px;margin-right:0}.burger-btn span{width:17px}}

@@ -6,6 +6,8 @@
 <title>Nutzungsbedingungen &amp; AGB – FLOß</title>
 <meta name="robots" content="index,follow">
 <link rel="stylesheet" href="styles.css">
+<link rel="stylesheet" href="burger-menu.css">
+<link rel="stylesheet" href="animations.css">
 <link rel="stylesheet" href="floss-auth.css">
 <link rel="stylesheet" href="recht.css">
 <meta name="description" content="Nutzungsbedingungen und AGB der FLOß Grammatik-Website.">
@@ -31,21 +33,57 @@
 </head>
 <body>
 <nav><div class="nav-inner">
-  <a class="nav-logo" href="index.html">FLO<span>ß</span> Grammatik</a>
+  <button class="burger-btn" id="burger-btn" type="button" aria-label="Menü öffnen" aria-haspopup="true" aria-expanded="false" aria-controls="burger-panel">
+    <span></span><span></span><span></span>
+  </button>
+  <a class="nav-logo" href="index.html">FLO<span>ß</span> <span class="nav-logo-sub">Grammatik</span></a>
   <ul class="nav-links">
     <li><a href="a1.html">A1</a></li>
     <li><a href="a2.html">A2</a></li>
     <li><a href="b1.html">B1</a></li>
     <li><a href="b2.html">B2</a></li>
-    <li><a href="c1.html">C1</a></li>
-    <li><a href="c2.html">C2</a></li>
-    <li><a href="modelltests.html">Modelltests</a></li>
-    <li><a href="wiederholen.html">Wiederholen</a></li>
-    <li><a href="tutor.html">Tutor</a></li>
-    <li><a href="referenz.html">Referenz</a></li>
-    <li><a href="unnuetzes-wissen.html">Unnützes Wissen</a></li>
+    <li><a href="modelltests.html">Test</a></li>
   </ul>
 </div></nav>
+<div class="burger-overlay" id="burger-overlay"></div>
+<aside class="burger-panel" id="burger-panel" aria-hidden="true">
+  <div class="burger-panel-head">
+    <a class="nav-logo" href="index.html">FLO<span>ß</span> Grammatik</a>
+    <button class="burger-close" id="burger-close" type="button" aria-label="Menü schließen">&times;</button>
+  </div>
+  <nav class="burger-panel-nav">
+    <a href="index.html">Startseite</a>
+    <div class="burger-section">
+      <h3>Grammatik</h3>
+      <a href="a1.html">A1</a>
+      <a href="a2.html">A2</a>
+      <a href="b1.html">B1</a>
+      <a href="b2.html">B2</a>
+      <a href="c1.html">C1</a>
+      <a href="c2.html">C2</a>
+    </div>
+    <div class="burger-section">
+      <h3>Üben</h3>
+      <a href="modelltests.html">Modelltests</a>
+      <a href="karteikarten.html">Karteikarten</a>
+      <a href="wiederholen.html">Wiederholen</a>
+      <a href="sprechen.html">Sprechen üben</a>
+      <a href="tutor.html">KI-Tutor</a>
+    </div>
+    <div class="burger-section">
+      <h3>Mehr</h3>
+      <a href="referenz.html">Referenz</a>
+      <a href="unnuetzes-wissen.html">Unnützes Wissen</a>
+      <a href="lehrer.html">Lehrer-Dashboard</a>
+    </div>
+    <div class="burger-section">
+      <h3>Rechtliches</h3>
+      <a href="datenschutz.html">Datenschutz</a>
+      <a href="agb.html" class="active">AGB</a>
+      <a href="impressum.html">Impressum</a>
+    </div>
+  </nav>
+</aside>
 
 <main class="recht">
 
@@ -420,5 +458,7 @@ Bitte lies ihn vollständig.</p>
   <p>Kontakt: <a href="mailto:fideslinguaortussolertia@gmail.com">fideslinguaortussolertia@gmail.com</a></p>
 </footer>
 <script src="sw-register.js"></script>
+<script src="burger-menu.js"></script>
+<script src="reveal.js"></script>
 </body>
 </html>

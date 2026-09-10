@@ -238,7 +238,7 @@
   const fab = document.createElement("button");
   fab.className = "as-fab"; fab.id = "as-fab";
   fab.setAttribute("aria-label","Grammatik-Assistent öffnen");
-  fab.innerHTML = '<span>Frag mich</span>';
+  fab.innerHTML = '<span>Fragen?!</span>';
   document.body.appendChild(fab);
 
   const panel = document.createElement("div");
