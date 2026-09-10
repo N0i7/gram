@@ -86,3 +86,22 @@
   .au-cta{margin:10px 12px 0;padding:38px 20px}
   .au-call-grid{grid-template-columns:repeat(3,1fr)}
 }
+
+/* Foto-Cluster: echte Unterrichts-Ausschnitte */
+.au-cluster{display:flex;flex-wrap:wrap;justify-content:center;align-items:flex-start;gap:34px 22px;padding:34px 6px 10px}
+.au-photo{background:#fff;padding:8px 8px 30px;border-radius:10px;box-shadow:0 10px 26px rgba(0,0,0,.13);
+  max-width:240px;margin:0;transition:transform .25s ease,box-shadow .25s ease}
+.au-photo img{width:100%;height:auto;display:block;border-radius:3px}
+.au-photo figcaption{text-align:center;font-size:12px;color:var(--sec);margin-top:10px;font-weight:600;line-height:1.35}
+.au-photo:hover{transform:rotate(0deg) scale(1.05);box-shadow:0 16px 34px rgba(0,0,0,.18);z-index:2;position:relative}
+.au-rot1{transform:rotate(-3deg)}
+.au-rot2{transform:rotate(2deg)}
+.au-rot3{transform:rotate(-1.5deg)}
+.au-rot4{transform:rotate(3deg)}
+.au-rot5{transform:rotate(-2deg)}
+.au-cluster + .au-live{justify-content:center;margin:8px auto 0}
+
+@media(max-width:640px){
+  .au-photo{max-width:150px;padding:6px 6px 22px}
+  .au-cluster{gap:26px 14px}
+}
