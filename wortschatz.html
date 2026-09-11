@@ -3,17 +3,14 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Deutsch A1 – FLOß Grammatik</title>
+<title>Wortschatz-Kompakt – FLOß Grammatik</title>
 <link rel="stylesheet" href="styles.css">
 <link rel="stylesheet" href="burger-menu.css">
 <link rel="stylesheet" href="animations.css">
-<link rel="stylesheet" href="assistant.css">
-<link rel="stylesheet" href="verbcard.css">
-<link rel="stylesheet" href="video.css">
 <link rel="stylesheet" href="floss-auth.css">
-<meta name="description" content="Deutsche Grammatik A1 – alle Themen, Übungen und Erklärungen zweisprachig Deutsch/Englisch. Kostenlos von FLOß.">
+<meta name="description" content="Themenwortschatz (Beruf, Wohnen, Behörden, Gesundheit), die wichtigsten Redewendungen, leicht verwechselbare Wörter und eine Länderliste — kostenlos von FLOß.">
 <meta name="robots" content="index,follow">
-<link rel="canonical" href="https://n0i7.github.io/gram/a1.html">
+<link rel="canonical" href="https://n0i7.github.io/gram/wortschatz.html">
 <link rel="icon" type="image/x-icon" href="favicon.ico">
 <link rel="icon" type="image/png" sizes="32x32" href="favicon-32x32.png">
 <link rel="icon" type="image/png" sizes="16x16" href="favicon-16x16.png">
@@ -21,16 +18,16 @@
 <link rel="manifest" href="site.webmanifest">
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="FLOß Grammatik">
-<meta property="og:title" content="Deutsch A1 – FLOß Grammatik">
-<meta property="og:description" content="Deutsche Grammatik A1 – alle Themen, Übungen und Erklärungen zweisprachig Deutsch/Englisch. Kostenlos von FLOß.">
-<meta property="og:url" content="https://n0i7.github.io/gram/a1.html">
+<meta property="og:title" content="Wortschatz-Kompakt – FLOß Grammatik">
+<meta property="og:description" content="Themenwortschatz, Redewendungen, leicht verwechselbare Wörter und Länderliste — kostenlos von FLOß.">
+<meta property="og:url" content="https://n0i7.github.io/gram/wortschatz.html">
 <meta property="og:image" content="https://n0i7.github.io/gram/assets/og-image.jpg">
 <meta property="og:locale" content="de_DE">
 <meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:title" content="Deutsch A1 – FLOß Grammatik">
-<meta name="twitter:description" content="Deutsche Grammatik A1 – alle Themen, Übungen und Erklärungen zweisprachig Deutsch/Englisch. Kostenlos von FLOß.">
+<meta name="twitter:title" content="Wortschatz-Kompakt – FLOß Grammatik">
+<meta name="twitter:description" content="Themenwortschatz, Redewendungen, leicht verwechselbare Wörter und Länderliste.">
 <meta name="twitter:image" content="https://n0i7.github.io/gram/assets/og-image.jpg">
-<!-- Analytics: kostenlos & datenschutzfreundlich via GoatCounter (goatcounter.com). Account anlegen, DEINCODE ersetzen, Zeile aktivieren. -->
+<!-- Analytics: kostenlos & datenschutzfreundlich via GoatCounter (goatcounter.com). -->
 <script data-goatcounter="https://no17.goatcounter.com/count" async src="//gc.zgo.at/count.js"></script>
 </head>
 <body>
@@ -40,7 +37,7 @@
   </button>
   <a class="nav-logo" href="index.html">FLO<span>ß</span> <span class="nav-logo-sub">Grammatik</span></a>
   <ul class="nav-links">
-    <li><a href="a1.html" class="active">A1</a></li>
+    <li><a href="a1.html">A1</a></li>
     <li><a href="a2.html">A2</a></li>
     <li><a href="b1.html">B1</a></li>
     <li><a href="b2.html">B2</a></li>
@@ -58,7 +55,7 @@
     <a href="ueber-uns.html">Über uns</a>
     <div class="burger-section">
       <h3>Grammatik</h3>
-      <a href="a1.html" class="active">A1</a>
+      <a href="a1.html">A1</a>
       <a href="a2.html">A2</a>
       <a href="b1.html">B1</a>
       <a href="b2.html">B2</a>
@@ -78,7 +75,7 @@
     <div class="burger-section">
       <h3>Mehr</h3>
       <a href="referenz.html">Referenz</a>
-      <a href="wortschatz.html">Wortschatz-Kompakt</a>
+      <a href="wortschatz.html" class="active">Wortschatz-Kompakt</a>
       <a href="unnuetzes-wissen.html">Unnützes Wissen</a>
       <a href="lerntipps.html">Lerntipps</a>
       <a href="lehrer.html">Lehrer-Dashboard</a>
@@ -91,10 +88,13 @@
     </div>
   </nav>
 </aside>
-<header class="lvl-hero" id="lvl-hero"></header>
+<header class="lvl-hero">
+  <span class="badge" style="background:#64748b">Wortschatz-Kompakt</span>
+  <h1>Wortschatz-Kompakt</h1>
+  <p>Themenwortschatz, Redewendungen, leicht verwechselbare Wörter und eine Länderliste — zum Nachschlagen.<br><span class="en">Thematic vocabulary, idioms, easily confused words and a country list — for quick reference.</span></p>
+</header>
 <div class="chipbar" id="chipbar"></div>
 <main class="wrap" id="topics"></main>
-<div class="next-level" id="nextlvl"></div>
 <footer>
   <div class="flogo">FLO<span>ß</span> — Fides Lingua Ortus Solertia</div>
   <p>Deutschschule · Intensivkurse A1–C2 · Prüfungsvorbereitung telc</p>
@@ -106,15 +106,8 @@
 <script src="floss-config.js"></script>
 <script src="floss-auth.js"></script>
 <script src="badges.js"></script>
-<script src="data-a1.js"></script>
-<script src="topics-map.js"></script>
-<script src="referenz-daten.js"></script>
-<script src="engine.js"></script>
-<script src="verbs.js"></script>
-<script src="verbcard.js"></script>
-<script src="search-index.js"></script>
-<script src="assistant.js"></script>
-<script src="floss-progress.js"></script>
+<script src="wortschatz-daten.js"></script>
+<script src="wortschatz.js"></script>
 <script src="sw-register.js"></script>
 <script src="burger-menu.js"></script>
 <script src="reveal.js"></script>
