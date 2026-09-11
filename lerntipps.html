@@ -3,17 +3,14 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Deutsch B2 – FLOß Grammatik</title>
+<title>Lerntipps – FLOß Grammatik</title>
 <link rel="stylesheet" href="styles.css">
 <link rel="stylesheet" href="burger-menu.css">
 <link rel="stylesheet" href="animations.css">
-<link rel="stylesheet" href="assistant.css">
-<link rel="stylesheet" href="verbcard.css">
-<link rel="stylesheet" href="video.css">
 <link rel="stylesheet" href="floss-auth.css">
-<meta name="description" content="Deutsche Grammatik B2 – alle Themen, Übungen und Erklärungen zweisprachig Deutsch/Englisch. Kostenlos von FLOß.">
+<meta name="description" content="Forschungsbasierte Lerntipps für Deutschlerner: Vokabeln mit Spaced Repetition lernen, Grammatik aktiv üben, Hören/Sprechen im Alltag trainieren und dich richtig auf die telc-Prüfung vorbereiten. Kostenlos von FLOß.">
 <meta name="robots" content="index,follow">
-<link rel="canonical" href="https://n0i7.github.io/gram/b2.html">
+<link rel="canonical" href="https://n0i7.github.io/gram/lerntipps.html">
 <link rel="icon" type="image/x-icon" href="favicon.ico">
 <link rel="icon" type="image/png" sizes="32x32" href="favicon-32x32.png">
 <link rel="icon" type="image/png" sizes="16x16" href="favicon-16x16.png">
@@ -21,16 +18,16 @@
 <link rel="manifest" href="site.webmanifest">
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="FLOß Grammatik">
-<meta property="og:title" content="Deutsch B2 – FLOß Grammatik">
-<meta property="og:description" content="Deutsche Grammatik B2 – alle Themen, Übungen und Erklärungen zweisprachig Deutsch/Englisch. Kostenlos von FLOß.">
-<meta property="og:url" content="https://n0i7.github.io/gram/b2.html">
+<meta property="og:title" content="Lerntipps – FLOß Grammatik">
+<meta property="og:description" content="Forschungsbasierte Lerntipps: Vokabeln, Grammatik, Hören/Sprechen im Alltag und telc-Prüfungsvorbereitung — kostenlos von FLOß.">
+<meta property="og:url" content="https://n0i7.github.io/gram/lerntipps.html">
 <meta property="og:image" content="https://n0i7.github.io/gram/assets/og-image.jpg">
 <meta property="og:locale" content="de_DE">
 <meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:title" content="Deutsch B2 – FLOß Grammatik">
-<meta name="twitter:description" content="Deutsche Grammatik B2 – alle Themen, Übungen und Erklärungen zweisprachig Deutsch/Englisch. Kostenlos von FLOß.">
+<meta name="twitter:title" content="Lerntipps – FLOß Grammatik">
+<meta name="twitter:description" content="Forschungsbasierte Lerntipps: Vokabeln, Grammatik, Hören/Sprechen im Alltag und telc-Prüfungsvorbereitung.">
 <meta name="twitter:image" content="https://n0i7.github.io/gram/assets/og-image.jpg">
-<!-- Analytics: kostenlos & datenschutzfreundlich via GoatCounter (goatcounter.com). Account anlegen, DEINCODE ersetzen, Zeile aktivieren. -->
+<!-- Analytics: kostenlos & datenschutzfreundlich via GoatCounter (goatcounter.com). -->
 <script data-goatcounter="https://no17.goatcounter.com/count" async src="//gc.zgo.at/count.js"></script>
 </head>
 <body>
@@ -43,7 +40,7 @@
     <li><a href="a1.html">A1</a></li>
     <li><a href="a2.html">A2</a></li>
     <li><a href="b1.html">B1</a></li>
-    <li><a href="b2.html" class="active">B2</a></li>
+    <li><a href="b2.html">B2</a></li>
     <li><a href="modelltests.html">Test</a></li>
   </ul>
 </div></nav>
@@ -61,7 +58,7 @@
       <a href="a1.html">A1</a>
       <a href="a2.html">A2</a>
       <a href="b1.html">B1</a>
-      <a href="b2.html" class="active">B2</a>
+      <a href="b2.html">B2</a>
       <a href="c1.html">C1</a>
       <a href="c2.html">C2</a>
     </div>
@@ -79,7 +76,7 @@
       <h3>Mehr</h3>
       <a href="referenz.html">Referenz</a>
       <a href="unnuetzes-wissen.html">Unnützes Wissen</a>
-      <a href="lerntipps.html">Lerntipps</a>
+      <a href="lerntipps.html" class="active">Lerntipps</a>
       <a href="lehrer.html">Lehrer-Dashboard</a>
     </div>
     <div class="burger-section">
@@ -90,10 +87,13 @@
     </div>
   </nav>
 </aside>
-<header class="lvl-hero" id="lvl-hero"></header>
+<header class="lvl-hero">
+  <span class="badge" style="background:#0d9488">Lerntipps</span>
+  <h1>Lerntipps</h1>
+  <p>Wie man Vokabeln, Grammatik und die telc-Prüfung wirklich effektiv angeht — forschungsbasiert, nicht nur gut gemeint.<br><span class="en">How to actually approach vocabulary, grammar and the telc exam effectively — research-based, not just well-meant advice.</span></p>
+</header>
 <div class="chipbar" id="chipbar"></div>
 <main class="wrap" id="topics"></main>
-<div class="next-level" id="nextlvl"></div>
 <footer>
   <div class="flogo">FLO<span>ß</span> — Fides Lingua Ortus Solertia</div>
   <p>Deutschschule · Intensivkurse A1–C2 · Prüfungsvorbereitung telc</p>
@@ -105,15 +105,8 @@
 <script src="floss-config.js"></script>
 <script src="floss-auth.js"></script>
 <script src="badges.js"></script>
-<script src="data-b2.js"></script>
-<script src="topics-map.js"></script>
-<script src="referenz-daten.js"></script>
-<script src="engine.js"></script>
-<script src="verbs.js"></script>
-<script src="verbcard.js"></script>
-<script src="search-index.js"></script>
-<script src="assistant.js"></script>
-<script src="floss-progress.js"></script>
+<script src="lerntipps-daten.js"></script>
+<script src="lerntipps.js"></script>
 <script src="sw-register.js"></script>
 <script src="burger-menu.js"></script>
 <script src="reveal.js"></script>

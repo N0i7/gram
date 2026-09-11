@@ -3,17 +3,14 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Deutsch B2 – FLOß Grammatik</title>
+<title>Hör-/Leseverstehen – FLOß Grammatik</title>
 <link rel="stylesheet" href="styles.css">
 <link rel="stylesheet" href="burger-menu.css">
 <link rel="stylesheet" href="animations.css">
-<link rel="stylesheet" href="assistant.css">
-<link rel="stylesheet" href="verbcard.css">
-<link rel="stylesheet" href="video.css">
 <link rel="stylesheet" href="floss-auth.css">
-<meta name="description" content="Deutsche Grammatik B2 – alle Themen, Übungen und Erklärungen zweisprachig Deutsch/Englisch. Kostenlos von FLOß.">
+<meta name="description" content="Hör- und Leseverstehen für Deutsch A1-B2: Originaltexte mit Wortschatzhilfe, Vorlesen-Funktion und Verständnisfragen — perfekt zur telc-Prüfungsvorbereitung. Kostenlos von FLOß.">
 <meta name="robots" content="index,follow">
-<link rel="canonical" href="https://n0i7.github.io/gram/b2.html">
+<link rel="canonical" href="https://n0i7.github.io/gram/hoerleseverstehen.html">
 <link rel="icon" type="image/x-icon" href="favicon.ico">
 <link rel="icon" type="image/png" sizes="32x32" href="favicon-32x32.png">
 <link rel="icon" type="image/png" sizes="16x16" href="favicon-16x16.png">
@@ -21,16 +18,16 @@
 <link rel="manifest" href="site.webmanifest">
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="FLOß Grammatik">
-<meta property="og:title" content="Deutsch B2 – FLOß Grammatik">
-<meta property="og:description" content="Deutsche Grammatik B2 – alle Themen, Übungen und Erklärungen zweisprachig Deutsch/Englisch. Kostenlos von FLOß.">
-<meta property="og:url" content="https://n0i7.github.io/gram/b2.html">
+<meta property="og:title" content="Hör-/Leseverstehen – FLOß Grammatik">
+<meta property="og:description" content="Originaltexte A1-B2 mit Wortschatzhilfe, Vorlesen-Funktion und Verständnisfragen — kostenlos von FLOß.">
+<meta property="og:url" content="https://n0i7.github.io/gram/hoerleseverstehen.html">
 <meta property="og:image" content="https://n0i7.github.io/gram/assets/og-image.jpg">
 <meta property="og:locale" content="de_DE">
 <meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:title" content="Deutsch B2 – FLOß Grammatik">
-<meta name="twitter:description" content="Deutsche Grammatik B2 – alle Themen, Übungen und Erklärungen zweisprachig Deutsch/Englisch. Kostenlos von FLOß.">
+<meta name="twitter:title" content="Hör-/Leseverstehen – FLOß Grammatik">
+<meta name="twitter:description" content="Originaltexte A1-B2 mit Wortschatzhilfe, Vorlesen-Funktion und Verständnisfragen.">
 <meta name="twitter:image" content="https://n0i7.github.io/gram/assets/og-image.jpg">
-<!-- Analytics: kostenlos & datenschutzfreundlich via GoatCounter (goatcounter.com). Account anlegen, DEINCODE ersetzen, Zeile aktivieren. -->
+<!-- Analytics: kostenlos & datenschutzfreundlich via GoatCounter (goatcounter.com). -->
 <script data-goatcounter="https://no17.goatcounter.com/count" async src="//gc.zgo.at/count.js"></script>
 </head>
 <body>
@@ -43,7 +40,7 @@
     <li><a href="a1.html">A1</a></li>
     <li><a href="a2.html">A2</a></li>
     <li><a href="b1.html">B1</a></li>
-    <li><a href="b2.html" class="active">B2</a></li>
+    <li><a href="b2.html">B2</a></li>
     <li><a href="modelltests.html">Test</a></li>
   </ul>
 </div></nav>
@@ -61,7 +58,7 @@
       <a href="a1.html">A1</a>
       <a href="a2.html">A2</a>
       <a href="b1.html">B1</a>
-      <a href="b2.html" class="active">B2</a>
+      <a href="b2.html">B2</a>
       <a href="c1.html">C1</a>
       <a href="c2.html">C2</a>
     </div>
@@ -72,7 +69,7 @@
       <a href="wiederholen.html">Wiederholen</a>
       <a href="sprechen.html">Sprechen üben</a>
       <a href="tutor.html">KI-Tutor</a>
-      <a href="hoerleseverstehen.html">Hör-/Leseverstehen</a>
+      <a href="hoerleseverstehen.html" class="active">Hör-/Leseverstehen</a>
       <a href="schreibschule.html">Schreibschule</a>
     </div>
     <div class="burger-section">
@@ -90,10 +87,13 @@
     </div>
   </nav>
 </aside>
-<header class="lvl-hero" id="lvl-hero"></header>
+<header class="lvl-hero">
+  <span class="badge" style="background:#0a84ff">Hör-/Leseverstehen</span>
+  <h1>Hör-/Leseverstehen</h1>
+  <p>Originaltexte A1 bis B2 mit Wortschatzhilfe, Vorlesen-Funktion und Verständnisfragen — wie im telc-Prüfungsteil.<br><span class="en">Original texts A1 to B2 with vocabulary help, a read-aloud button and comprehension questions — just like in the telc exam.</span></p>
+</header>
 <div class="chipbar" id="chipbar"></div>
 <main class="wrap" id="topics"></main>
-<div class="next-level" id="nextlvl"></div>
 <footer>
   <div class="flogo">FLO<span>ß</span> — Fides Lingua Ortus Solertia</div>
   <p>Deutschschule · Intensivkurse A1–C2 · Prüfungsvorbereitung telc</p>
@@ -105,15 +105,9 @@
 <script src="floss-config.js"></script>
 <script src="floss-auth.js"></script>
 <script src="badges.js"></script>
-<script src="data-b2.js"></script>
-<script src="topics-map.js"></script>
-<script src="referenz-daten.js"></script>
-<script src="engine.js"></script>
-<script src="verbs.js"></script>
-<script src="verbcard.js"></script>
-<script src="search-index.js"></script>
-<script src="assistant.js"></script>
-<script src="floss-progress.js"></script>
+<script src="content-quiz.js"></script>
+<script src="hoerleseverstehen-daten.js"></script>
+<script src="hoerleseverstehen.js"></script>
 <script src="sw-register.js"></script>
 <script src="burger-menu.js"></script>
 <script src="reveal.js"></script>

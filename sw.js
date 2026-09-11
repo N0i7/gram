@@ -13,7 +13,7 @@
    ============================================================ */
 "use strict";
 
-var CACHE_NAME = "floss-v3";
+var CACHE_NAME = "floss-v4";
 
 // App-Grundgerüst: wird beim ersten Besuch vorab geladen, damit die
 // Seite danach auch offline startet. Bewusst OHNE modelltest-data/ —
@@ -23,13 +23,14 @@ var CACHE_NAME = "floss-v3";
 var PRECACHE = [
   "index.html", "a1.html", "a2.html", "b1.html", "b2.html", "c1.html", "c2.html",
   "karteikarten.html", "modelltests.html", "modelltest.html", "referenz.html", "unnuetzes-wissen.html",
-  "tutor.html", "wiederholen.html", "sprechen.html",
+  "tutor.html", "wiederholen.html", "sprechen.html", "hoerleseverstehen.html", "schreibschule.html", "lerntipps.html",
   "styles.css", "roadmap.css", "assistant.css", "verbcard.css", "video.css", "recht.css",
   "floss-auth.css", "modelltest.css", "tutor.css", "wiederholen.css", "sprechen.css",
   "engine.js", "assistant.js", "search-index.js", "topics-map.js", "verbcard.js", "verbs.js",
   "floss-config.js", "floss-auth.js", "floss-progress.js", "floss-cards.js",
   "modelltest-engine.js", "modelltest-korrektur.js",
   "tutor.js", "wiederholen.js", "sprechen.js", "badges.js", "referenz.js", "referenz-daten.js", "unnuetzes-wissen.js", "unnuetzes-wissen-daten.js",
+  "content-quiz.js", "hoerleseverstehen.js", "hoerleseverstehen-daten.js", "schreibschule.js", "schreibschule-daten.js", "lerntipps.js", "lerntipps-daten.js",
   "data-a1.js", "data-a2.js", "data-b1.js", "data-b2.js", "data-c1.js", "data-c2.js",
   "site.webmanifest", "favicon.ico", "favicon-16x16.png", "favicon-32x32.png", "apple-touch-icon.png"
 ];

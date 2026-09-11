@@ -159,3 +159,13 @@ details.ref-full summary .en{color:var(--sec);font-weight:400}
 details.ref-full .ref-body{margin-top:14px}
 .ref-group{margin:44px 0 4px;font-size:12.5px;font-weight:700;text-transform:uppercase;letter-spacing:.05em;color:var(--sec)}
 .ref-group:first-of-type{margin-top:6px}
+
+
+/* ===== Hör-/Leseverstehen: Vorlesen-Button (Web Speech API) ===== */
+.hlv-play{font-family:inherit;font-size:14px;font-weight:600;padding:9px 18px;border-radius:980px;
+  border:1.5px solid var(--blue);background:#fff;color:var(--blue);cursor:pointer;margin-bottom:14px;
+  display:inline-flex;align-items:center;gap:7px;transition:all .15s}
+.hlv-play:hover{background:#eaf3ff}
+.hlv-play.playing{background:var(--blue);color:#fff}
+.hlv-play-ico{font-size:11px}
+.hlv-text{font-size:16px;line-height:1.7;margin-bottom:14px}

@@ -3,17 +3,15 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Deutsch B2 – FLOß Grammatik</title>
+<title>Schreibschule – FLOß Grammatik</title>
 <link rel="stylesheet" href="styles.css">
 <link rel="stylesheet" href="burger-menu.css">
 <link rel="stylesheet" href="animations.css">
-<link rel="stylesheet" href="assistant.css">
-<link rel="stylesheet" href="verbcard.css">
-<link rel="stylesheet" href="video.css">
 <link rel="stylesheet" href="floss-auth.css">
-<meta name="description" content="Deutsche Grammatik B2 – alle Themen, Übungen und Erklärungen zweisprachig Deutsch/Englisch. Kostenlos von FLOß.">
+<link rel="stylesheet" href="modelltest.css">
+<meta name="description" content="Schreibschule für Deutsch: Aufsätze und Referate, formelle/informelle Briefe, Stilmittel, Erzählperspektive und Rechtschreibung — mit freiem Schreiben und KI-Korrektur. Kostenlos von FLOß.">
 <meta name="robots" content="index,follow">
-<link rel="canonical" href="https://n0i7.github.io/gram/b2.html">
+<link rel="canonical" href="https://n0i7.github.io/gram/schreibschule.html">
 <link rel="icon" type="image/x-icon" href="favicon.ico">
 <link rel="icon" type="image/png" sizes="32x32" href="favicon-32x32.png">
 <link rel="icon" type="image/png" sizes="16x16" href="favicon-16x16.png">
@@ -21,16 +19,16 @@
 <link rel="manifest" href="site.webmanifest">
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="FLOß Grammatik">
-<meta property="og:title" content="Deutsch B2 – FLOß Grammatik">
-<meta property="og:description" content="Deutsche Grammatik B2 – alle Themen, Übungen und Erklärungen zweisprachig Deutsch/Englisch. Kostenlos von FLOß.">
-<meta property="og:url" content="https://n0i7.github.io/gram/b2.html">
+<meta property="og:title" content="Schreibschule – FLOß Grammatik">
+<meta property="og:description" content="Aufsätze, Briefe, Stilmittel, Erzählperspektive, Rechtschreibung — plus freies Schreiben mit KI-Korrektur. Kostenlos von FLOß.">
+<meta property="og:url" content="https://n0i7.github.io/gram/schreibschule.html">
 <meta property="og:image" content="https://n0i7.github.io/gram/assets/og-image.jpg">
 <meta property="og:locale" content="de_DE">
 <meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:title" content="Deutsch B2 – FLOß Grammatik">
-<meta name="twitter:description" content="Deutsche Grammatik B2 – alle Themen, Übungen und Erklärungen zweisprachig Deutsch/Englisch. Kostenlos von FLOß.">
+<meta name="twitter:title" content="Schreibschule – FLOß Grammatik">
+<meta name="twitter:description" content="Aufsätze, Briefe, Stilmittel, Erzählperspektive, Rechtschreibung — plus freies Schreiben mit KI-Korrektur.">
 <meta name="twitter:image" content="https://n0i7.github.io/gram/assets/og-image.jpg">
-<!-- Analytics: kostenlos & datenschutzfreundlich via GoatCounter (goatcounter.com). Account anlegen, DEINCODE ersetzen, Zeile aktivieren. -->
+<!-- Analytics: kostenlos & datenschutzfreundlich via GoatCounter (goatcounter.com). -->
 <script data-goatcounter="https://no17.goatcounter.com/count" async src="//gc.zgo.at/count.js"></script>
 </head>
 <body>
@@ -43,7 +41,7 @@
     <li><a href="a1.html">A1</a></li>
     <li><a href="a2.html">A2</a></li>
     <li><a href="b1.html">B1</a></li>
-    <li><a href="b2.html" class="active">B2</a></li>
+    <li><a href="b2.html">B2</a></li>
     <li><a href="modelltests.html">Test</a></li>
   </ul>
 </div></nav>
@@ -61,7 +59,7 @@
       <a href="a1.html">A1</a>
       <a href="a2.html">A2</a>
       <a href="b1.html">B1</a>
-      <a href="b2.html" class="active">B2</a>
+      <a href="b2.html">B2</a>
       <a href="c1.html">C1</a>
       <a href="c2.html">C2</a>
     </div>
@@ -73,7 +71,7 @@
       <a href="sprechen.html">Sprechen üben</a>
       <a href="tutor.html">KI-Tutor</a>
       <a href="hoerleseverstehen.html">Hör-/Leseverstehen</a>
-      <a href="schreibschule.html">Schreibschule</a>
+      <a href="schreibschule.html" class="active">Schreibschule</a>
     </div>
     <div class="burger-section">
       <h3>Mehr</h3>
@@ -90,10 +88,13 @@
     </div>
   </nav>
 </aside>
-<header class="lvl-hero" id="lvl-hero"></header>
+<header class="lvl-hero">
+  <span class="badge" style="background:#c2185b">Schreibschule</span>
+  <h1>Schreibschule</h1>
+  <p>Aufsätze, Briefe, Stilmittel und Rechtschreibung — plus freies Schreiben mit KI-Korrektur.<br><span class="en">Essays, letters, style and spelling — plus free writing with AI-assisted correction.</span></p>
+</header>
 <div class="chipbar" id="chipbar"></div>
 <main class="wrap" id="topics"></main>
-<div class="next-level" id="nextlvl"></div>
 <footer>
   <div class="flogo">FLO<span>ß</span> — Fides Lingua Ortus Solertia</div>
   <p>Deutschschule · Intensivkurse A1–C2 · Prüfungsvorbereitung telc</p>
@@ -105,15 +106,10 @@
 <script src="floss-config.js"></script>
 <script src="floss-auth.js"></script>
 <script src="badges.js"></script>
-<script src="data-b2.js"></script>
-<script src="topics-map.js"></script>
-<script src="referenz-daten.js"></script>
-<script src="engine.js"></script>
-<script src="verbs.js"></script>
-<script src="verbcard.js"></script>
-<script src="search-index.js"></script>
-<script src="assistant.js"></script>
-<script src="floss-progress.js"></script>
+<script src="content-quiz.js"></script>
+<script src="modelltest-korrektur.js"></script>
+<script src="schreibschule-daten.js"></script>
+<script src="schreibschule.js"></script>
 <script src="sw-register.js"></script>
 <script src="burger-menu.js"></script>
 <script src="reveal.js"></script>
