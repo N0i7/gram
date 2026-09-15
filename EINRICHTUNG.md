@@ -365,6 +365,29 @@ ohne automatische Bewertung.
    Lehrer-Account (siehe Schritt 6) auf `lehrer.html` prüfen, ob die Aufnahme
    unter „Sprechen — offene Aufnahmen“ erscheint und abspielbar ist.
 
+## Schritt 12 — Lernspiel „Der Strom“ einrichten (3 Minuten)
+
+Neue Seite `der-strom.html`: das Deutsch-Lernspiel (A1–B1) mit Lektionen,
+Erklärfilmen, Zwischentests und Bossen. Es nutzt dieselbe Anmeldung wie alle
+anderen Seiten — Anmelden, Mein Konto und Abmelden liegen im Spiel oben rechts
+(👤) und im Hauptmenü.
+
+1. Supabase Dashboard → **SQL Editor** → **New query**.
+2. Den kompletten Inhalt von `supabase-migration-der-strom.sql` einfügen →
+   **RUN**. Legt die Tabelle `spiel_stand` an (ein Spielstand pro Nutzer,
+   Lehrer dürfen lesen). Kann gefahrlos mehrfach laufen.
+3. Testen: auf `der-strom.html` anmelden, eine Lektion spielen, Seite neu
+   laden → im Hauptmenü steht „☁️ Fortschritt wird in deinem Konto
+   gespeichert“. Im Table Editor erscheint eine Zeile in `spiel_stand`.
+   Jeder Zwischen- und Abschlusstest landet zusätzlich in `test_durchlauf`
+   (test_key `der-strom-<bezirk>` bzw. `der-strom-<bezirk>-zwischentest`).
+
+**Ohne diesen Schritt** läuft das Spiel trotzdem: angemeldete Spieler sehen
+„Konto-Speicher noch nicht eingerichtet“ und der Fortschritt bleibt im Browser.
+
+**Quelle des Spiels:** `der-strom.html` wird nicht von Hand bearbeitet, sondern
+im Spiel-Projekt (`CCode/der-strom`) mit
+`powershell -File build.ps1 -Web ..\..\website\der-strom.html` erzeugt.
 ## Was ohne weitere Einrichtung läuft
 
 Drei neue Sachen brauchen **nichts extra** — einfach mit hochladen:

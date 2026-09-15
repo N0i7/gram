@@ -13,7 +13,7 @@
    ============================================================ */
 "use strict";
 
-var CACHE_NAME = "floss-v5";
+var CACHE_NAME = "floss-v6";
 
 // App-Grundgerüst: wird beim ersten Besuch vorab geladen, damit die
 // Seite danach auch offline startet. Bewusst OHNE modelltest-data/ —
@@ -23,7 +23,7 @@ var CACHE_NAME = "floss-v5";
 var PRECACHE = [
   "index.html", "a1.html", "a2.html", "b1.html", "b2.html", "c1.html", "c2.html",
   "karteikarten.html", "modelltests.html", "modelltest.html", "referenz.html", "unnuetzes-wissen.html",
-  "tutor.html", "wiederholen.html", "sprechen.html", "hoerleseverstehen.html", "schreibschule.html", "lerntipps.html", "wortschatz.html",
+  "tutor.html", "wiederholen.html", "sprechen.html", "hoerleseverstehen.html", "schreibschule.html", "lerntipps.html", "wortschatz.html", "der-strom.html",
   "styles.css", "roadmap.css", "assistant.css", "verbcard.css", "video.css", "recht.css",
   "floss-auth.css", "modelltest.css", "tutor.css", "wiederholen.css", "sprechen.css",
   "engine.js", "assistant.js", "search-index.js", "topics-map.js", "verbcard.js", "verbs.js",
