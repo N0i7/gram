@@ -1,0 +1,10 @@
+Musik: "JRPG Music Pack #4 [Calm]" von Juhani Junkala (SubspaceAudio)
+Quelle: https://opengameart.org/content/jrpg-pack-4-calm
+Lizenz: CC0 1.0 (Public Domain) — https://creativecommons.org/publicdomain/zero/1.0/
+Heruntergeladen am 15.09.2026 mit Freigabe von Lion. Dateien umbenannt:
+  zuhause.ogg            = Calm1 - A Place I Call Home
+  kindheitsfreunde.ogg   = Calm2 - Childhood Friends
+  friedliche-tage.ogg    = Calm3 - Peaceful Days
+  sandburgen.ogg         = Calm4 - Sand Castles
+  sommererinnerungen.ogg = Calm5 - Summer Memories
+  unschuld.ogg           = Calm6 - Innocence

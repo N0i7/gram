@@ -10510,10 +10510,21 @@ const Particles = {
 // Schluessel = Stimmung (menue, boss, Bezirks-id) oder "welt" als Vorgabe fuer alle Bezirke ohne
 // eigenen Eintrag. Wert = Pfad relativ zur Seite (Website: musik/…) oder data:-URI (Artifact).
 // Nur Stuecke mit CC0-Lizenz eintragen und Quelle im README festhalten.
+// Aktuell: "JRPG Music Pack #4 [Calm]" von Juhani Junkala (CC0), siehe musik/LIZENZ.txt.
+// Bosse bleiben bewusst beim generierten Stueck mit Trommel — ruhige Loops passen nicht zum Kampf.
 const MUSIK_TRACKS = Object.assign({
-  // menue: "musik/menue.ogg",
-  // welt:  "musik/welt.ogg",
-  // boss:  "musik/boss.ogg",
+  menue:          "musik/zuhause.ogg",
+  heimatdorf:     "musik/zuhause.ogg",
+  quelle:         "musik/friedliche-tage.ogg",
+  schilf:         "musik/friedliche-tage.ogg",
+  dorf:           "musik/sommererinnerungen.ogg",
+  handelsstadt:   "musik/sommererinnerungen.ogg",
+  bruecke:        "musik/sandburgen.ogg",
+  stromschnellen: "musik/sandburgen.ogg",
+  schleuse:       "musik/unschuld.ogg",
+  leuchtturm:     "musik/unschuld.ogg",
+  hafenstadt:     "musik/kindheitsfreunde.ogg",
+  welt:           "musik/friedliche-tage.ogg",
 }, window.MUSIK_TRACKS || {});
 
 const TONLEITERN = {
@@ -10601,6 +10612,7 @@ const Musik = {
       try {
         this.audio = new Audio();
         this.audio.loop = true;
+        this.audio.volume = 0.7; // die Loops sind lauter abgemischt als der Generator
         this.audio.preload = "auto";
         this.ctx.createMediaElementSource(this.audio).connect(this.bus);
       } catch (e) {
