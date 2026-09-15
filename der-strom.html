@@ -10500,9 +10500,21 @@ const Particles = {
 
 
 // ===== musik.js =====
-// Der Strom — generierte Hintergrundmusik (Web Audio). Keine Dateien, keine Lizenzen:
-// Akkordflaeche, Bass, Arpeggio und eine locker improvisierte Melodie, jede Stimmung pro Bezirk
-// in eigener Tonart und eigenem Tempo. Bosse bekommen eine gespanntere Moll-Variante mit Trommel.
+// Der Strom — Hintergrundmusik (Web Audio).
+// 1. Echte Musikstuecke (CC0), wenn in MUSIK_TRACKS eine Datei fuer die Stimmung eingetragen ist.
+//    Sie laufen ueber denselben Lautstaerke-Bus wie der Generator: Ein-/Ausblenden, Ducken, Stumm.
+// 2. Sonst — und immer, wenn eine Datei fehlt oder nicht laedt — die generierte Musik:
+//    Akkordflaeche, Bass, Arpeggio und eine locker improvisierte Melodie, jede Stimmung pro Bezirk
+//    in eigener Tonart und eigenem Tempo. Bosse bekommen eine gespanntere Moll-Variante mit Trommel.
+
+// Schluessel = Stimmung (menue, boss, Bezirks-id) oder "welt" als Vorgabe fuer alle Bezirke ohne
+// eigenen Eintrag. Wert = Pfad relativ zur Seite (Website: musik/…) oder data:-URI (Artifact).
+// Nur Stuecke mit CC0-Lizenz eintragen und Quelle im README festhalten.
+const MUSIK_TRACKS = Object.assign({
+  // menue: "musik/menue.ogg",
+  // welt:  "musik/welt.ogg",
+  // boss:  "musik/boss.ogg",
+}, window.MUSIK_TRACKS || {});
 
 const TONLEITERN = {
   dur: [0, 2, 4, 5, 7, 9, 11],
@@ -10532,6 +10544,7 @@ const Musik = {
   stimmung: STIMMUNGEN.menue, key: "menue",
   schritt: 0, naechsteZeit: 0, melodieTon: 0,
   lautstaerke: 0.55, geduckt: false,
+  audio: null, trackAktiv: false, trackUrl: null, kaputt: new Set(),
 
   hz(midi) { return 440 * Math.pow(2, (midi - 69) / 12); },
 
@@ -10559,6 +10572,7 @@ const Musik = {
     this.anpassenHall();
     this.fade(this.zielPegel(), 1.5);
     this.timer = setInterval(() => this.planen(), 50);
+    this.wechsleTrack(this.key);
   },
 
   stop() {
@@ -10566,6 +10580,47 @@ const Musik = {
     this.laeuft = false;
     clearInterval(this.timer);
     if (this.bus) this.fade(0, 0.4);
+    if (this.audio) setTimeout(() => { if (!this.laeuft) this.audio.pause(); }, 450);
+  },
+
+  // ---------------- Echte Musikstuecke ----------------
+  trackFuer(key) {
+    if (this.trackGesperrt) return null;
+    const url = MUSIK_TRACKS[key] || (key === "menue" || key === "boss" ? null : MUSIK_TRACKS.welt) || null;
+    return url && !this.kaputt.has(url) ? url : null;
+  },
+
+  wechsleTrack(key) {
+    const url = this.trackFuer(key);
+    if (!url) {
+      this.trackAktiv = false; this.trackUrl = null;
+      if (this.audio) this.audio.pause();
+      return;
+    }
+    if (!this.audio) {
+      try {
+        this.audio = new Audio();
+        this.audio.loop = true;
+        this.audio.preload = "auto";
+        this.ctx.createMediaElementSource(this.audio).connect(this.bus);
+      } catch (e) {
+        // Ohne Web-Audio-Anbindung kein Fade/Ducken — dann lieber beim Generator bleiben.
+        console.warn("[Musik] Track-Wiedergabe nicht moeglich:", e.message);
+        this.trackGesperrt = true;
+        this.audio = null;
+        return;
+      }
+      this.audio.addEventListener("playing", () => { this.trackAktiv = true; });
+      this.audio.addEventListener("error", () => {
+        if (this.trackUrl) { console.warn("[Musik] Datei laedt nicht, generierte Musik uebernimmt:", this.trackUrl); this.kaputt.add(this.trackUrl); }
+        this.trackAktiv = false; this.trackUrl = null;
+      });
+    }
+    if (url === this.trackUrl) { if (this.audio.paused) this.audio.play().catch(() => {}); return; }
+    this.trackAktiv = false;
+    this.trackUrl = url;
+    this.audio.src = url;
+    this.audio.play().catch(() => { /* Autoplay-Sperre: naechster Start nach Nutzeraktion */ });
   },
 
   zielPegel() { return this.lautstaerke * (this.geduckt ? 0.3 : 1); },
@@ -10594,7 +10649,7 @@ const Musik = {
       this.schritt = 0;
       this.melodieTon = 0;
       this.anpassenHall();
-      if (this.laeuft) this.fade(this.zielPegel(), 1.2);
+      if (this.laeuft) { this.wechsleTrack(this.key); this.fade(this.zielPegel(), 1.2); }
     }, 650);
   },
 
@@ -10668,6 +10723,7 @@ const Musik = {
   },
 
   spieleSchritt(schritt, zeit, s16) {
+    if (this.trackAktiv) return; // ein echtes Stueck laeuft — Generator schweigt
     const st = this.stimmung;
     const takt = Math.floor(schritt / 16);
     const imTakt = schritt % 16;
