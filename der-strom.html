@@ -1108,6 +1108,155 @@ canvas{ filter:saturate(1.18) contrast(1.03); }
 /* Regelbild im Regel-Kasten der Aufgaben */
 .regelbild{ display:flex; flex-wrap:wrap; gap:5px; margin-top:7px; }
 
+/* ---------------- Minispiele: Spielhalle, Wortle, Wortjagd ---------------- */
+#minispiel-overlay{
+  position:absolute; inset:0; z-index:38; display:flex; align-items:center; justify-content:center;
+  background:radial-gradient(ellipse at 50% 30%, rgba(18,34,31,.96), rgba(4,10,9,.98) 80%);
+}
+#minispiel-card{
+  width:1000px; max-width:96%; max-height:96%; overflow-y:auto; background:#0f1c1a;
+  border:1px solid rgba(255,255,255,.14); border-radius:22px; padding:18px 24px 22px;
+  box-shadow:0 24px 70px rgba(0,0,0,.65);
+}
+.ms-kopf{ display:flex; align-items:flex-start; justify-content:space-between; gap:14px; }
+.ms-kopf h2{ font-size:1.45rem; margin:2px 0 10px; }
+#minispiel-close{
+  width:34px; height:34px; border-radius:50%; border:1px solid rgba(255,255,255,.18);
+  background:rgba(255,255,255,.06); color:#eef2ef; font-size:.95rem; cursor:pointer; flex:none;
+}
+#minispiel-close:hover{ background:rgba(226,121,93,.25); border-color:rgba(226,121,93,.5); }
+.ms-sub{ font-size:.88rem; color:#a9beb7; line-height:1.6; margin:0 0 16px; max-width:70ch; }
+.ms-hinweis{ font-size:.76rem; color:#87a39b; margin:16px 0 0; }
+
+.ms-auswahl{ display:grid; grid-template-columns:1fr 1fr; gap:16px; }
+.ms-kachel{
+  display:flex; flex-direction:column; gap:8px; text-align:left; cursor:pointer;
+  background:var(--panel); border:1px solid var(--panel-line); border-left:4px solid var(--ms);
+  border-radius:18px; padding:20px 22px; color:#eef2ef; font-family:var(--font-display);
+  transition:transform .15s ease, border-color .15s ease, background .15s ease;
+}
+.ms-kachel:hover{ transform:translateY(-3px); background:rgba(255,255,255,.05); border-color:var(--ms); border-left-color:var(--ms); }
+.ms-kachel .ms-icon{ font-size:2rem; }
+.ms-kachel .ms-name{ font-weight:800; font-size:1.1rem; color:var(--ms); }
+.ms-kachel .ms-desc{ font-size:.82rem; color:#cfe0da; line-height:1.55; }
+.ms-kachel .ms-stat{ font-family:var(--font-mono); font-size:.68rem; color:#87a39b; margin-top:4px; }
+
+.ms-leiste{ display:flex; align-items:center; gap:14px; flex-wrap:wrap; margin-bottom:12px; }
+.ms-zurueck{
+  padding:6px 14px; border-radius:100px; border:1px solid rgba(255,255,255,.18);
+  background:rgba(255,255,255,.06); color:#cfe0da; font-family:var(--font-display);
+  font-weight:700; font-size:.76rem; cursor:pointer;
+}
+.ms-zurueck:hover{ background:rgba(255,255,255,.12); }
+.ms-pills{ display:flex; align-items:center; gap:6px; font-size:.76rem; color:#a9beb7; }
+.ms-pill{
+  width:28px; height:28px; border-radius:9px; border:1px solid rgba(255,255,255,.16);
+  background:rgba(255,255,255,.05); color:#cfe0da; font-family:var(--font-mono); font-weight:600; cursor:pointer;
+}
+.ms-pill.an{ background:rgba(224,169,78,.2); border-color:rgba(224,169,78,.55); color:var(--gold); }
+.ms-punkte{ margin-left:auto; font-family:var(--font-mono); font-size:.74rem; color:#a9beb7; }
+.ms-knopf{
+  padding:9px 18px; border-radius:12px; border:1px solid rgba(255,255,255,.2);
+  background:rgba(255,255,255,.08); color:#eef2ef; font-family:var(--font-display);
+  font-weight:700; font-size:.84rem; cursor:pointer;
+}
+.ms-knopf:hover{ background:rgba(255,255,255,.14); }
+.ms-knopf.primaer{ background:var(--gold); border-color:rgba(224,169,78,.5); color:#241a06; font-weight:800; }
+.ms-knopf.primaer:hover{ background:#f0bf68; }
+.ms-knopf.gross{ padding:13px 30px; font-size:1rem; }
+.ms-knopf kbd{
+  font-family:var(--font-mono); font-size:.62rem; padding:1px 6px; margin-left:6px;
+  border-radius:5px; background:rgba(0,0,0,.25); border:1px solid rgba(0,0,0,.3);
+}
+
+/* ---- Wortle ---- */
+.wortle-thema{ display:flex; justify-content:center; gap:8px; flex-wrap:wrap; margin-bottom:12px; }
+.wortle-chip{
+  font-family:var(--font-mono); font-size:.68rem; padding:4px 11px; border-radius:100px;
+  background:rgba(255,255,255,.07); border:1px solid rgba(255,255,255,.14); color:#cfe0da;
+}
+.wortle-chip.tipp{ background:rgba(224,169,78,.16); border-color:rgba(224,169,78,.4); color:var(--gold); }
+.wortle-chip.tipp-btn{ cursor:pointer; font-family:var(--font-mono); }
+.wortle-chip.tipp-btn:hover{ background:rgba(224,169,78,.22); }
+.wortle-grid{ display:flex; flex-direction:column; align-items:center; gap:5px; }
+.wortle-reihe{ display:flex; gap:5px; }
+.wortle-feld{
+  width:46px; height:46px; display:flex; align-items:center; justify-content:center;
+  border:2px solid rgba(255,255,255,.14); border-radius:10px; background:rgba(255,255,255,.03);
+  font-family:var(--font-display); font-weight:800; font-size:1.5rem; color:#eef2ef;
+}
+.wortle-feld.gefuellt{ border-color:rgba(255,255,255,.4); animation:wortle-pop .12s ease-out; }
+.wortle-feld.ok{ background:#3f8f5f; border-color:#3f8f5f; animation:wortle-dreh .5s ease both; }
+.wortle-feld.da{ background:#c4a03c; border-color:#c4a03c; animation:wortle-dreh .5s ease both; }
+.wortle-feld.weg{ background:#2b3a36; border-color:#2b3a36; animation:wortle-dreh .5s ease both; }
+@keyframes wortle-pop{ from{ transform:scale(.88);} to{ transform:scale(1);} }
+@keyframes wortle-dreh{ 0%{ transform:rotateX(0);} 50%{ transform:rotateX(90deg);} 100%{ transform:rotateX(0);} }
+.wortle-reihe.shake{ animation:shake .35s; }
+
+.wortle-meldung{ min-height:30px; text-align:center; margin:10px 0 2px; font-size:.82rem; color:#a9beb7; }
+.wortle-meldung.warn{ color:var(--danger); }
+.wortle-ende{
+  border-radius:16px; padding:14px 18px; border:1px solid rgba(255,255,255,.14);
+  background:rgba(255,255,255,.04); display:inline-block; min-width:320px;
+}
+.wortle-ende.gut{ border-color:rgba(114,192,142,.5); background:rgba(114,192,142,.1); }
+.wortle-ende.schlecht{ border-color:rgba(226,121,93,.5); background:rgba(226,121,93,.1); }
+.we-kopf{ font-weight:800; font-size:.9rem; margin-bottom:6px; color:#eef2ef; }
+.we-wort{ font-size:1.5rem; font-weight:800; color:var(--gold); }
+.we-en{ font-family:var(--font-mono); font-size:.74rem; color:#a9beb7; margin-top:2px; }
+.we-knoepfe{ display:flex; gap:8px; justify-content:center; margin-top:12px; }
+
+.wortle-tasten{ display:flex; flex-direction:column; align-items:center; gap:6px; margin-top:10px; }
+.wt-reihe{ display:flex; gap:5px; }
+.wt-taste{
+  min-width:34px; height:38px; border-radius:8px; border:1px solid rgba(255,255,255,.14);
+  background:rgba(255,255,255,.08); color:#eef2ef; font-family:var(--font-display);
+  font-weight:700; font-size:.88rem; cursor:pointer; padding:0 8px;
+}
+.wt-taste:hover{ background:rgba(255,255,255,.16); }
+.wt-taste.breit{ min-width:58px; }
+.wt-taste.ok{ background:#3f8f5f; border-color:#3f8f5f; }
+.wt-taste.da{ background:#c4a03c; border-color:#c4a03c; }
+.wt-taste.weg{ background:#20302c; border-color:#20302c; color:#6b817b; }
+
+/* ---- Wortjagd ---- */
+.jagd-brief{ display:flex; gap:18px; align-items:flex-start; background:var(--panel);
+  border:1px solid var(--panel-line); border-radius:18px; padding:20px 22px; }
+.jagd-brief p{ margin:0 0 10px; font-size:.88rem; line-height:1.6; color:#dbe9e5; }
+.jb-icon{ font-size:2.4rem; }
+.jb-liste{ margin:0; padding-left:18px; font-size:.82rem; color:#cfe0da; line-height:1.9; }
+.jagd-knoepfe{ display:flex; gap:10px; justify-content:center; margin-top:18px; }
+#jagd-leinwand{
+  display:block; width:100%; border-radius:16px; border:1px solid rgba(255,255,255,.14);
+  background:#07100e; cursor:crosshair; image-rendering:auto;
+}
+.jagd-hinweis{ text-align:center; font-family:var(--font-mono); font-size:.68rem; color:#87a39b; margin:8px 0 0; }
+
+.jagd-ende{ text-align:center; }
+.je-punkte{ font-size:3rem; font-weight:800; color:var(--gold); line-height:1; }
+.je-punkte span{ display:block; font-family:var(--font-mono); font-size:.72rem; color:#a9beb7; font-weight:400; margin-top:4px; }
+.je-zahlen{ display:flex; justify-content:center; gap:10px; flex-wrap:wrap; margin:18px 0 12px; }
+.je-zahlen div{
+  min-width:104px; background:var(--panel); border:1px solid var(--panel-line); border-radius:14px;
+  padding:10px 12px; font-family:var(--font-mono); font-size:.68rem; color:#a9beb7;
+}
+.je-zahlen strong{ display:block; font-family:var(--font-display); font-size:1.3rem; color:#eef2ef; margin-bottom:2px; }
+.je-lohn{ font-weight:800; color:var(--good); font-size:.94rem; }
+.je-perfekt{ color:var(--good); font-size:.86rem; margin-top:12px; }
+.je-merken{
+  margin:16px auto 0; max-width:640px; text-align:left; background:rgba(226,121,93,.08);
+  border:1px solid rgba(226,121,93,.32); border-radius:16px; padding:14px 16px;
+}
+.je-merken-kopf{ font-weight:800; font-size:.84rem; margin-bottom:8px; color:#f0b3a1; }
+.je-wort{
+  display:flex; align-items:center; gap:10px; width:100%; text-align:left; cursor:pointer;
+  background:rgba(255,255,255,.04); border:1px solid rgba(255,255,255,.1); border-radius:10px;
+  padding:7px 12px; margin-bottom:6px; color:#eef2ef; font-family:var(--font-display); font-size:.84rem;
+}
+.je-wort:hover{ background:rgba(255,255,255,.1); }
+.je-wort .je-en{ font-family:var(--font-mono); font-size:.72rem; color:#a9beb7; }
+.je-wort .je-ton{ margin-left:auto; }
+
 
 /* ---- Website: Anmelde-Dialoge im hellen FLOß-Design ---- */
 .floss-overlay{
@@ -1216,6 +1365,7 @@ canvas{ filter:saturate(1.18) contrast(1.03); }
       <button id="map-toggle" class="dock-btn" style="--dock:#a78bfa">🗺️</button>
       <button id="translator-toggle" class="dock-btn" style="--dock:#4f9fd6">🧭</button>
       <button id="vocab-toggle" class="dock-btn" style="--dock:#f062a6">🧠</button>
+      <button id="minispiele-toggle" class="dock-btn" style="--dock:#c78bf0">🎮</button>
       <span class="dock-sep"></span>
       <button id="lang-toggle" class="dock-btn" style="--dock:#72c08e">🌐</button>
       <button id="mute-toggle" class="dock-btn" style="--dock:#72c08e">🔊</button>
@@ -1344,6 +1494,19 @@ canvas{ filter:saturate(1.18) contrast(1.03); }
       <h2 id="map-title">Deine Reise</h2>
       <div id="map-list"></div>
       <button id="map-close-btn">Zurück zum Spiel</button>
+    </div>
+  </div>
+
+  <div id="minispiel-overlay" class="hidden">
+    <div id="minispiel-card">
+      <div class="ms-kopf">
+        <div>
+          <div class="cs-eyebrow" id="minispiel-eyebrow">Spielhalle</div>
+          <h2 id="minispiel-title">Minispiele</h2>
+        </div>
+        <button id="minispiel-close" aria-label="Schließen">✕</button>
+      </div>
+      <div id="minispiel-body"></div>
     </div>
   </div>
 
@@ -2258,6 +2421,107 @@ const VOCAB_THEMES = {
     { de: "versorgen", en: "to tend to / provide for" }, { de: "begleiten", en: "to accompany" }, { de: "unterstützen", en: "to support" },
     { de: "berücksichtigen", en: "to take into account" }, { de: "sich einarbeiten", en: "to settle into a new job" },
   ],
+  // ---------- Nachtrag 18.09.2026: zehn neue Themen auf dem Weg zu ~2.400 Woertern ----------
+  // Jedes deutsche Wort steht nur in EINEM Thema (gegen den Bestand geprueft), jedes Thema
+  // hat ein Label in VOCAB_THEME_LABELS und ist in bezirke.js einem Bezirk zugeordnet.
+  hoeflichkeit: [
+    { de: "bitte schön", en: "here you are" }, { de: "gern geschehen", en: "you're welcome" },
+    { de: "kein Problem", en: "no problem" }, { de: "Verzeihung", en: "pardon" },
+    { de: "Vorsicht!", en: "careful!" }, { de: "Achtung!", en: "attention!" },
+    { de: "Viel Erfolg!", en: "good luck!" }, { de: "Gute Besserung!", en: "get well soon!" },
+    { de: "Guten Appetit!", en: "enjoy your meal!" }, { de: "Schönen Tag noch!", en: "have a nice day!" },
+    { de: "Bis später!", en: "see you later!" }, { de: "Machen Sie es gut!", en: "take care!" },
+    { de: "Darf ich?", en: "may I?" }, { de: "Einen Moment, bitte.", en: "one moment, please" },
+    { de: "Nach Ihnen.", en: "after you" },
+  ],
+  kleine_woerter: [
+    { de: "meistens", en: "mostly" }, { de: "gleich", en: "in a moment" }, { de: "genug", en: "enough" },
+    { de: "zu viel", en: "too much" }, { de: "fast", en: "almost" }, { de: "schon wieder", en: "yet again" },
+    { de: "noch nicht", en: "not yet" }, { de: "nur", en: "only" }, { de: "kaum", en: "hardly" },
+    { de: "bereits", en: "already" }, { de: "plötzlich", en: "suddenly" }, { de: "eigentlich", en: "actually" },
+    { de: "übrigens", en: "by the way" }, { de: "hoffentlich", en: "hopefully" },
+    { de: "bestimmt", en: "definitely" }, { de: "unbedingt", en: "absolutely" },
+    { de: "ziemlich", en: "quite" }, { de: "besonders", en: "especially" },
+  ],
+  garten_pflanzen: [
+    { de: "die Pflanze", en: "plant" }, { de: "die Blume", en: "flower" }, { de: "der Baum", en: "tree" },
+    { de: "das Blatt", en: "leaf" }, { de: "die Wurzel", en: "root" }, { de: "das Gras", en: "grass" },
+    { de: "der Rasen", en: "lawn" }, { de: "der Zaun", en: "fence" }, { de: "der Blumentopf", en: "flower pot" },
+    { de: "die Erde", en: "soil" }, { de: "die Gießkanne", en: "watering can" }, { de: "gießen", en: "to water" },
+    { de: "pflanzen", en: "to plant" }, { de: "wachsen", en: "to grow" }, { de: "die Ernte", en: "harvest" },
+    { de: "der Samen", en: "seed" }, { de: "die Rose", en: "rose" }, { de: "der Busch", en: "bush" },
+  ],
+  geld_bezahlen: [
+    { de: "das Bargeld", en: "cash" }, { de: "der Geldschein", en: "banknote" }, { de: "die Münze", en: "coin" },
+    { de: "der Kassenzettel", en: "till receipt" }, { de: "das Sonderangebot", en: "special offer" },
+    { de: "bar zahlen", en: "to pay cash" }, { de: "der Betrag", en: "amount" },
+    { de: "wechseln", en: "to change (money)" }, { de: "der Kontoauszug", en: "bank statement" },
+    { de: "die Mehrwertsteuer", en: "VAT" }, { de: "der Gutschein", en: "voucher" },
+    { de: "der Beleg", en: "proof of payment" }, { de: "die Mahnung", en: "payment reminder" },
+    { de: "die Anzahlung", en: "down payment" }, { de: "die Ratenzahlung", en: "payment in instalments" },
+    { de: "die Spende", en: "donation" },
+  ],
+  werkstatt_handwerk: [
+    { de: "die Werkstatt", en: "workshop" }, { de: "das Werkzeug", en: "tool" },
+    { de: "der Hammer", en: "hammer" }, { de: "der Schraubenzieher", en: "screwdriver" },
+    { de: "die Schraube", en: "screw" }, { de: "der Nagel", en: "nail" }, { de: "die Leiter", en: "ladder" },
+    { de: "der Pinsel", en: "brush" }, { de: "streichen", en: "to paint (a wall)" },
+    { de: "bohren", en: "to drill" }, { de: "der Kleber", en: "glue" }, { de: "die Zange", en: "pliers" },
+    { de: "der Draht", en: "wire" }, { de: "die Säge", en: "saw" }, { de: "das Brett", en: "board" },
+  ],
+  am_bahnhof: [
+    { de: "das Gleis", en: "platform track" }, { de: "der Bahnsteig", en: "platform" },
+    { de: "die Anzeigetafel", en: "departure board" }, { de: "der Fahrkartenautomat", en: "ticket machine" },
+    { de: "die Rückfahrkarte", en: "return ticket" }, { de: "die Durchsage", en: "announcement" },
+    { de: "der Anschluss", en: "connection" }, { de: "das Abteil", en: "compartment" },
+    { de: "der Schaffner", en: "ticket inspector" }, { de: "entwerten", en: "to validate (a ticket)" },
+    { de: "der Warteraum", en: "waiting room" }, { de: "das Schließfach", en: "locker" },
+    { de: "die Unterführung", en: "underpass" }, { de: "der Zuschlag", en: "surcharge" },
+    { de: "der Notausgang", en: "emergency exit" },
+  ],
+  umwelt_klima: [
+    { de: "der Umweltschutz", en: "environmental protection" }, { de: "der Klimawandel", en: "climate change" },
+    { de: "der Abfall", en: "waste" }, { de: "die Mülltrennung", en: "waste separation" },
+    { de: "trennen", en: "to separate" }, { de: "recyceln", en: "to recycle" },
+    { de: "die Verschmutzung", en: "pollution" }, { de: "nachhaltig", en: "sustainable" },
+    { de: "erneuerbar", en: "renewable" }, { de: "die Solaranlage", en: "solar system" },
+    { de: "verschwenden", en: "to waste" }, { de: "die Tonne", en: "bin" },
+    { de: "der Verbrauch", en: "consumption" }, { de: "die Folge", en: "consequence" },
+    { de: "vermeiden", en: "to avoid" }, { de: "die Verpackung", en: "packaging" },
+    { de: "der Kunststoff", en: "plastic" }, { de: "das Hochwasser", en: "flood" },
+  ],
+  pflege_geraete: [
+    { de: "das Blutdruckmessgerät", en: "blood pressure monitor" },
+    { de: "das Blutzuckermessgerät", en: "blood sugar meter" }, { de: "die Gehhilfe", en: "walking aid" },
+    { de: "der Patientenlifter", en: "patient lift" }, { de: "die Bettpfanne", en: "bedpan" },
+    { de: "die Urinflasche", en: "urine bottle" }, { de: "der Tropf", en: "drip" },
+    { de: "die Kanüle", en: "cannula" }, { de: "die Magensonde", en: "feeding tube" },
+    { de: "die Sauerstoffflasche", en: "oxygen cylinder" }, { de: "der Verbandwagen", en: "dressing trolley" },
+    { de: "die Waage", en: "scales" }, { de: "das Hörgerät", en: "hearing aid" },
+    { de: "die Klingel", en: "call bell" }, { de: "der Nachtstuhl", en: "commode" },
+    { de: "die Schiene", en: "splint" },
+  ],
+  hygiene_schutz: [
+    { de: "die Händedesinfektion", en: "hand disinfection" },
+    { de: "das Desinfektionsmittel", en: "disinfectant" }, { de: "der Einmalhandschuh", en: "disposable glove" },
+    { de: "die Schutzkleidung", en: "protective clothing" }, { de: "der Mundschutz", en: "face mask" },
+    { de: "die Schürze", en: "apron" }, { de: "keimfrei", en: "sterile" },
+    { de: "die Ansteckung", en: "transmission of infection" }, { de: "die Isolierung", en: "isolation" },
+    { de: "der Abfallbehälter", en: "waste container" }, { de: "wischen", en: "to wipe" },
+    { de: "die Hygienevorschrift", en: "hygiene rule" }, { de: "die Schutzbrille", en: "safety goggles" },
+    { de: "die Haube", en: "hair cover" },
+  ],
+  buero_papier: [
+    { de: "der Ordner", en: "folder" }, { de: "die Akte", en: "file (records)" },
+    { de: "die Ablage", en: "filing" }, { de: "die Kopie", en: "copy" },
+    { de: "der Scanner", en: "scanner" }, { de: "einscannen", en: "to scan in" },
+    { de: "ausdrucken", en: "to print out" }, { de: "die Vorlage", en: "template" },
+    { de: "das Deckblatt", en: "cover sheet" }, { de: "die Tabelle", en: "table (spreadsheet)" },
+    { de: "das Protokoll", en: "minutes" }, { de: "der Stempel", en: "stamp" },
+    { de: "der Locher", en: "hole punch" }, { de: "die Büroklammer", en: "paper clip" },
+    { de: "der Hefter", en: "stapler" }, { de: "weiterleiten", en: "to forward" },
+    { de: "der Zugang", en: "access" },
+  ],
 };
 
 // Anzeigenamen der Wortschatz-Themen — fuer Aufgaben wie „Fang alle Woerter zum Thema …“.
@@ -2300,6 +2564,11 @@ const VOCAB_THEME_LABELS = {
   arbeitsrecht: ["Rechte im Job", "rights at work"], heimweh: ["Heimweh & Gefühle", "homesickness & feelings"],
   briefe: ["Formelle Briefe", "formal letters"], konnektoren: ["Verbindungswörter", "linking words"],
   verben_b1_plus: ["Verben B1 (Beruf)", "B1 verbs (work)"],
+  hoeflichkeit: ["Höflich sein", "being polite"], kleine_woerter: ["Kleine Wörter", "little words"],
+  garten_pflanzen: ["Garten & Pflanzen", "garden & plants"], geld_bezahlen: ["Geld & Bezahlen", "money & paying"],
+  werkstatt_handwerk: ["Werkstatt & Handwerk", "workshop & trades"], am_bahnhof: ["Am Bahnhof", "at the station"],
+  umwelt_klima: ["Umwelt & Klima", "environment & climate"], pflege_geraete: ["Pflegehilfsmittel", "care equipment"],
+  hygiene_schutz: ["Hygiene & Schutz", "hygiene & protection"], buero_papier: ["Büro & Unterlagen", "office & paperwork"],
 };
 
 // Genus-Hinweis je Nomen — echtes Muster, wo eins existiert, sonst ehrlicher Hinweis, dass
@@ -2425,16 +2694,76 @@ const ADJEKTIV_ITEMS = [
 ];
 const ADJEKTIV_RULE = "Nach dem bestimmten Artikel endet das Adjektiv fast immer auf -en. Nur im Nominativ (und Akkusativ neutral/feminin) steht -e.";
 
-// ---------------- B1: Konjunktiv II — hoefliche Bitten & Wuensche ----------------
+// ---------------- B1: Konjunktiv II — hoefliche Bitten, Wuensche, Ratschlaege ----------------
+// schwer: true = unregelmaessige Form oder irrealer Gebrauch. Diese Eintraege kommen ueber
+// Combat.gestaffelt() erst gegen Ende der Lektion haeufiger.
+// correct muss im example genau einmal als eigenes Wort vorkommen (die Aufgabe blendet es aus).
 const KONJUNKTIV_ITEMS = [
-  { prompt: "können (ich) — höfliche Bitte", correct: "könnte", en: "could", example: "Könnte ich bitte einen Termin bekommen?" },
-  { prompt: "haben (ich) — Wunsch", correct: "hätte", en: "would have", example: "Ich hätte gern einen Kaffee." },
-  { prompt: "sein (es) — Höflichkeit", correct: "wäre", en: "would be", example: "Das wäre sehr nett von Ihnen." },
-  { prompt: "werden (ich) — würde-Form", correct: "würde", en: "would", example: "Ich würde gern kommen." },
-  { prompt: "können (Sie) — höfliche Frage", correct: "könnten", en: "could (formal)", example: "Könnten Sie mir bitte helfen?" },
-  { prompt: "haben (Sie) — höfliche Frage", correct: "hätten", en: "would have (formal)", example: "Hätten Sie kurz Zeit?" },
+  // --- Grundformen: hoefliche Bitten und Wuensche ---
+  { prompt: "können (ich) — höfliche Bitte", promptEn: "können (I) — polite request",
+    correct: "könnte", en: "could", example: "Könnte ich bitte einen Termin bekommen?" },
+  { prompt: "haben (ich) — Wunsch", promptEn: "haben (I) — wish",
+    correct: "hätte", en: "would have", example: "Ich hätte gern einen Kaffee." },
+  { prompt: "sein (es) — Höflichkeit", promptEn: "sein (it) — politeness",
+    correct: "wäre", en: "would be", example: "Das wäre sehr nett von Ihnen." },
+  { prompt: "werden (ich) — würde-Form", promptEn: "werden (I) — würde form",
+    correct: "würde", en: "would", example: "Ich würde gern kommen." },
+  { prompt: "können (Sie) — höfliche Frage", promptEn: "können (you, formal) — polite question",
+    correct: "könnten", en: "could (formal)", example: "Könnten Sie mir bitte helfen?" },
+  { prompt: "haben (Sie) — höfliche Frage", promptEn: "haben (you, formal) — polite question",
+    correct: "hätten", en: "would have (formal)", example: "Hätten Sie kurz Zeit?" },
+  { prompt: "sein (Sie) — höfliche Frage", promptEn: "sein (you, formal) — polite question",
+    correct: "wären", en: "would be (formal)", example: "Wären Sie so freundlich und rufen mich zurück?" },
+  { prompt: "werden (Sie) — höfliche Bitte", promptEn: "werden (you, formal) — polite request",
+    correct: "würden", en: "would (formal)", example: "Würden Sie das bitte noch einmal erklären?" },
+  { prompt: "können (wir) — höfliche Frage", promptEn: "können (we) — polite question",
+    correct: "könnten", en: "could (we)", example: "Könnten wir den Termin verschieben?" },
+  { prompt: "haben (wir) — Wunsch", promptEn: "haben (we) — wish",
+    correct: "hätten", en: "would have (we)", example: "Wir hätten gern einen Termin am Montag." },
+  { prompt: "werden (du) — Bitte unter Freunden", promptEn: "werden (you, informal) — request among friends",
+    correct: "würdest", en: "would (you)", example: "Würdest du mir kurz helfen?" },
+  { prompt: "haben (du) — Frage nach Zeit", promptEn: "haben (you, informal) — asking about time",
+    correct: "hättest", en: "would have (you)", example: "Hättest du morgen Zeit für mich?" },
+  { prompt: "mögen (ich) — höflicher Wunsch", promptEn: "mögen (I) — polite wish",
+    correct: "möchte", en: "would like", example: "Ich möchte einen Termin vereinbaren." },
+  { prompt: "können (ich) — Bitte im Krankenhaus", promptEn: "können (I) — request at the hospital",
+    correct: "könnte", en: "could", example: "Könnte ich bitte mit der Stationsleitung sprechen?" },
+
+  // --- schwerer: Ratschlaege, unregelmaessige Formen, irreale Saetze ---
+  { prompt: "müssen (ich) — eigentlich nötig", promptEn: "müssen (I) — actually necessary",
+    correct: "müsste", en: "ought to", example: "Ich müsste eigentlich noch den Bericht schreiben.", schwer: true },
+  { prompt: "dürfen (ich) — sehr höflich fragen", promptEn: "dürfen (I) — asking very politely",
+    correct: "dürfte", en: "might / may I", example: "Dürfte ich Sie kurz etwas fragen?", schwer: true },
+  { prompt: "sollen (Sie) — Ratschlag", promptEn: "sollen (you, formal) — advice",
+    correct: "sollten", en: "should (formal)", example: "Sie sollten mehr Wasser trinken.", schwer: true },
+  { prompt: "sollen (du) — Ratschlag", promptEn: "sollen (you, informal) — advice",
+    correct: "solltest", en: "should (you)", example: "Du solltest heute zum Arzt gehen.", schwer: true },
+  { prompt: "brauchen (ich) — höflicher Bedarf", promptEn: "brauchen (I) — polite need",
+    correct: "bräuchte", en: "would need", example: "Ich bräuchte noch Ihre Unterschrift.", schwer: true },
+  { prompt: "wissen (ich) — höfliches Nachfragen", promptEn: "wissen (I) — polite enquiry",
+    correct: "wüsste", en: "would like to know", example: "Ich wüsste gern, wie es weitergeht.", schwer: true },
+  { prompt: "kommen (er) — irreale Bedingung", promptEn: "kommen (he) — unreal condition",
+    correct: "käme", en: "would come", example: "Wenn er früher Feierabend hätte, käme er mit.", schwer: true },
+  { prompt: "gehen (es) — höfliche Terminfrage", promptEn: "gehen (it) — polite question about a date",
+    correct: "ginge", en: "would be possible", example: "Ginge es bei Ihnen auch am Freitag?", schwer: true },
+  { prompt: "geben (es) — irreal", promptEn: "geben (there) — unreal",
+    correct: "gäbe", en: "there would be", example: "Ohne die Nachtschicht gäbe es kein Problem.", schwer: true },
+  { prompt: "finden (ich) — höfliche Meinung", promptEn: "finden (I) — polite opinion",
+    correct: "fände", en: "would find", example: "Ich fände einen späteren Termin besser.", schwer: true },
+  { prompt: "nehmen (ich) — Rat an deiner Stelle", promptEn: "nehmen (I) — advice in your place",
+    correct: "nähme", en: "would take", example: "An deiner Stelle nähme ich den früheren Zug.", schwer: true },
+  { prompt: "sein (ich) — Rat an deiner Stelle", promptEn: "sein (I) — advice in your place",
+    correct: "wäre", en: "would be", example: "An deiner Stelle wäre ich vorsichtiger.", schwer: true },
+  { prompt: "bleiben (wir) — irreale Folge", promptEn: "bleiben (we) — unreal consequence",
+    correct: "blieben", en: "would stay", example: "Bei diesem Wetter blieben wir lieber zu Hause.", schwer: true },
+  { prompt: "lassen (Sie) — sehr höfliche Bitte", promptEn: "lassen (you, formal) — very polite request",
+    correct: "ließen", en: "would let", example: "Ließen Sie mich bitte kurz ausreden?", schwer: true },
+  { prompt: "müssen (Sie) — freundlicher Hinweis", promptEn: "müssen (you, formal) — friendly note",
+    correct: "müssten", en: "would have to", example: "Sie müssten das Formular noch unterschreiben.", schwer: true },
+  { prompt: "dürfen (wir) — vorsichtige Vermutung", promptEn: "dürfen (we) — careful assumption",
+    correct: "dürften", en: "would probably", example: "Wir dürften in zehn Minuten fertig sein.", schwer: true },
 ];
-const KONJUNKTIV_RULE = "Konjunktiv II macht Bitten höflich: könnte, hätte, wäre, würde. Im Beruf und in E-Mails ist das Pflicht.";
+const KONJUNKTIV_RULE = "Konjunktiv II macht Bitten höflich: könnte, hätte, wäre, würde. Starke Verben bilden ihn aus dem Präteritum mit Umlaut: kam → käme, ging → ginge. Im Beruf und in E-Mails ist das Pflicht.";
 
 // ---------------- B1: Passiv ----------------
 const PASSIV_SENTENCES = [
@@ -2459,41 +2788,179 @@ const REDEMITTEL = [
 
 // E-Mail-Aufgabe: die richtige formelle Wendung waehlen. Die Ablenker sind bewusst
 // umgangssprachlich — genau der Fehler, den Lernende in Bewerbungen machen.
+// level: A2 = Alltag (Termin, Krankmeldung, Vermieter), B1 = Bewerbung, Amt, Anerkennung.
+// Combat.roundEmail waehlt nach Niveau und wiederholt dieselbe Aufgabe nie zweimal hintereinander.
 const EMAIL_TASKS = [
+  // ---------- A2: Alltag ----------
   {
     context: "Du schreibst an eine Sprachschule, deren Ansprechpartner du nicht kennst.",
     contextEn: "You are writing to a language school whose contact person you don't know.",
-    slot: "Anrede", slotEn: "Salutation",
+    slot: "Anrede", slotEn: "Salutation", level: "A2",
     correct: "Sehr geehrte Damen und Herren,",
     wrong: ["Hallo zusammen,", "Hi Leute,"],
   },
   {
+    context: "Du kennst den Namen: Frau Keller leitet die Kursanmeldung.",
+    contextEn: "You know the name: Ms Keller runs the course registration.",
+    slot: "Anrede mit Namen", slotEn: "Salutation with a name", level: "A2",
+    correct: "Sehr geehrte Frau Keller,",
+    wrong: ["Liebe Keller,", "Hallo Frau Keller!!"],
+  },
+  {
     context: "Du willst den Grund deiner E-Mail nennen — formell.",
     contextEn: "You want to state the reason for your email — formally.",
-    slot: "Einleitung", slotEn: "Opening",
+    slot: "Einleitung", slotEn: "Opening", level: "A2",
     correct: "ich schreibe Ihnen bezüglich Ihres Deutschkurses.",
     wrong: ["ich wollte mal fragen wegen dem Kurs.", "ich hab da mal ne Frage zum Kurs."],
   },
   {
     context: "Du bittest höflich um eine Information.",
     contextEn: "You are politely asking for information.",
-    slot: "Bitte", slotEn: "Request",
+    slot: "Bitte", slotEn: "Request", level: "A2",
     correct: "Könnten Sie mir bitte mitteilen, wann der Kurs beginnt?",
     wrong: ["Sagen Sie mir wann der Kurs beginnt.", "Wann geht der Kurs los?"],
   },
   {
     context: "Du weist auf deine angehängten Unterlagen hin.",
     contextEn: "You are pointing to your attached documents.",
-    slot: "Anhang", slotEn: "Attachment",
+    slot: "Anhang", slotEn: "Attachment", level: "A2",
     correct: "Im Anhang finden Sie meine Unterlagen.",
     wrong: ["Die Sachen sind unten dran.", "Hab dir mal was drangehängt."],
   },
   {
     context: "Du beendest die formelle E-Mail.",
     contextEn: "You are closing the formal email.",
-    slot: "Schluss", slotEn: "Closing",
+    slot: "Schluss", slotEn: "Closing", level: "A2",
     correct: "Mit freundlichen Grüßen",
     wrong: ["LG", "Bis dann!"],
+  },
+  {
+    context: "Die Betreffzeile deiner E-Mail an die Praxis.",
+    contextEn: "The subject line of your email to the doctor's surgery.",
+    slot: "Betreff", slotEn: "Subject", level: "A2",
+    correct: "Terminanfrage für nächste Woche",
+    wrong: ["Hallo :)", "wichtig!!! bitte lesen"],
+  },
+  {
+    context: "Du bist krank und meldest dich bei deiner Stationsleitung ab.",
+    contextEn: "You are ill and are letting your ward manager know.",
+    slot: "Krankmeldung", slotEn: "Calling in sick", level: "A2",
+    correct: "hiermit melde ich mich für heute krank.",
+    wrong: ["ich komme heute nicht, bin krank.", "heute geht nichts bei mir, sorry."],
+  },
+  {
+    context: "Du kannst einen vereinbarten Termin nicht wahrnehmen.",
+    contextEn: "You cannot keep an appointment you agreed on.",
+    slot: "Absage", slotEn: "Cancellation", level: "A2",
+    correct: "leider muss ich den Termin am Dienstag absagen.",
+    wrong: ["der Termin am Dienstag klappt nicht.", "Dienstag fällt bei mir aus."],
+  },
+  {
+    context: "Du möchtest den Termin lieber verschieben statt absagen.",
+    contextEn: "You would rather move the appointment than cancel it.",
+    slot: "Bitte um Verschiebung", slotEn: "Asking to reschedule", level: "A2",
+    correct: "Wäre es möglich, den Termin auf Donnerstag zu verschieben?",
+    wrong: ["Machen wir lieber Donnerstag.", "Donnerstag passt mir besser, okay?"],
+  },
+  {
+    context: "In deiner Wohnung ist die Heizung kaputt. Du schreibst dem Vermieter.",
+    contextEn: "The heating in your flat is broken. You write to the landlord.",
+    slot: "Problem nennen", slotEn: "Stating the problem", level: "A2",
+    correct: "seit drei Tagen funktioniert die Heizung in meiner Wohnung nicht.",
+    wrong: ["die Heizung ist schon wieder im Eimer.", "bei mir ist es total kalt."],
+  },
+  {
+    context: "Du hast dich um zehn Minuten verspätet und entschuldigst dich schriftlich.",
+    contextEn: "You were ten minutes late and apologise in writing.",
+    slot: "Entschuldigung", slotEn: "Apology", level: "A2",
+    correct: "ich entschuldige mich für meine Verspätung am Montag.",
+    wrong: ["sorry wegen Montag.", "Montag war blöd, tut mir leid."],
+  },
+  {
+    context: "Du bedankst dich am Ende einer Bitte — im Voraus.",
+    contextEn: "You say thank you at the end of a request — in advance.",
+    slot: "Dank", slotEn: "Thanks", level: "A2",
+    correct: "Vielen Dank im Voraus für Ihre Mühe.",
+    wrong: ["Danke schon mal!", "Danke und schönen Tag noch."],
+  },
+
+  // ---------- B1: Bewerbung, Amt, Anerkennung ----------
+  {
+    context: "Du bewirbst dich um eine Ausbildungsstelle in der Pflege.",
+    contextEn: "You are applying for a training position in nursing.",
+    slot: "Einleitung Bewerbung", slotEn: "Opening of an application", level: "B1",
+    correct: "mit großem Interesse habe ich Ihre Stellenanzeige gelesen.",
+    wrong: ["ich habe eure Anzeige gesehen und finde sie gut.", "ich melde mich mal wegen dem Job."],
+  },
+  {
+    context: "Du nennst deine Stärke in der Bewerbung.",
+    contextEn: "You name your strength in the application.",
+    slot: "Stärken", slotEn: "Strengths", level: "B1",
+    correct: "Durch meine Arbeit im Krankenhaus bringe ich Erfahrung in der Pflege mit.",
+    wrong: ["Ich bin richtig gut mit Patienten.", "Pflege kann ich, kein Problem."],
+  },
+  {
+    context: "Du bittest um ein Vorstellungsgespräch.",
+    contextEn: "You ask for a job interview.",
+    slot: "Bitte um Gespräch", slotEn: "Asking for an interview", level: "B1",
+    correct: "Über eine Einladung zu einem Vorstellungsgespräch würde ich mich sehr freuen.",
+    wrong: ["Meldet euch mal für ein Gespräch.", "Ich hoffe, ihr ladet mich ein."],
+  },
+  {
+    context: "Nach zwei Wochen ohne Antwort fragst du nach dem Stand deiner Bewerbung.",
+    contextEn: "After two weeks without a reply you ask about your application.",
+    slot: "Nachfrage", slotEn: "Follow-up", level: "B1",
+    correct: "Darf ich fragen, ob meine Bewerbung bei Ihnen eingegangen ist?",
+    wrong: ["Habt ihr meine Bewerbung jetzt oder nicht?", "Warum antwortet bei Ihnen niemand?"],
+  },
+  {
+    context: "Du schreibst der Behörde wegen der Anerkennung deines Abschlusses.",
+    contextEn: "You write to the authority about the recognition of your qualification.",
+    slot: "Anliegen beim Amt", slotEn: "Request to an authority", level: "B1",
+    correct: "ich beziehe mich auf mein Verfahren zur Anerkennung meines Berufsabschlusses.",
+    wrong: ["es geht um meine Anerkennung, wie läuft das?", "ich wollte wissen, was mit meinem Abschluss ist."],
+  },
+  {
+    context: "Das Amt verlangt ein Dokument, das du nachreichst.",
+    contextEn: "The authority wants a document, which you are sending later.",
+    slot: "Unterlagen nachreichen", slotEn: "Submitting documents later", level: "B1",
+    correct: "die fehlende Bescheinigung reiche ich Ihnen hiermit nach.",
+    wrong: ["das Papier schicke ich jetzt einfach nochmal.", "hier ist das Blatt, das gefehlt hat."],
+  },
+  {
+    context: "Du bittest deinen Arbeitgeber um eine Arbeitsbescheinigung.",
+    contextEn: "You ask your employer for a written employment reference.",
+    slot: "Bitte um Bescheinigung", slotEn: "Asking for a certificate", level: "B1",
+    correct: "Ich wäre Ihnen dankbar, wenn Sie mir eine Arbeitsbescheinigung ausstellen könnten.",
+    wrong: ["Ich brauche eine Bescheinigung von Ihnen.", "Schreiben Sie mir bitte so ein Papier."],
+  },
+  {
+    context: "Du hast das Vorstellungsgespräch geführt und bedankst dich danach.",
+    contextEn: "You had the interview and say thank you afterwards.",
+    slot: "Dank nach dem Gespräch", slotEn: "Thanks after the interview", level: "B1",
+    correct: "Vielen Dank für das freundliche Gespräch am gestrigen Vormittag.",
+    wrong: ["Danke fürs Gespräch, war nett.", "Hat mich gefreut gestern!"],
+  },
+  {
+    context: "Du bittest um einen Rückruf, weil die Sache eilt.",
+    contextEn: "You ask for a call back because the matter is urgent.",
+    slot: "Rückruf erbitten", slotEn: "Asking for a call back", level: "B1",
+    correct: "Für einen kurzen Rückruf unter der unten genannten Nummer wäre ich Ihnen dankbar.",
+    wrong: ["Rufen Sie mich an, es ist dringend.", "Melden Sie sich mal bei mir."],
+  },
+  {
+    context: "Du schreibst an eine Person, deren Geschlecht du nicht kennst (Vorname „Kim“).",
+    contextEn: "You write to a person whose gender you don't know (first name „Kim“).",
+    slot: "Anrede ohne Geschlecht", slotEn: "Salutation without gender", level: "B1",
+    correct: "Guten Tag Kim Berger,",
+    wrong: ["Sehr geehrter Herr oder Frau Berger,", "Hallo Kim, wie geht es dir?"],
+  },
+  {
+    context: "Du kündigst deinen Sprachkurs zum Monatsende.",
+    contextEn: "You are cancelling your language course at the end of the month.",
+    slot: "Kündigung", slotEn: "Cancelling a contract", level: "B1",
+    correct: "hiermit kündige ich meinen Kursvertrag fristgerecht zum 31. März.",
+    wrong: ["ich will ab April nicht mehr kommen.", "ich höre auf mit dem Kurs, tschüss."],
   },
 ];
 
@@ -3921,31 +4388,119 @@ const FEHLER_SAETZE = [
 ];
 
 // ---------------- Dialoge: die passende Antwort waehlen ----------------
+// level steuert, ab wann eine Situation vorkommt: A1 = Begruessung, Einkauf, Small Talk,
+// A2 = Amt, Arzt, Wohnung, B1 = Beruf, Station, Konflikt. Combat.roundDialog nimmt alle
+// Situationen bis zum eigenen Niveau und wiederholt keine zweimal hintereinander.
 const DIALOG_ITEMS = [
-  { situation: "Im Amt", situationEn: "At the public office",
+  // ---------- A1 ----------
+  { situation: "Erste Begegnung", situationEn: "Meeting someone", level: "A1",
+    frage: "Guten Tag, wie heißen Sie?",
+    correct: "Guten Tag, ich heiße Jomar Reyes.",
+    wrong: ["Ja, gern.", "Ich wohne in Cebu."], en: "You give your name." },
+  { situation: "Im Supermarkt", situationEn: "At the supermarket", level: "A1",
+    frage: "Das macht zusammen acht Euro fünfzig.",
+    correct: "Hier bitte. Kann ich mit Karte zahlen?",
+    wrong: ["Nein danke, ich habe schon.", "Wie spät ist es, bitte?"], en: "You pay and ask about paying by card." },
+  { situation: "Nach dem Weg fragen", situationEn: "Asking for directions", level: "A1",
+    frage: "Entschuldigung, suchen Sie etwas?",
+    correct: "Ja, wie komme ich zum Bahnhof?",
+    wrong: ["Nein, ich suche nichts, danke schön.", "Der Bahnhof ist sehr schön."], en: "You are looking for the station." },
+  { situation: "Im Kurs", situationEn: "In class", level: "A1",
+    frage: "Haben Sie noch Fragen zur Hausaufgabe?",
+    correct: "Ja, können Sie Aufgabe drei noch einmal erklären?",
+    wrong: ["Nein, ich mache nie Hausaufgaben.", "Die Hausaufgabe ist zu lang."], en: "You ask for exercise three to be explained again." },
+  { situation: "Einladung", situationEn: "An invitation", level: "A1",
+    frage: "Wir grillen am Samstag. Kommst du?",
+    correct: "Gern, ich komme. Was soll ich mitbringen?",
+    wrong: ["Ich grille nicht gern, tschüss.", "Samstag ist ein Tag."], en: "You accept and ask what to bring." },
+  { situation: "Im Restaurant", situationEn: "At the restaurant", level: "A1",
+    frage: "Möchten Sie schon bestellen?",
+    correct: "Ja, ich nehme die Suppe und ein Wasser, bitte.",
+    wrong: ["Ich habe kein Geld dabei.", "Das Essen war gut, danke."], en: "You order soup and water." },
+
+  // ---------- A2 ----------
+  { situation: "Im Amt", situationEn: "At the public office", level: "A2",
     frage: "Guten Tag, was kann ich für Sie tun?",
     correct: "Guten Tag, ich möchte mich anmelden.",
     wrong: ["Ja, tschüss.", "Ich weiß nicht, was das ist."], en: "You want to register." },
-  { situation: "Beim Arzt", situationEn: "At the doctor's",
+  { situation: "Beim Arzt", situationEn: "At the doctor's", level: "A2",
     frage: "Was fehlt Ihnen denn?",
     correct: "Ich habe seit drei Tagen Kopfschmerzen.",
     wrong: ["Mir fehlt nichts, danke.", "Ich möchte einen Kaffee."], en: "You have had a headache for three days." },
-  { situation: "Vorstellungsgespräch", situationEn: "Job interview",
-    frage: "Warum möchten Sie bei uns arbeiten?",
-    correct: "Weil ich in der Pflege Erfahrung sammeln möchte.",
-    wrong: ["Weil ich Geld brauche.", "Keine Ahnung, mal sehen."], en: "Because you want to gain experience in care work." },
-  { situation: "Wohnungssuche", situationEn: "Looking for a flat",
+  { situation: "Wohnungssuche", situationEn: "Looking for a flat", level: "A2",
     frage: "Die Wohnung kostet 600 Euro kalt. Ist das in Ordnung?",
     correct: "Könnten Sie mir sagen, wie hoch die Nebenkosten sind?",
     wrong: ["Ja, egal.", "Das ist zu teuer, tschüss."], en: "You ask about the additional costs." },
-  { situation: "Am Telefon", situationEn: "On the phone",
+  { situation: "Am Telefon", situationEn: "On the phone", level: "A2",
     frage: "Guten Tag, Praxis Dr. Weber. Was kann ich für Sie tun?",
     correct: "Ich hätte gern einen Termin für nächste Woche.",
     wrong: ["Hallo, wer ist da?", "Ich rufe später nochmal an, tschüss."], en: "You would like an appointment for next week." },
-  { situation: "Krankmeldung", situationEn: "Calling in sick",
+  { situation: "Krankmeldung", situationEn: "Calling in sick", level: "A2",
     frage: "Sie klingen krank. Kommen Sie heute?",
     correct: "Nein, ich bin krank. Ich schicke Ihnen die Krankmeldung.",
-    wrong: ["Vielleicht komme ich, vielleicht nicht.", "Ich habe keine Lust heute."], en: "You are ill and will send the sick note." },
+    wrong: ["Vielleicht komme ich, vielleicht nicht.", "Ich habe heute keine Lust."], en: "You are ill and will send the sick note." },
+  { situation: "In der Apotheke", situationEn: "At the pharmacy", level: "A2",
+    frage: "Haben Sie ein Rezept dafür?",
+    correct: "Nein, gibt es das Medikament auch ohne Rezept?",
+    wrong: ["Ich nehme einfach zwei Packungen.", "Ein Rezept ist ein Papier."], en: "You ask whether it is available without a prescription." },
+  { situation: "Bei der Bank", situationEn: "At the bank", level: "A2",
+    frage: "Sie möchten ein Konto eröffnen? Haben Sie einen Ausweis dabei?",
+    correct: "Ja, hier ist mein Pass und meine Meldebescheinigung.",
+    wrong: ["Meinen Ausweis habe ich zu Hause vergessen, geht das trotzdem?", "Ich brauche nur Geld, bitte."], en: "You hand over your passport and registration certificate." },
+  { situation: "Beim Nachbarn", situationEn: "With the neighbour", level: "A2",
+    frage: "Ihre Musik war gestern sehr laut.",
+    correct: "Das tut mir leid, ich passe in Zukunft besser auf.",
+    wrong: ["Das war nicht ich.", "Dann hören Sie eben weg."], en: "You apologise and promise to be careful." },
+  { situation: "Paket beim Nachbarn", situationEn: "Parcel at the neighbour's", level: "A2",
+    frage: "Ich habe ein Paket für Sie angenommen.",
+    correct: "Vielen Dank! Wann kann ich es abholen?",
+    wrong: ["Ich habe nichts bestellt.", "Behalten Sie es ruhig."], en: "You say thanks and ask when to collect it." },
+  { situation: "Reise", situationEn: "Travelling", level: "A2",
+    frage: "Der Zug nach Hamburg fällt heute aus.",
+    correct: "Wann fährt denn der nächste Zug?",
+    wrong: ["Dann gehe ich zu Fuß.", "Hamburg ist weit weg."], en: "You ask about the next train." },
+
+  // ---------- B1 ----------
+  { situation: "Vorstellungsgespräch", situationEn: "Job interview", level: "B1",
+    frage: "Warum möchten Sie bei uns arbeiten?",
+    correct: "Weil ich in der Pflege Erfahrung sammeln möchte.",
+    wrong: ["Weil ich Geld brauche.", "Keine Ahnung, mal sehen."], en: "Because you want to gain experience in care work." },
+  { situation: "Vorstellungsgespräch", situationEn: "Job interview", level: "B1",
+    frage: "Was ist Ihre größte Schwäche?",
+    correct: "Ich bin manchmal zu genau, daran arbeite ich.",
+    wrong: ["Ich habe keine Schwächen.", "Ich komme oft zu spät."], en: "You name a weakness and say what you do about it." },
+  { situation: "Auf Station", situationEn: "On the ward", level: "B1",
+    frage: "Herr Meier in Zimmer 12 hat starke Schmerzen.",
+    correct: "Ich sehe sofort nach ihm und informiere die Ärztin.",
+    wrong: ["Das ist nicht mein Zimmer.", "Er hat immer Schmerzen."], en: "You check on him and inform the doctor." },
+  { situation: "Übergabe", situationEn: "Shift handover", level: "B1",
+    frage: "Gibt es etwas Besonderes für die Spätschicht?",
+    correct: "Ja, Frau Wagner hat erhöhte Temperatur, bitte um 16 Uhr noch einmal messen.",
+    wrong: ["Nein, alles wie immer.", "Fragen Sie doch die anderen."], en: "You report a patient with a raised temperature." },
+  { situation: "Konflikt im Team", situationEn: "Conflict in the team", level: "B1",
+    frage: "Sie haben gestern die Dokumentation nicht fertig gemacht.",
+    correct: "Das stimmt, ich habe es nicht geschafft. Können wir besprechen, wie wir das lösen?",
+    wrong: ["Das war nicht meine Aufgabe.", "Immer bin ich schuld."], en: "You admit it and suggest talking about a solution." },
+  { situation: "Beim Chef", situationEn: "With the boss", level: "B1",
+    frage: "Sie möchten Urlaub im August nehmen?",
+    correct: "Ja, gern in der ersten Augustwoche — falls es für die Station passt.",
+    wrong: ["Ja, ich bin im August weg.", "Urlaub steht mir zu."], en: "You ask for the first week of August if it suits the ward." },
+  { situation: "Anerkennung", situationEn: "Recognition of qualifications", level: "B1",
+    frage: "Für die Anerkennung fehlt noch eine Übersetzung Ihres Zeugnisses.",
+    correct: "Ich lasse das Zeugnis übersetzen und reiche es bis Freitag nach.",
+    wrong: ["Das habe ich schon geschickt, glaube ich.", "Warum brauchen Sie das denn?"], en: "You will have it translated and send it by Friday." },
+  { situation: "Sprachkurs", situationEn: "Language course", level: "B1",
+    frage: "Sie waren zwei Wochen nicht im Unterricht.",
+    correct: "Ich war krank geschrieben. Was kann ich nachholen?",
+    wrong: ["Ich hatte keine Zeit.", "Der Unterricht bringt mir nichts."], en: "You were on sick leave and ask what to catch up on." },
+  { situation: "Reklamation", situationEn: "Complaint", level: "B1",
+    frage: "Sie möchten das Gerät zurückgeben? Warum?",
+    correct: "Es funktioniert seit gestern nicht mehr. Ich hätte gern ein neues oder mein Geld zurück.",
+    wrong: ["Es gefällt mir einfach nicht mehr.", "Ihr Laden ist schlecht."], en: "It stopped working and you want a replacement or a refund." },
+  { situation: "Beim Vermieter", situationEn: "With the landlord", level: "B1",
+    frage: "Die Nebenkosten steigen um 40 Euro im Monat.",
+    correct: "Könnten Sie mir bitte die Abrechnung schicken, damit ich das nachvollziehen kann?",
+    wrong: ["Das zahle ich nicht, basta.", "Okay, ist mir egal."], en: "You ask for the statement so you can understand it." },
 ];
 
 // ---------------- Hoerverstehen ----------------
@@ -8384,7 +8939,7 @@ const LEKTIONEN_PLUS = {};
     }),
     {
       id: "schilf", name: "Das Schilfufer", cefr: "A1.2",
-      vocabThemes: ["gefuehle", "farben", "kalender", "verben_a1", "zahlen_mehr", "tageszeiten", "tiere"],
+      vocabThemes: ["gefuehle", "farben", "kalender", "verben_a1", "zahlen_mehr", "tageszeiten", "tiere", "hoeflichkeit", "kleine_woerter"],
       width: 1700, height: 1000,
       ground: "#b8dca0", groundAlt: "#a2d086", water: "#56a7cf", pathColor: "#d3c489",
       deco: ["#f2c14e", "#e2637b", "#ffffff", "#b58ce8"], accent: "#4f8f3f",
@@ -8404,7 +8959,7 @@ const LEKTIONEN_PLUS = {};
     },
     bezirk(alt.dorf, {
       cefr: "A1.3", next: "handelsstadt", boss: true,
-      vocabThemes: ["alltag", "essen", "wohnen", "wetter", "kleidung", "adjektive_a1", "obst_gemuese", "kueche", "haus_moebel", "getraenke", "kochen", "hausarbeit", "bad_hygiene", "jahreszeiten"],
+      vocabThemes: ["alltag", "essen", "wohnen", "wetter", "kleidung", "adjektive_a1", "obst_gemuese", "kueche", "haus_moebel", "getraenke", "kochen", "hausarbeit", "bad_hygiene", "jahreszeiten", "garten_pflanzen"],
       enemyMix: [{ type: "artikel", count: 5 }, { type: "leser", count: 2 }, { type: "echo", count: 1 }, { type: "satzbau", count: 1 }],
       enemyCount: 9,
       bossInfo: { name: "Die Dorfhexe", nameEn: "The Village Witch", emoji: "🧙", farbe: "#a0527a",
@@ -8412,7 +8967,7 @@ const LEKTIONEN_PLUS = {};
     }),
     bezirk(alt.handelsstadt, {
       cefr: "A2.1", next: "bruecke", nextAfterBoss: undefined, boss: true, wegwahl: true,
-      vocabThemes: ["einkaufen", "supermarkt", "wegbeschreibung", "stadt", "schule", "zeitangaben", "post_bank", "restaurant", "im_geschaeft", "stadtorte", "verben_a2"],
+      vocabThemes: ["einkaufen", "supermarkt", "wegbeschreibung", "stadt", "schule", "zeitangaben", "post_bank", "restaurant", "im_geschaeft", "stadtorte", "verben_a2", "geld_bezahlen"],
       enemyMix: [{ type: "artikel", count: 5 }, { type: "leser", count: 2 }, { type: "satzbau", count: 2 }, { type: "echo", count: 1 }],
       enemyCount: 10,
       bossInfo: { name: "Der Marktvogt", nameEn: "The Market Reeve", emoji: "🤴", farbe: "#c0392b",
@@ -8420,7 +8975,7 @@ const LEKTIONEN_PLUS = {};
     }),
     {
       id: "bruecke", name: "Die Brücke", cefr: "A2.2",
-      vocabThemes: ["verben_alltag", "freizeit", "berufe", "feste", "tagesablauf", "sport", "arbeitsalltag"],
+      vocabThemes: ["verben_alltag", "freizeit", "berufe", "feste", "tagesablauf", "sport", "arbeitsalltag", "werkstatt_handwerk"],
       width: 1800, height: 1050,
       ground: "#dca98a", groundAlt: "#cf9776", water: "#5fb0dc", pathColor: "#ead3a2",
       deco: ["#f2c14e", "#c1633b", "#ffffff", "#7a5ad8"], accent: "#a8572a",
@@ -8439,7 +8994,7 @@ const LEKTIONEN_PLUS = {};
     },
     bezirk(alt.stromschnellen, {
       cefr: "A2.3", next: "schleuse", boss: true,
-      vocabThemes: ["koerper", "reisen", "verkehr", "krankheit", "telefon", "wohnungssuche", "natur", "gesicht_koerper", "technik", "wohnung_probleme", "urlaub_hotel", "flughafen", "adjektive_a2"],
+      vocabThemes: ["koerper", "reisen", "verkehr", "krankheit", "telefon", "wohnungssuche", "natur", "gesicht_koerper", "technik", "wohnung_probleme", "urlaub_hotel", "flughafen", "adjektive_a2", "am_bahnhof"],
       enemyMix: [{ type: "verbwirbel", count: 3 }, { type: "artikel", count: 3 }, { type: "satzbau", count: 3 }, { type: "echo", count: 2 }, { type: "leser", count: 1 }],
       enemyCount: 12,
       bossInfo: { name: "Der Strudel", nameEn: "The Whirlpool", emoji: "🌀", farbe: "#2f7fae",
@@ -8447,7 +9002,7 @@ const LEKTIONEN_PLUS = {};
     }),
     {
       id: "schleuse", name: "Die Schleuse", cefr: "B1.1",
-      vocabThemes: ["charakter", "medien", "beziehungen", "notfall", "sprachen_lernen", "meinung", "diskussion", "konnektoren", "heimweh", "gesellschaft"],
+      vocabThemes: ["charakter", "medien", "beziehungen", "notfall", "sprachen_lernen", "meinung", "diskussion", "konnektoren", "heimweh", "gesellschaft", "umwelt_klima"],
       width: 1800, height: 1050,
       ground: "#90b8ae", groundAlt: "#7eaa9f", water: "#3a8bc0", pathColor: "#bcd0c8",
       deco: ["#e8f1f5", "#f2c14e", "#e2637b", "#3f6f86"], accent: "#23777f",
@@ -8467,7 +9022,7 @@ const LEKTIONEN_PLUS = {};
     },
     {
       id: "leuchtturm", name: "Der Leuchtturm", cefr: "B1.2",
-      vocabThemes: ["gesundheit", "pflege_station", "arzt_praxis", "pflege_alltag", "pflege_doku", "krankenhaus", "organe", "adjektive_b1", "verben_b1"],
+      vocabThemes: ["gesundheit", "pflege_station", "arzt_praxis", "pflege_alltag", "pflege_doku", "krankenhaus", "organe", "adjektive_b1", "verben_b1", "pflege_geraete", "hygiene_schutz"],
       width: 1900, height: 1100,
       ground: "#aeaa98", groundAlt: "#9e9a86", water: "#3775a0", pathColor: "#d6d0ba",
       deco: ["#ffffff", "#e2795d", "#f2c14e", "#2f4f63"], accent: "#b8503a",
@@ -8487,7 +9042,7 @@ const LEKTIONEN_PLUS = {};
     },
     bezirk(alt.hafenstadt, {
       cefr: "B1.3", next: null, boss: true,
-      vocabThemes: ["arbeit", "amt", "verben_beruf", "ausbildung", "vertrag", "nomen_verb", "bewerbung", "anerkennung", "ankommen_amt", "arbeitsrecht", "briefe", "verben_b1_plus"],
+      vocabThemes: ["arbeit", "amt", "verben_beruf", "ausbildung", "vertrag", "nomen_verb", "bewerbung", "anerkennung", "ankommen_amt", "arbeitsrecht", "briefe", "verben_b1_plus", "buero_papier"],
       enemyMix: [{ type: "brief", count: 4 }, { type: "artikel", count: 5 }, { type: "leser", count: 3 }, { type: "verbwirbel", count: 2 }, { type: "echo", count: 1 }],
       enemyCount: 15,
       bossInfo: { name: "Die Behördenkrake", nameEn: "The Bureaucracy Kraken", emoji: "🐙", farbe: "#4a6f8f",
@@ -8766,6 +9321,97 @@ const LESETEXTE = [
         beleg: "brechen Sie die Einnahme sofort ab und rufen den Notarzt" },
     ],
   },
+  // ---------- Nachtrag: mehr Texte, damit Lesen-Lektionen sich nicht wiederholen ----------
+  {
+    id: "a1-stundenplan", level: "A1", icon: "🗓️", titel: "Der Kursplan", titelEn: "The course timetable",
+    text: "Deutschkurs A1 — Montag bis Freitag von neun bis elf Uhr. Am Mittwoch ist der Kurs im Raum 2, sonst immer im Raum 5. Die Lehrerin heißt Frau Ortega. Am Freitag schreiben wir jede Woche einen kleinen Test.",
+    fragen: [
+      { typ: "mc", frage: "Wann ist der Kurs?", frageEn: "When is the course?",
+        options: ["von neun bis elf Uhr", "von elf bis neun Uhr", "am Wochenende"], correct: "von neun bis elf Uhr",
+        beleg: "von neun bis elf Uhr" },
+      { typ: "rf", aussage: "Am Mittwoch ist der Kurs in einem anderen Raum.", aussageEn: "On Wednesday the course is in a different room.", richtig: true,
+        beleg: "Am Mittwoch ist der Kurs im Raum 2" },
+      { typ: "mc", frage: "Was passiert jeden Freitag?", frageEn: "What happens every Friday?",
+        options: ["ein kleiner Test", "ein Ausflug", "kein Unterricht"], correct: "ein kleiner Test",
+        beleg: "Am Freitag schreiben wir jede Woche einen kleinen Test." },
+    ],
+  },
+  {
+    id: "a1-einkaufszettel", level: "A1", icon: "🛒", titel: "Ein Zettel für den Einkauf", titelEn: "A shopping note",
+    text: "Hallo Papa, bitte kaufe im Supermarkt ein: zwei Liter Milch, ein Brot, sechs Eier und Bananen. Die Milch ist im Angebot. Bitte keine Schokolade! Ich bin um sechs Uhr zu Hause. Deine Ana",
+    fragen: [
+      { typ: "mc", frage: "Wie viele Eier soll der Vater kaufen?", frageEn: "How many eggs should the father buy?",
+        options: ["sechs", "zwei", "zwölf"], correct: "sechs", beleg: "sechs Eier" },
+      { typ: "rf", aussage: "Ana möchte Schokolade.", aussageEn: "Ana wants chocolate.", richtig: false,
+        beleg: "Bitte keine Schokolade!" },
+      { typ: "rf", aussage: "Ana kommt um sechs Uhr nach Hause.", aussageEn: "Ana comes home at six o'clock.", richtig: true,
+        beleg: "Ich bin um sechs Uhr zu Hause." },
+    ],
+  },
+  {
+    id: "a1-busfahrplan", level: "A1", icon: "🚌", titel: "Der Bus zum Krankenhaus", titelEn: "The bus to the hospital",
+    text: "Linie 12 zum Krankenhaus. Der Bus fährt von Montag bis Freitag alle zwanzig Minuten. Die erste Fahrt ist um fünf Uhr, die letzte um dreiundzwanzig Uhr. Am Sonntag fährt die Linie 12 nicht. Eine Fahrkarte kostet drei Euro.",
+    fragen: [
+      { typ: "mc", frage: "Wie oft fährt der Bus in der Woche?", frageEn: "How often does the bus run during the week?",
+        options: ["alle zwanzig Minuten", "einmal am Tag", "alle zwei Stunden"], correct: "alle zwanzig Minuten",
+        beleg: "alle zwanzig Minuten" },
+      { typ: "rf", aussage: "Am Sonntag kann man mit der Linie 12 fahren.", aussageEn: "On Sunday you can take line 12.", richtig: false,
+        beleg: "Am Sonntag fährt die Linie 12 nicht." },
+      { typ: "mc", frage: "Was kostet eine Fahrkarte?", frageEn: "How much is a ticket?",
+        options: ["drei Euro", "zwölf Euro", "fünf Euro"], correct: "drei Euro", beleg: "Eine Fahrkarte kostet drei Euro." },
+    ],
+  },
+  {
+    id: "a1-praxis", level: "A1", icon: "🩺", titel: "Ein Zettel an der Praxistür", titelEn: "A note on the surgery door",
+    text: "Praxis Dr. Lange. Vom 1. bis 10. August ist die Praxis geschlossen. In dieser Zeit hilft Ihnen Frau Dr. Kim in der Bergstraße 4. Bei starken Schmerzen rufen Sie bitte die Nummer 116117 an.",
+    fragen: [
+      { typ: "mc", frage: "Wer hilft im August?", frageEn: "Who helps in August?",
+        options: ["Frau Dr. Kim", "Dr. Lange", "niemand"], correct: "Frau Dr. Kim", beleg: "hilft Ihnen Frau Dr. Kim" },
+      { typ: "rf", aussage: "Die Praxis ist im August zehn Tage zu.", aussageEn: "The surgery is closed for ten days in August.", richtig: true,
+        beleg: "Vom 1. bis 10. August ist die Praxis geschlossen." },
+      { typ: "mc", frage: "Was macht man bei starken Schmerzen?", frageEn: "What do you do if you are in a lot of pain?",
+        options: ["die 116117 anrufen", "warten bis September", "in die Bergstraße gehen"], correct: "die 116117 anrufen",
+        beleg: "rufen Sie bitte die Nummer 116117 an" },
+    ],
+  },
+  {
+    id: "b1-arbeitsvertrag", level: "B1", icon: "📄", titel: "Auszug aus dem Arbeitsvertrag", titelEn: "Extract from the employment contract",
+    text: "Die Probezeit beträgt sechs Monate. Während der Probezeit kann das Arbeitsverhältnis von beiden Seiten mit einer Frist von zwei Wochen gekündigt werden. Der Jahresurlaub beträgt 28 Arbeitstage. Urlaub ist spätestens vier Wochen vorher schriftlich zu beantragen. Überstunden werden grundsätzlich in Freizeit ausgeglichen; eine Auszahlung ist nur nach Absprache mit der Pflegedienstleitung möglich.",
+    fragen: [
+      { typ: "mc", frage: "Wie lange ist die Kündigungsfrist in der Probezeit?", frageEn: "What is the notice period during the probation period?",
+        options: ["zwei Wochen", "sechs Monate", "vier Wochen"], correct: "zwei Wochen", beleg: "mit einer Frist von zwei Wochen gekündigt werden" },
+      { typ: "rf", aussage: "Überstunden werden immer ausgezahlt.", aussageEn: "Overtime is always paid out.", richtig: false,
+        beleg: "Überstunden werden grundsätzlich in Freizeit ausgeglichen" },
+      { typ: "mc", frage: "Wann muss man Urlaub beantragen?", frageEn: "When do you have to apply for leave?",
+        options: ["spätestens vier Wochen vorher", "am selben Tag", "sechs Monate vorher"], correct: "spätestens vier Wochen vorher",
+        beleg: "spätestens vier Wochen vorher schriftlich zu beantragen" },
+    ],
+  },
+  {
+    id: "b1-anerkennung", level: "B1", icon: "🏛️", titel: "Bescheid der Anerkennungsstelle", titelEn: "Letter from the recognition office",
+    text: "Sehr geehrte Frau Cruz, wir haben Ihre Unterlagen geprüft. Ihre Ausbildung entspricht der deutschen Pflegeausbildung überwiegend, es bestehen jedoch wesentliche Unterschiede im Bereich der Pflegeplanung. Sie können diese Unterschiede entweder durch einen Anpassungslehrgang von sechs Monaten oder durch eine Kenntnisprüfung ausgleichen. Bitte teilen Sie uns innerhalb von vier Wochen mit, welchen Weg Sie wählen. Die Frist beginnt mit dem Zugang dieses Schreibens.",
+    fragen: [
+      { typ: "mc", frage: "Was ist das Ergebnis der Prüfung?", frageEn: "What is the result of the assessment?",
+        options: ["Es gibt wesentliche Unterschiede.", "Die Ausbildung wird nicht anerkannt.", "Alles ist gleichwertig."], correct: "Es gibt wesentliche Unterschiede.",
+        beleg: "es bestehen jedoch wesentliche Unterschiede" },
+      { typ: "rf", aussage: "Frau Cruz kann zwischen zwei Wegen wählen.", aussageEn: "Ms Cruz can choose between two options.", richtig: true,
+        beleg: "entweder durch einen Anpassungslehrgang von sechs Monaten oder durch eine Kenntnisprüfung" },
+      { typ: "mc", frage: "Wie viel Zeit hat sie für die Antwort?", frageEn: "How much time does she have to reply?",
+        options: ["vier Wochen", "sechs Monate", "zwei Jahre"], correct: "vier Wochen", beleg: "innerhalb von vier Wochen mit" },
+    ],
+  },
+  {
+    id: "b1-dienstplan-regeln", level: "B1", icon: "🕒", titel: "Aushang: Regeln für den Dienstplan", titelEn: "Notice: rules for the duty roster",
+    text: "Liebe Kolleginnen und Kollegen, der Dienstplan für den Folgemonat hängt jeweils am 20. aus. Wünsche für freie Tage geben Sie bitte bis zum 10. in die Liste im Stationszimmer ein. Wer kurzfristig tauschen möchte, klärt das selbst mit einer Kollegin und trägt den Tausch danach in den Plan ein. Ohne Eintrag gilt der alte Plan. Bei Krankheit melden Sie sich bitte vor Dienstbeginn telefonisch, eine Nachricht per Chat reicht nicht aus.",
+    fragen: [
+      { typ: "mc", frage: "Bis wann kann man freie Tage wünschen?", frageEn: "By when can you request days off?",
+        options: ["bis zum 10.", "bis zum 20.", "bis zum Monatsende"], correct: "bis zum 10.", beleg: "bis zum 10. in die Liste" },
+      { typ: "rf", aussage: "Nach einem Tausch muss man nichts eintragen.", aussageEn: "After a swap you don't have to write anything down.", richtig: false,
+        beleg: "trägt den Tausch danach in den Plan ein" },
+      { typ: "rf", aussage: "Eine Krankmeldung per Chat genügt nicht.", aussageEn: "Reporting sick by chat is not enough.", richtig: true,
+        beleg: "eine Nachricht per Chat reicht nicht aus" },
+    ],
+  },
 ];
 
 // ---------------- Bild-Wort (A1/A2) ----------------
@@ -8787,24 +9433,43 @@ const BILD_WOERTER = [
   { e: "💊", de: "die Tablette", en: "tablet / pill" }, { e: "❤️", de: "das Herz", en: "heart" }, { e: "👁️", de: "das Auge", en: "eye" },
   { e: "👂", de: "das Ohr", en: "ear" }, { e: "🦷", de: "der Zahn", en: "tooth" }, { e: "✋", de: "die Hand", en: "hand" },
   { e: "🦶", de: "der Fuß", en: "foot" }, { e: "🌳", de: "der Baum", en: "tree" }, { e: "🌊", de: "das Meer", en: "sea" },
+  // ---------- Nachtrag 18.09.2026 ----------
+  { e: "🥖", de: "das Brötchen", en: "bread roll" }, { e: "🍲", de: "die Suppe", en: "soup" },
+  { e: "🧂", de: "das Salz", en: "salt" }, { e: "🍽️", de: "der Teller", en: "plate" },
+  { e: "🥄", de: "der Löffel", en: "spoon" }, { e: "🍴", de: "die Gabel", en: "fork" },
+  { e: "🪟", de: "das Fenster", en: "window" }, { e: "🛋️", de: "das Sofa", en: "sofa" },
+  { e: "🧹", de: "der Besen", en: "broom" }, { e: "🧺", de: "die Wäsche", en: "laundry" },
+  { e: "🚑", de: "der Krankenwagen", en: "ambulance" }, { e: "💉", de: "die Spritze", en: "syringe" },
+  { e: "🩹", de: "das Pflaster", en: "plaster" }, { e: "🌡️", de: "das Fieber", en: "fever" },
+  { e: "🧤", de: "der Handschuh", en: "glove" }, { e: "🧢", de: "die Mütze", en: "cap" },
+  { e: "☂️", de: "der Regenschirm", en: "umbrella" }, { e: "💶", de: "das Geld", en: "money" },
+  { e: "✉️", de: "der Brief", en: "letter" }, { e: "🗝️", de: "das Schloss", en: "lock" },
+  { e: "🌙", de: "der Mond", en: "moon" }, { e: "⭐", de: "der Stern", en: "star" },
+  { e: "🔥", de: "das Feuer", en: "fire" }, { e: "🌷", de: "die Blume", en: "flower" },
 ];
 
 // ---------------- Wortpaare verbinden (Kollokationen) ----------------
 // Jeder Satz ist so gewaehlt, dass sich die Paare NICHT ueber Kreuz sinnvoll kombinieren lassen.
 const KOLLOKATIONEN = {
   A1: [
+    { auftrag: "Was passt zusammen? Verbinde.", auftragEn: "What goes together? Connect.",
+      paare: [["Musik", "hören"], ["Deutsch", "lernen"], ["ein Buch", "lesen"], ["Suppe", "kochen"], ["Fahrrad", "fahren"]] },
     { auftrag: "Welches Verb passt? Verbinde.", auftragEn: "Which verb fits? Connect.",
       paare: [["Zähne", "putzen"], ["Fußball", "spielen"], ["Kaffee", "trinken"], ["im Supermarkt", "einkaufen"], ["ins Bett", "gehen"]] },
     { auftrag: "Welches Verb passt? Verbinde.", auftragEn: "Which verb fits? Connect.",
       paare: [["Fieber", "messen"], ["Geburtstag", "feiern"], ["eine E-Mail", "schreiben"], ["Freunde", "treffen"], ["den Tisch", "decken"]] },
   ],
   A2: [
+    { auftrag: "Termine und Papiere: Verbinde.", auftragEn: "Appointments and paperwork: connect.",
+      paare: [["die Miete", "überweisen"], ["den Vertrag", "unterschreiben"], ["die Wäsche", "aufhängen"], ["einen Tisch", "reservieren"], ["den Führerschein", "machen"]] },
     { auftrag: "Hausarbeit: Welches Verb gehört dazu?", auftragEn: "Housework: which verb goes with it?",
       paare: [["Wäsche", "waschen"], ["den Müll", "rausbringen"], ["Staub", "saugen"], ["Blumen", "gießen"], ["den Rasen", "mähen"]] },
     { auftrag: "Bank, Amt und Reise: Verbinde.", auftragEn: "Bank, office and travel: connect.",
       paare: [["ein Konto", "eröffnen"], ["Geld", "abheben"], ["ein Formular", "ausfüllen"], ["eine Fahrkarte", "kaufen"], ["einen Arzttermin", "absagen"]] },
   ],
   B1: [
+    { auftrag: "Feste Verbindungen im Gespräch: Verbinde.", auftragEn: "Fixed phrases in conversation: connect.",
+      paare: [["Kritik", "üben"], ["einen Vorschlag", "machen"], ["die Verantwortung", "tragen"], ["eine Rede", "halten"], ["in Kontakt", "bleiben"]] },
     { auftrag: "Feste Verbindungen: Welches Verb gehört zum Nomen?", auftragEn: "Fixed phrases: which verb goes with the noun?",
       paare: [["eine Entscheidung", "treffen"], ["eine Frage", "stellen"], ["Rücksicht", "nehmen"], ["Bescheid", "geben"], ["eine Rolle", "spielen"]] },
     { auftrag: "Feste Verbindungen im Beruf: Verbinde.", auftragEn: "Fixed phrases at work: connect.",
@@ -8914,6 +9579,7 @@ function freshState() {
     visited: ["heimatdorf"], // districtId[] — dorthin darf man jederzeit teleportieren
     tests: {}, // districtId -> { versuche, beste, bestanden } — Abschlusstests (Bosse)
     vocab: {}, // Spaced-Repetition-Karten, siehe VocabSRS in vocab.js
+    minispiele: { wortle: {}, jagd: {} }, // Bestwerte der Spielhalle, siehe minispiele.js
   };
 }
 
@@ -9012,6 +9678,8 @@ const Economy = {
     // Alte Spielstaende kennen "visited" noch nicht — jeder Bezirk mit gesehenem Kapitel war schon besucht.
     if (!this.state.visited) this.state.visited = ["heimatdorf", ...this.state.storySeen];
     if (!this.state.tests) this.state.tests = {};
+    // Spielstaende von vor den Minispielen kennen den Schluessel noch nicht.
+    if (!this.state.minispiele) this.state.minispiele = { wortle: {}, jagd: {} };
     this.state.inventory = this.state.inventory.filter((it) => it.slot);
     // Falls sich die XP-Kurve seit dem letzten Speicherstand geaendert hat (Balancing-Update),
     // Level und xpTotal wieder in Einklang bringen statt eine falsche Anzeige zu riskieren.
@@ -13283,12 +13951,17 @@ const Combat = {
     this.beiEnter((val) => this.checkFreitext(val, correct, `${a.pos} → ${a.komp} → ${a.sup}`));
   },
 
+  // Konjunktiv II: mit dem Lektionsfortschritt mehr unregelmaessige Formen (kaeme, naehme, braeuchte)
+  // und irreale Saetze statt der vier Grundformen.
   roundKonjunktiv(lesson) {
-    const k = zufall(KONJUNKTIV_ITEMS);
+    const k = this.gestaffelt(KONJUNKTIV_ITEMS, (x) => x.schwer, this.lektionsFortschritt(lesson));
+    // Wortgrenze und Gross-/Kleinschreibung egal: sonst bliebe „Wären“ am Satzanfang stehen
+    // und verriete die Loesung; \b verhindert, dass „wäre“ in „wären“ getroffen wird.
+    const luecke = k.example.replace(new RegExp(`\\b${k.correct}\\b`, "i"), "____");
     bodyEl.innerHTML = `
       ${this.regel(lesson)}
-      <div class="prompt">${Lang.isEn() ? "Which polite form?" : "Welche Höflichkeitsform?"} <strong>${k.prompt}</strong>
-        <span class="task-en">${k.example.replace(k.correct, "____")}</span></div>
+      <div class="prompt">${Lang.isEn() ? "Which polite form?" : "Welche Höflichkeitsform?"} <strong>${Lang.isEn() ? (k.promptEn || k.prompt) : k.prompt}</strong>
+        <span class="task-en">${luecke}${k.schwer ? (Lang.isEn() ? " · irregular!" : " · unregelmäßig!") : ""}</span></div>
       ${this.eingabe(Lang.isEn() ? "polite form" : "Konjunktiv II")}`;
     this.beiEnter((val) => this.checkFreitext(val, k.correct, Verben.markiere(k.example)));
   },
@@ -13340,7 +14013,11 @@ const Combat = {
   // ---------------- Formelle E-Mail ----------------
   roundEmail() {
     const lesson = this.lektionFuer("email");
-    const task = zufall(EMAIL_TASKS);
+    // A2-Redemittel (Termin, Krankmeldung, Vermieter) gibt es ueberall, die Bewerbungs- und
+    // Amtssprache erst ab B1. Dieselbe Aufgabe kommt nie zweimal hintereinander.
+    const pool = EMAIL_TASKS.filter((x) => this.niveau() === "B1" || x.level !== "B1");
+    const task = zufall(pool.filter((x) => x !== this._letzteEmail)) || zufall(pool);
+    this._letzteEmail = task;
     bodyEl.innerHTML = `
       ${this.regel(lesson, null, Lang.isEn() ? "Formal email: use the Sie form and set phrases." : "Formelle E-Mail: Sie-Form und feste Redemittel benutzen.")}
       <div class="prompt">${Lang.isEn() ? task.contextEn : task.context}<span class="task-en">${Lang.isEn() ? task.slotEn : task.slot}</span></div>
@@ -13920,7 +14597,11 @@ const Combat = {
 
   // Dialog: die passende Antwort in einer echten Situation.
   roundDialog(lesson) {
-    const d = zufall(DIALOG_ITEMS);
+    // Alle Situationen bis zum eigenen Niveau — auf A1 also kein Vorstellungsgespraech.
+    const erlaubt = { A1: ["A1"], A2: ["A1", "A2"], B1: ["A1", "A2", "B1"] }[this.niveau()] || ["A1"];
+    const pool = DIALOG_ITEMS.filter((x) => erlaubt.includes(x.level || "A2"));
+    const d = zufall(pool.filter((x) => x !== this._letzterDialog)) || zufall(pool);
+    this._letzterDialog = d;
     bodyEl.innerHTML = `
       ${this.regel(lesson, "💬 " + (Lang.isEn() ? d.situationEn : d.situation), Lang.isEn() ? "Choose the appropriate reply." : "Wähle die passende Antwort.")}
       <div class="dialog-line"><span class="dialog-who">🧑‍💼</span><span class="dialog-say">${Verben.markiere(d.frage)}</span></div>
@@ -14654,6 +15335,1059 @@ const CaseOpening = {
 };
 
 
+// ===== minispiele.js =====
+// Der Strom — Minispiele: Wortle (Worträtsel) und Wortjagd (Ego-Shooter).
+//
+// Beide Spiele holen ihren Stoff aus dem Wortschatz der schon besuchten Bezirke, damit
+// das Niveau immer zum Fortschritt passt (wie Combat.lektionFuer bei den Gegnern).
+// Ergebnisse geben XP und Bernstein und wandern ins Spaced-Repetition-Deck.
+//
+// Achtung fuer das Bundle: alle Namen hier beginnen mit ms/Minispiel/Wortle/Wortjagd —
+// combat.js und main.js belegen im selben Skript-Scope schon overlay, card, canvas, ctx, keys.
+
+// "ß".toUpperCase() ergibt in JavaScript "SS" und wuerde jedes Raetselwort verlaengern.
+function msGross(s) {
+  return String(s).split("").map((c) => (c === "ß" ? "ß" : c.toUpperCase())).join("");
+}
+
+// ---------------- Wortmaterial ----------------
+const MinispielDaten = {
+  // Alle Wortschatz-Themen bis einschliesslich des aktuellen Bezirks.
+  themen() {
+    const id = typeof window.currentDistrictId === "function" ? window.currentDistrictId() : "heimatdorf";
+    const idx = Math.max(0, DISTRICTS.findIndex((d) => d.id === id));
+    const th = [];
+    const nimm = (d) => (d && d.vocabThemes || []).forEach((x) => { if (!th.includes(x)) th.push(x); });
+    DISTRICTS.slice(0, idx + 1).forEach(nimm);
+    // Am Anfang ist der eigene Wortschatz noch zu duenn fuer ein ganzes Spiel (Heimatdorf hat
+    // gar keinen). Dann kommt der naechste Bezirk dazu — dessen Woerter lernt man ohnehin als
+    // Naechstes, und ueber das SRS-Deck sind sie danach schon vorbereitet.
+    for (let i = idx + 1; i < DISTRICTS.length && this.zaehle(th) < 220; i++) nimm(DISTRICTS[i]);
+    return th;
+  },
+
+  zaehle(themen) {
+    return themen.reduce((s, th) => s + ((VOCAB_THEMES[th] || []).length), 0);
+  },
+
+  woerter() {
+    return this.themen().flatMap((th) => (VOCAB_THEMES[th] || []).map((w) => ({ ...w, theme: th })));
+  },
+
+  themaLabel(theme) {
+    const l = VOCAB_THEME_LABELS[theme];
+    return l ? (Lang.isEn() ? l[1] : l[0]) : "";
+  },
+
+  // Nomen mit sicherem Artikel: { artikel, wort, en, theme }.
+  nomen() {
+    const list = [];
+    for (const w of this.woerter()) {
+      const m = w.de.match(/^(der|die|das) ([A-ZÄÖÜ][A-Za-zÄÖÜäöüß-]*)$/);
+      if (m) list.push({ artikel: m[1], wort: m[2], en: w.en, theme: w.theme });
+    }
+    for (const n of ARTICLE_NOUNS) {
+      if (!list.some((x) => x.wort === n.noun)) list.push({ artikel: n.article, wort: n.noun, en: n.en, theme: null });
+    }
+    return list;
+  },
+
+  // Verben im Infinitiv: { wort, en }.
+  verben() {
+    const list = [];
+    const add = (wort, en) => {
+      if (/^[a-zäöüß]+$/.test(wort) && !list.some((v) => v.wort === wort)) list.push({ wort, en });
+    };
+    for (const w of this.woerter()) if (/^to /.test(w.en)) add(w.de.replace(/^sich /, ""), w.en);
+    for (const v of [...VERBS, ...MODAL_VERBS, ...VOKALWECHSEL_VERBS]) add(v.inf, v.en);
+    return list;
+  },
+
+  // Raetselwoerter fuer Wortle: ein einzelnes Wort aus reinen Buchstaben, genaue Laenge.
+  raetselWoerter(laenge) {
+    const gesehen = new Set();
+    const out = [];
+    for (const w of this.woerter()) {
+      const rein = w.de.replace(/^(der|die|das|sich) /, "");
+      if (!/^[A-Za-zÄÖÜäöüß]+$/.test(rein) || rein.length !== laenge) continue;
+      const key = msGross(rein);
+      if (gesehen.has(key)) continue;
+      gesehen.add(key);
+      out.push({ wort: rein, en: w.en, theme: w.theme, voll: w.de });
+    }
+    return out;
+  },
+};
+
+// ---------------- Spielhalle: gemeinsamer Rahmen fuer beide Minispiele ----------------
+const Minispiele = {
+  overlay: document.getElementById("minispiel-overlay"),
+  body: document.getElementById("minispiel-body"),
+  titel: document.getElementById("minispiel-title"),
+  aktiv: null, // null = Auswahl, sonst "wortle" | "jagd"
+
+  init() {
+    document.getElementById("minispiel-close").addEventListener("click", () => { Sound.playClick(); this.close(); });
+    document.getElementById("minispiele-toggle").addEventListener("click", () => {
+      Sound.ensureContext(); Sound.playClick();
+      this.isOpen() ? this.close() : this.open();
+    });
+  },
+
+  isOpen() { return !this.overlay.classList.contains("hidden"); },
+
+  open() {
+    // Nicht waehrend Kampf, Dialog, Lektionskarte, Hauptmenue oder Charakterwahl.
+    if (Combat.active || Dialogue.active || Lesson.pending || MainMenu.isOpen()) return;
+    if (!document.getElementById("charselect-overlay").classList.contains("hidden")) return;
+    Panels.closeAll();
+    this.overlay.classList.remove("hidden");
+    this.hub();
+  },
+
+  close() {
+    if (this.aktiv === "jagd") Wortjagd.stop();
+    this.aktiv = null;
+    this.overlay.classList.add("hidden");
+    this.body.innerHTML = "";
+    UI.refresh();
+  },
+
+  stand() {
+    if (!Economy.state.minispiele) Economy.state.minispiele = {};
+    const s = Economy.state.minispiele;
+    if (!s.wortle) s.wortle = {};
+    if (!s.jagd) s.jagd = {};
+    return s;
+  },
+
+  // Auswahlbildschirm mit den Bestwerten.
+  hub() {
+    if (this.aktiv === "jagd") Wortjagd.stop();
+    this.aktiv = null;
+    const en = Lang.isEn();
+    const s = this.stand();
+    const w = s.wortle, j = s.jagd;
+    this.titel.textContent = en ? "Mini games" : "Minispiele";
+    this.body.innerHTML = `
+      <p class="ms-sub">${en
+        ? "Two short games built from the vocabulary you have already met. They give XP, amber and feed your review deck."
+        : "Zwei kurze Spiele mit dem Wortschatz, den du schon kennst. Sie geben XP, Bernstein und füttern dein Wiederholungs-Deck."}</p>
+      <div class="ms-auswahl">
+        <button class="ms-kachel" data-spiel="wortle" style="--ms:#72c08e">
+          <span class="ms-icon">🟩</span>
+          <span class="ms-name">Wortle</span>
+          <span class="ms-desc">${en
+            ? "Guess the German word in six tries. Green = right letter, yellow = wrong place."
+            : "Errate das deutsche Wort in sechs Versuchen. Grün = richtiger Buchstabe, Gelb = falscher Platz."}</span>
+          <span class="ms-stat">${w.gespielt
+            ? `${en ? "Won" : "Gewonnen"} ${w.gewonnen || 0}/${w.gespielt} · ${en ? "streak" : "Serie"} ${w.serie || 0} (${en ? "best" : "Rekord"} ${w.besteSerie || 0})`
+            : (en ? "not played yet" : "noch nicht gespielt")}</span>
+        </button>
+        <button class="ms-kachel" data-spiel="jagd" style="--ms:#e2795d">
+          <span class="ms-icon">🎯</span>
+          <span class="ms-name">${en ? "Word hunt" : "Wortjagd"}</span>
+          <span class="ms-desc">${en
+            ? "First-person shooter: words fly at you — hit only the ones your order asks for."
+            : "Ego-Shooter: Wörter fliegen auf dich zu — triff nur die, die der Auftrag verlangt."}</span>
+          <span class="ms-stat">${j.gespielt
+            ? `${en ? "Best" : "Bestwert"} ${j.beste || 0} ${en ? "points" : "Punkte"} · ${j.gespielt} ${en ? "runs" : "Runden"}`
+            : (en ? "not played yet" : "noch nicht gespielt")}</span>
+        </button>
+      </div>
+      <p class="ms-hinweis">🧠 ${en
+        ? "Every word from the mini games lands in the vocabulary trainer."
+        : "Jedes Wort aus den Minispielen landet im Vokabeltrainer."}</p>`;
+    this.body.querySelectorAll(".ms-kachel").forEach((b) => b.addEventListener("click", () => {
+      Sound.ensureContext(); Sound.playClick();
+      if (b.dataset.spiel === "wortle") Wortle.oeffne(); else Wortjagd.oeffne();
+    }));
+  },
+
+  // Kopfzeile mit Zurueck-Knopf fuer beide Spiele.
+  kopf(titel) {
+    this.titel.textContent = titel;
+    return `<button class="ms-zurueck" id="ms-zurueck">← ${Lang.isEn() ? "Arcade" : "Spielhalle"}</button>`;
+  },
+
+  bindZurueck() {
+    const b = document.getElementById("ms-zurueck");
+    if (b) b.addEventListener("click", () => { Sound.playClick(); this.hub(); });
+  },
+
+  // Belohnung fuer beide Spiele — dieselbe Waehrung wie im Kampf.
+  belohne(xp, attr, bernstein) {
+    if (xp > 0) {
+      const r = Economy.awardXP(attr || "wortschatz", xp);
+      UI.toast(`+${r.gained} XP`, "good");
+      if (r.leveledUp) { UI.toast(`Level ${Economy.state.level}!`, "gold"); Sound.playLevelUp(); }
+    }
+    if (bernstein > 0) {
+      Economy.state.bernstein += bernstein;
+      Economy.save();
+      UI.toast(`+${bernstein} Bernstein`, "gold");
+    }
+    UI.refresh();
+  },
+
+  // Wort ins Wiederholungs-Deck legen und gleich bewerten.
+  merkeWort(de, en, theme, richtig) {
+    if (!de) return;
+    VocabSRS.ensureCard(de, en, theme || null, 0);
+    VocabSRS.grade(de, !!richtig);
+  },
+
+  // Tastatur: main.js leitet alles hierher um, solange die Spielhalle offen ist.
+  taste(e) {
+    if (e.key === "Escape") {
+      if (this.aktiv) this.hub(); else this.close();
+      return;
+    }
+    if (this.aktiv === "wortle") Wortle.taste(e);
+    else if (this.aktiv === "jagd") Wortjagd.taste(e);
+  },
+
+  tasteAuf(e) { if (this.aktiv === "jagd") Wortjagd.tasteAuf(e); },
+};
+
+// ---------------- Wortle: Worträtsel mit sechs Versuchen ----------------
+// Gleiche Regeln wie das bekannte Wordle, aber mit deutschen Umlauten, ß und einem
+// Wortschatz, den der Spieler im Spiel schon getroffen hat. Nach drei Versuchen
+// erscheint die Bedeutung als Hilfe, damit niemand blind raten muss.
+const WORTLE_TASTEN = ["QWERTZUIOPÜ", "ASDFGHJKLÖÄ", "⏎YXCVBNMß⌫"];
+const WORTLE_XP = [40, 34, 28, 22, 18, 14]; // XP nach Anzahl der gebrauchten Versuche
+
+const Wortle = {
+  MAX: 6,
+  laenge: 5,
+  loesung: null,
+  ziel: [],
+  reihen: [],
+  eingabe: "",
+  fertig: false,
+  tippGenutzt: false,
+  tastenStand: {},
+
+  // Laengen, fuer die der bisherige Wortschatz genug Woerter hergibt.
+  moeglicheLaengen() {
+    return [4, 5, 6, 7].filter((n) => MinispielDaten.raetselWoerter(n).length >= 5);
+  },
+
+  oeffne() {
+    const moeglich = this.moeglicheLaengen();
+    if (!moeglich.length) {
+      Minispiele.aktiv = "wortle";
+      Minispiele.body.innerHTML = `${Minispiele.kopf("Wortle")}
+        <p class="ms-sub">${Lang.isEn()
+          ? "Your vocabulary is still too small for this game — learn a few lessons first."
+          : "Dein Wortschatz ist für dieses Spiel noch zu klein — lerne erst ein paar Lektionen."}</p>`;
+      Minispiele.bindZurueck();
+      return;
+    }
+    if (!moeglich.includes(this.laenge)) this.laenge = moeglich.includes(5) ? 5 : moeglich[0];
+    this.start(this.laenge);
+  },
+
+  start(laenge) {
+    this.laenge = laenge;
+    const pool = MinispielDaten.raetselWoerter(laenge);
+    // Nicht zweimal hintereinander dasselbe Wort.
+    const frisch = pool.filter((w) => !this.loesung || w.wort !== this.loesung.wort);
+    this.loesung = zufall(frisch.length ? frisch : pool);
+    this.ziel = msGross(this.loesung.wort).split("");
+    this.reihen = [];
+    this.eingabe = "";
+    this.fertig = false;
+    this.tippGenutzt = false;
+    this.tastenStand = {};
+    Minispiele.aktiv = "wortle";
+    this.baue();
+  },
+
+  baue() {
+    const en = Lang.isEn();
+    const s = Minispiele.stand().wortle;
+    const laengen = this.moeglicheLaengen().map((n) =>
+      `<button class="ms-pill ${n === this.laenge ? "an" : ""}" data-len="${n}">${n}</button>`).join("");
+    Minispiele.body.innerHTML = `
+      <div class="ms-leiste">
+        ${Minispiele.kopf("Wortle")}
+        <div class="ms-pills">${en ? "Letters" : "Buchstaben"}: ${laengen}</div>
+        <div class="ms-punkte">${en ? "Streak" : "Serie"} ${s.serie || 0} · ${en ? "best" : "Rekord"} ${s.besteSerie || 0}</div>
+      </div>
+      <div class="wortle-thema" id="wortle-thema"></div>
+      <div class="wortle-grid" id="wortle-grid"></div>
+      <div class="wortle-meldung" id="wortle-meldung"></div>
+      <div class="wortle-tasten" id="wortle-tasten"></div>`;
+    Minispiele.bindZurueck();
+    Minispiele.body.querySelectorAll(".ms-pill").forEach((b) => b.addEventListener("click", () => {
+      Sound.playClick();
+      this.start(Number(b.dataset.len));
+    }));
+    this.zeichne();
+  },
+
+  zeichne() {
+    const en = Lang.isEn();
+    const thema = MinispielDaten.themaLabel(this.loesung.theme);
+    document.getElementById("wortle-thema").innerHTML =
+      `<span class="wortle-chip">🗂️ ${thema || (en ? "Vocabulary" : "Wortschatz")}</span>
+       <span class="wortle-chip">${this.laenge} ${en ? "letters" : "Buchstaben"}</span>
+       ${this.reihen.length >= 3 || this.fertig || this.tippGenutzt
+         ? `<span class="wortle-chip tipp">💡 ${this.loesung.en}</span>`
+         : `<button class="wortle-chip tipp-btn" id="wortle-tipp">💡 ${en ? "Show meaning (half XP)" : "Bedeutung zeigen (halbe XP)"}</button>`}`;
+    const tipp = document.getElementById("wortle-tipp");
+    if (tipp) tipp.addEventListener("click", () => { Sound.playClick(); this.tippGenutzt = true; this.zeichne(); });
+
+    let html = "";
+    for (let r = 0; r < this.MAX; r++) {
+      const fertig = this.reihen[r];
+      const aktuell = !fertig && r === this.reihen.length;
+      html += `<div class="wortle-reihe ${aktuell ? "aktiv" : ""}">`;
+      for (let i = 0; i < this.laenge; i++) {
+        const b = fertig ? fertig.buchstaben[i] : (aktuell ? (this.eingabe[i] || "") : "");
+        const w = fertig ? fertig.wertung[i] : "";
+        html += `<div class="wortle-feld ${w} ${b && !fertig ? "gefuellt" : ""}" style="animation-delay:${fertig ? i * 0.09 : 0}s">${b || ""}</div>`;
+      }
+      html += "</div>";
+    }
+    document.getElementById("wortle-grid").innerHTML = html;
+    this.zeichneTasten();
+  },
+
+  zeichneTasten() {
+    const html = WORTLE_TASTEN.map((reihe) => `<div class="wt-reihe">${reihe.split("").map((c) => {
+      const breit = c === "⏎" || c === "⌫";
+      return `<button class="wt-taste ${breit ? "breit" : ""} ${this.tastenStand[c] || ""}" data-k="${c}">${c}</button>`;
+    }).join("")}</div>`).join("");
+    const box = document.getElementById("wortle-tasten");
+    box.innerHTML = html;
+    box.querySelectorAll(".wt-taste").forEach((b) => b.addEventListener("click", () => {
+      const k = b.dataset.k;
+      if (k === "⏎") this.absenden();
+      else if (k === "⌫") this.loesche();
+      else this.tippe(k);
+    }));
+  },
+
+  meldung(text, art) {
+    const el = document.getElementById("wortle-meldung");
+    if (!el) return;
+    el.className = `wortle-meldung ${art || ""}`;
+    el.innerHTML = text;
+  },
+
+  tippe(c) {
+    if (this.fertig || this.eingabe.length >= this.laenge) return;
+    this.eingabe += msGross(c);
+    Sound.tone(520, 0.03, "square", 0.05);
+    this.zeichne();
+  },
+
+  loesche() {
+    if (this.fertig || !this.eingabe.length) return;
+    this.eingabe = this.eingabe.slice(0, -1);
+    this.zeichne();
+  },
+
+  // Zwei Durchgaenge, damit doppelte Buchstaben richtig bewertet werden.
+  bewerte(versuch) {
+    const rest = {};
+    const wertung = new Array(this.laenge).fill("weg");
+    this.ziel.forEach((c, i) => { if (versuch[i] !== c) rest[c] = (rest[c] || 0) + 1; });
+    versuch.forEach((c, i) => {
+      if (c === this.ziel[i]) wertung[i] = "ok";
+      else if (rest[c]) { wertung[i] = "da"; rest[c]--; }
+    });
+    return wertung;
+  },
+
+  absenden() {
+    if (this.fertig) { this.start(this.laenge); return; }
+    const en = Lang.isEn();
+    if (this.eingabe.length < this.laenge) {
+      this.meldung(en ? `The word has ${this.laenge} letters.` : `Das Wort hat ${this.laenge} Buchstaben.`, "warn");
+      Sound.playWrong();
+      const reihe = document.querySelector(".wortle-reihe.aktiv");
+      if (reihe) { reihe.classList.remove("shake"); void reihe.offsetWidth; reihe.classList.add("shake"); }
+      return;
+    }
+    const buchstaben = this.eingabe.split("");
+    const wertung = this.bewerte(buchstaben);
+    this.reihen.push({ buchstaben, wertung });
+    // Tastaturfarbe: gruen schlaegt gelb, gelb schlaegt grau.
+    const rang = { weg: 0, da: 1, ok: 2 };
+    buchstaben.forEach((c, i) => {
+      if (!this.tastenStand[c] || rang[wertung[i]] > rang[this.tastenStand[c]]) this.tastenStand[c] = wertung[i];
+    });
+    this.eingabe = "";
+    const gewonnen = wertung.every((w) => w === "ok");
+    this.zeichne();
+    if (gewonnen) { this.ende(true); return; }
+    if (this.reihen.length >= this.MAX) { this.ende(false); return; }
+    Sound.tone(300, 0.08, "sine", 0.08);
+    this.meldung(`${en ? "Try" : "Versuch"} ${this.reihen.length + 1} / ${this.MAX}`);
+  },
+
+  ende(gewonnen) {
+    this.fertig = true;
+    const en = Lang.isEn();
+    const s = Minispiele.stand().wortle;
+    s.gespielt = (s.gespielt || 0) + 1;
+    s.verteilung = s.verteilung || [0, 0, 0, 0, 0, 0];
+    if (gewonnen) {
+      s.gewonnen = (s.gewonnen || 0) + 1;
+      s.serie = (s.serie || 0) + 1;
+      s.besteSerie = Math.max(s.besteSerie || 0, s.serie);
+      s.verteilung[this.reihen.length - 1]++;
+    } else {
+      s.serie = 0;
+    }
+    Economy.save();
+
+    // Das Wort kommt ins Deck: in drei Versuchen sass es, sonst nicht.
+    Minispiele.merkeWort(this.loesung.voll, this.loesung.en, this.loesung.theme, gewonnen && this.reihen.length <= 3);
+
+    if (gewonnen) {
+      Economy.incCombo();
+      let xp = WORTLE_XP[this.reihen.length - 1] || 14;
+      xp = Math.round(xp * (this.laenge / 5) * (this.tippGenutzt ? 0.5 : 1));
+      Minispiele.belohne(xp, "wortschatz", this.tippGenutzt ? 4 : 8);
+      Sound.playLevelUp();
+    } else {
+      Economy.resetCombo();
+      Sound.playWrong();
+      UI.refresh();
+    }
+    Sound.speak(this.loesung.voll);
+
+    this.zeichne();
+    const versuche = this.reihen.length;
+    this.meldung(`
+      <div class="wortle-ende ${gewonnen ? "gut" : "schlecht"}">
+        <div class="we-kopf">${gewonnen
+          ? `✓ ${en ? "Solved in" : "Gelöst in"} ${versuche} ${en ? (versuche === 1 ? "try" : "tries") : (versuche === 1 ? "Versuch" : "Versuchen")}`
+          : `✗ ${en ? "Not this time" : "Diesmal nicht"}`}</div>
+        <div class="we-wort">${this.loesung.voll}</div>
+        <div class="we-en">${this.loesung.en}${MinispielDaten.themaLabel(this.loesung.theme) ? ` · ${MinispielDaten.themaLabel(this.loesung.theme)}` : ""}</div>
+        <div class="we-knoepfe">
+          <button class="ms-knopf" id="wortle-hoeren">🔊 ${en ? "Listen" : "Anhören"}</button>
+          <button class="ms-knopf primaer" id="wortle-neu">${en ? "Next word" : "Nächstes Wort"} <kbd>${en ? "Space" : "Leertaste"}</kbd></button>
+        </div>
+      </div>`, gewonnen ? "gut" : "schlecht");
+    document.getElementById("wortle-hoeren").addEventListener("click", () => Sound.speak(this.loesung.voll));
+    document.getElementById("wortle-neu").addEventListener("click", () => { Sound.playClick(); this.start(this.laenge); });
+  },
+
+  taste(e) {
+    if (e.key === "Enter") { e.preventDefault(); this.absenden(); return; }
+    if (e.key === "Backspace") { e.preventDefault(); this.loesche(); return; }
+    if (e.key === " " || e.key === "Spacebar") {
+      e.preventDefault();
+      if (this.fertig) this.start(this.laenge);
+      return;
+    }
+    if (/^[a-zA-ZäöüÄÖÜß]$/.test(e.key)) { e.preventDefault(); this.tippe(e.key); }
+  },
+};
+
+// ---------------- Wortjagd: Ego-Shooter auf Wörter ----------------
+// Aus der Ich-Perspektive fliegen Wörter auf den Spieler zu. Der Auftrag sagt, welche
+// getroffen werden müssen (Artikel, Bedeutung, Wortart, Verbform). Falsch geschossen
+// oder ein richtiges Wort durchgelassen kostet ein Leben. Alles läuft auf einer eigenen
+// Leinwand mit eigener Schleife — die Weltkarte draußen pausiert derweil (siehe main.js).
+const JAGD_ZEIT = 75;        // Sekunden pro Runde
+const JAGD_LEBEN = 5;
+const JAGD_F = 520;          // Brennweite der Perspektive
+const JAGD_NAH = 0.62;       // ab hier ist ein Wort am Spieler vorbei
+
+const Wortjagd = {
+  leinwand: null,
+  malen: null,
+  laeuft: false,
+  raf: 0,
+  letzte: 0,
+
+  auftrag: null,
+  frage: "",
+  ziele: [],
+  funken: [],
+  strahlen: [],
+  hinweis: null,       // { text, bis }
+  fehlerliste: [],
+
+  zeit: JAGD_ZEIT,
+  leben: JAGD_LEBEN,
+  punkte: 0,
+  serie: 0,
+  besteSerie: 0,
+  treffer: 0,
+  fehler: 0,
+  verpasst: 0,
+  welle: 0,
+  rueckstoss: 0,
+
+  krx: 470,
+  kry: 230,
+  tasten: {},
+
+  // ---------- Aufträge ----------
+  // Jeder Auftrag liefert pro Welle { frage, frageEn, ziele }. ziel = { wort, richtig, de, en, theme }.
+  auftragArtikel() {
+    const nomen = MinispielDaten.nomen();
+    const artikel = zufall(["der", "die", "das"]);
+    const richtige = nomen.filter((n) => n.artikel === artikel);
+    const falsche = nomen.filter((n) => n.artikel !== artikel);
+    if (richtige.length < 4 || falsche.length < 4) return null;
+    const mach = (n, richtig) => ({ wort: n.wort, richtig, de: `${n.artikel} ${n.wort}`, en: n.en, theme: n.theme });
+    return {
+      art: "artikel", attr: "grammatik",
+      hilfe: `„${artikel}“`,
+      welle: () => ({
+        frage: `Triff nur die Wörter mit „${artikel}“`,
+        frageEn: `Hit only the words that take “${artikel}”`,
+        ziele: mischen([
+          ...mischen(richtige).slice(0, 2).map((n) => mach(n, true)),
+          ...mischen(falsche).slice(0, 3).map((n) => mach(n, false)),
+        ]),
+      }),
+    };
+  },
+
+  auftragBedeutung() {
+    const woerter = MinispielDaten.woerter().filter((w) => w.de && w.en);
+    if (woerter.length < 8) return null;
+    return {
+      art: "bedeutung", attr: "wortschatz",
+      welle: () => {
+        const ziel = zufall(woerter);
+        const gleichesThema = woerter.filter((w) => w.theme === ziel.theme && w.de !== ziel.de);
+        const pool = gleichesThema.length >= 3 ? gleichesThema : woerter.filter((w) => w.de !== ziel.de);
+        const mach = (w, richtig) => ({ wort: w.de, richtig, de: w.de, en: w.en, theme: w.theme });
+        return {
+          frage: `Triff das Wort für „${ziel.en}“`,
+          frageEn: `Hit the German word for “${ziel.en}”`,
+          ziele: mischen([mach(ziel, true), ...mischen(pool).slice(0, 4).map((w) => mach(w, false))]),
+        };
+      },
+    };
+  },
+
+  auftragWortart() {
+    const verben = MinispielDaten.verben();
+    const nomen = MinispielDaten.nomen();
+    if (verben.length < 4 || nomen.length < 4) return null;
+    const verbenJagen = Math.random() < 0.5;
+    return {
+      art: "wortart", attr: "grammatik",
+      welle: () => {
+        const v = mischen(verben).slice(0, verbenJagen ? 2 : 3)
+          .map((x) => ({ wort: x.wort, richtig: verbenJagen, de: x.wort, en: x.en, theme: null }));
+        const n = mischen(nomen).slice(0, verbenJagen ? 3 : 2)
+          .map((x) => ({ wort: x.wort, richtig: !verbenJagen, de: `${x.artikel} ${x.wort}`, en: x.en, theme: x.theme }));
+        return {
+          frage: verbenJagen ? "Triff nur die Verben" : "Triff nur die Nomen",
+          frageEn: verbenJagen ? "Hit only the verbs" : "Hit only the nouns",
+          ziele: mischen([...v, ...n]),
+        };
+      },
+    };
+  },
+
+  auftragVerbform() {
+    const verben = [...VERBS, ...MODAL_VERBS, ...VOKALWECHSEL_VERBS].filter((v) => v.forms && v.forms.length === 6);
+    if (!verben.length) return null;
+    return {
+      art: "verbform", attr: "grammatik",
+      welle: () => {
+        const v = zufall(verben);
+        const i = Math.floor(Math.random() * 6);
+        const richtig = v.forms[i];
+        // Andere Personen desselben Verbs als Ablenker — doppelte Formen fliegen raus.
+        const andere = [...new Set(v.forms.filter((f, k) => k !== i && f !== richtig))];
+        // merken:false — "ich gehe" ist eine Satzform, keine Vokabel fuers SRS-Deck.
+        const mach = (f, ok) => ({ wort: f, richtig: ok, de: `${PRONOUNS[i]} ${richtig}`, en: v.en, theme: null, merken: false });
+        return {
+          frage: `${PRONOUNS[i]} ____ (${v.inf}) — triff die richtige Form`,
+          frageEn: `${PRONOUNS[i]} ____ (${v.inf}) — hit the correct form`,
+          ziele: mischen([mach(richtig, true), ...mischen(andere).slice(0, 3).map((f) => mach(f, false))]),
+        };
+      },
+    };
+  },
+
+  neuerAuftrag() {
+    const bauer = mischen([
+      () => this.auftragBedeutung(), () => this.auftragArtikel(),
+      () => this.auftragWortart(), () => this.auftragVerbform(),
+    ]);
+    for (const b of bauer) { const a = b(); if (a) return a; }
+    return null;
+  },
+
+  // ---------- Bildschirme ----------
+  oeffne() {
+    Minispiele.aktiv = "jagd";
+    const en = Lang.isEn();
+    const s = Minispiele.stand().jagd;
+    Minispiele.body.innerHTML = `
+      <div class="ms-leiste">
+        ${Minispiele.kopf(en ? "Word hunt" : "Wortjagd")}
+        <div class="ms-punkte">${en ? "Best" : "Bestwert"} ${s.beste || 0}</div>
+      </div>
+      <div class="jagd-brief">
+        <div class="jb-icon">🎯</div>
+        <div>
+          <p>${en
+            ? "You are standing in the stream of words. Every few seconds a new order appears at the top — hit only the words it asks for."
+            : "Du stehst im Wortstrom. Alle paar Sekunden erscheint oben ein neuer Auftrag — triff nur die Wörter, die er verlangt."}</p>
+          <ul class="jb-liste">
+            <li>🖱️ ${en ? "Move the mouse to aim, click to shoot" : "Maus bewegen = zielen, Klick = schießen"}</li>
+            <li>⌨️ ${en ? "Or: arrow keys / WASD to aim, space to shoot" : "Oder: Pfeiltasten / WASD zum Zielen, Leertaste schießt"}</li>
+            <li>❤️ ${en ? `${JAGD_LEBEN} lives — a wrong hit or a missed target costs one` : `${JAGD_LEBEN} Leben — ein Fehlschuss oder ein durchgelassenes Wort kostet eins`}</li>
+            <li>⏱️ ${en ? `${JAGD_ZEIT} seconds · streaks give extra points` : `${JAGD_ZEIT} Sekunden · Serien geben Extrapunkte`}</li>
+          </ul>
+        </div>
+      </div>
+      <div class="jagd-knoepfe"><button class="ms-knopf primaer gross" id="jagd-start">▶ ${en ? "Start the hunt" : "Jagd starten"}</button></div>`;
+    Minispiele.bindZurueck();
+    document.getElementById("jagd-start").addEventListener("click", () => { Sound.playClick(); this.start(); });
+  },
+
+  start() {
+    const en = Lang.isEn();
+    Minispiele.aktiv = "jagd";
+    Minispiele.body.innerHTML = `
+      <div class="ms-leiste">
+        ${Minispiele.kopf(en ? "Word hunt" : "Wortjagd")}
+        <div class="ms-punkte" id="jagd-anzeige"></div>
+      </div>
+      <canvas id="jagd-leinwand" width="940" height="470"></canvas>
+      <p class="jagd-hinweis">🖱️ ${en ? "aim & click" : "zielen & klicken"} · ⌨️ ${en ? "arrows + space" : "Pfeiltasten + Leertaste"} · ⎋ ${en ? "back" : "zurück"}</p>`;
+    Minispiele.bindZurueck();
+
+    this.leinwand = document.getElementById("jagd-leinwand");
+    this.malen = this.leinwand.getContext("2d");
+    this.leinwand.addEventListener("mousemove", (e) => {
+      const r = this.leinwand.getBoundingClientRect();
+      this.krx = (e.clientX - r.left) * (this.leinwand.width / r.width);
+      this.kry = (e.clientY - r.top) * (this.leinwand.height / r.height);
+    });
+    this.leinwand.addEventListener("mousedown", (e) => { e.preventDefault(); this.schuss(); });
+
+    this.ziele = []; this.funken = []; this.strahlen = []; this.fehlerliste = [];
+    this.hinweis = null;
+    this.zeit = JAGD_ZEIT;
+    this.leben = JAGD_LEBEN;
+    this.punkte = 0; this.serie = 0; this.besteSerie = 0;
+    this.treffer = 0; this.fehler = 0; this.verpasst = 0; this.welle = 0;
+    this.rueckstoss = 0;
+    this.tasten = {};
+    this.krx = this.leinwand.width / 2;
+    this.kry = this.leinwand.height / 2;
+    this.auftrag = this.neuerAuftrag();
+    if (!this.auftrag) { this.oeffne(); return; }
+    this.neueWelle(0);
+    this.laeuft = true;
+    this.letzte = performance.now();
+    this.raf = requestAnimationFrame((t) => this.schleife(t));
+  },
+
+  stop() {
+    this.laeuft = false;
+    if (this.raf) cancelAnimationFrame(this.raf);
+    this.raf = 0;
+  },
+
+  // ---------- Wellen ----------
+  neueWelle(now) {
+    this.welle++;
+    // Alle paar Wellen ein neuer Auftrag — sonst wird es zu eintönig.
+    if (this.welle % 3 === 1 && this.welle > 1) this.auftrag = this.neuerAuftrag() || this.auftrag;
+    const w = this.auftrag.welle();
+    this.frage = Lang.isEn() ? w.frageEn : w.frage;
+    const tempo = 0.78 + Math.min(0.5, this.welle * 0.04) + Math.min(0.25, Combat.bezirkIndex() * 0.03);
+    const plaetze = mischen([-1, -0.5, 0, 0.5, 1]);
+    w.ziele.slice(0, 5).forEach((z, i) => {
+      this.ziele.push({
+        ...z,
+        x: plaetze[i] + (Math.random() - 0.5) * 0.14,
+        y: -0.55 + Math.random() * 0.9,
+        z: 4.2 + i * 0.55 + Math.random() * 0.3,
+        vz: tempo * (0.9 + Math.random() * 0.25),
+        schwung: Math.random() * Math.PI * 2,
+        tot: false,
+      });
+    });
+  },
+
+  // ---------- Schießen ----------
+  schuss() {
+    if (!this.laeuft) return;
+    Sound.tone(190, 0.05, "sawtooth", 0.12);
+    Sound.tone(90, 0.09, "square", 0.08, 0.01);
+    this.rueckstoss = 1;
+    this.strahlen.push({ x: this.krx, y: this.kry, bis: performance.now() + 90 });
+    // Nächstes Ziel zuerst: was vorn fliegt, wird auch vorn getroffen.
+    const kandidaten = this.ziele
+      .filter((z) => !z.tot && z.kasten && this.imKasten(z.kasten, this.krx, this.kry))
+      .sort((a, b) => a.z - b.z);
+    if (!kandidaten.length) {
+      this.punkte = Math.max(0, this.punkte - 2);
+      this.zeigeHinweis(Lang.isEn() ? "Missed" : "Daneben", "neutral");
+      return;
+    }
+    this.trefferAuf(kandidaten[0]);
+  },
+
+  imKasten(k, x, y) { return x >= k.x && x <= k.x + k.w && y >= k.y && y <= k.y + k.h; },
+
+  trefferAuf(ziel) {
+    ziel.tot = true;
+    const p = ziel.kasten;
+    this.funke(p.x + p.w / 2, p.y + p.h / 2, ziel.richtig ? "#72c08e" : "#e2795d");
+    if (ziel.richtig) {
+      this.treffer++;
+      this.serie++;
+      this.besteSerie = Math.max(this.besteSerie, this.serie);
+      this.punkte += 10 + Math.min(20, this.serie * 2);
+      Sound.playHit();
+      this.zeigeHinweis(`✓ ${ziel.de} — ${ziel.en}`, "gut");
+      if (ziel.merken !== false) Minispiele.merkeWort(ziel.de, ziel.en, ziel.theme, true);
+    } else {
+      this.fehler++;
+      this.serie = 0;
+      this.leben--;
+      Sound.playWrong();
+      this.zeigeHinweis(`✗ ${ziel.de} — ${ziel.en}`, "schlecht");
+      this.merkeFehler(ziel);
+      if (this.leben <= 0) this.ende();
+    }
+  },
+
+  // Ein richtiges Wort ist vorbeigeflogen.
+  verpasstesZiel(ziel) {
+    this.verpasst++;
+    this.serie = 0;
+    this.leben--;
+    Sound.playWrong();
+    this.zeigeHinweis(`${Lang.isEn() ? "Missed" : "Verpasst"}: ${ziel.de} — ${ziel.en}`, "schlecht");
+    this.merkeFehler(ziel);
+    if (this.leben <= 0) this.ende();
+  },
+
+  merkeFehler(ziel) {
+    if (ziel.merken !== false) Minispiele.merkeWort(ziel.de, ziel.en, ziel.theme, false);
+    if (!this.fehlerliste.some((f) => f.de === ziel.de)) this.fehlerliste.push({ de: ziel.de, en: ziel.en });
+  },
+
+  zeigeHinweis(text, art) { this.hinweis = { text, art, bis: performance.now() + 1500 }; },
+
+  funke(x, y, farbe) {
+    for (let i = 0; i < 14; i++) {
+      const a = Math.random() * Math.PI * 2;
+      const v = 1 + Math.random() * 4;
+      this.funken.push({ x, y, vx: Math.cos(a) * v, vy: Math.sin(a) * v, leben: 1, farbe });
+    }
+  },
+
+  // ---------- Schleife ----------
+  schleife(now) {
+    if (!this.laeuft) return;
+    const dt = Math.min(0.05, (now - this.letzte) / 1000);
+    this.letzte = now;
+
+    this.zeit -= dt;
+    if (this.zeit <= 0) { this.zeit = 0; this.ende(); return; }
+
+    // Fadenkreuz auch mit der Tastatur steuerbar.
+    const v = 420 * dt;
+    if (this.tasten["arrowleft"] || this.tasten["a"]) this.krx -= v;
+    if (this.tasten["arrowright"] || this.tasten["d"]) this.krx += v;
+    if (this.tasten["arrowup"] || this.tasten["w"]) this.kry -= v;
+    if (this.tasten["arrowdown"] || this.tasten["s"]) this.kry += v;
+    this.krx = clamp(this.krx, 10, this.leinwand.width - 10);
+    this.kry = clamp(this.kry, 10, this.leinwand.height - 10);
+
+    for (const z of this.ziele) {
+      if (z.tot) continue;
+      z.z -= z.vz * dt;
+      z.schwung += dt * 1.6;
+      if (z.z <= JAGD_NAH) {
+        z.tot = true;
+        if (z.richtig) this.verpasstesZiel(z);
+      }
+    }
+    this.ziele = this.ziele.filter((z) => !z.tot);
+    // Sind alle richtigen Woerter der Welle erledigt, ziehen die uebrigen schnell vorbei —
+    // sonst wartet man nach einem guten Treffer sekundenlang auf die naechste Frage.
+    if (this.ziele.length && !this.ziele.some((z) => z.richtig)) {
+      for (const z of this.ziele) if (!z.eilt) { z.eilt = true; z.vz *= 3.5; }
+    }
+    if (!this.ziele.length && this.laeuft) this.neueWelle(now);
+
+    for (const f of this.funken) { f.x += f.vx; f.y += f.vy; f.vy += 0.16; f.leben -= dt * 1.8; }
+    this.funken = this.funken.filter((f) => f.leben > 0);
+    this.strahlen = this.strahlen.filter((s) => s.bis > now);
+    this.rueckstoss = Math.max(0, this.rueckstoss - dt * 5);
+    if (this.hinweis && this.hinweis.bis < now) this.hinweis = null;
+
+    this.zeichne(now);
+    // Leben, Punkte und Zeit stehen auf der Leinwand — die Zeile darueber zeigt nur die Welle.
+    const anzeige = document.getElementById("jagd-anzeige");
+    if (anzeige) anzeige.textContent = `${Lang.isEn() ? "Wave" : "Welle"} ${this.welle}`;
+    this.raf = requestAnimationFrame((t) => this.schleife(t));
+  },
+
+  // ---------- Zeichnen ----------
+  zeichne(now) {
+    const c = this.malen, B = this.leinwand.width, H = this.leinwand.height;
+    const cx = B / 2, cy = H * 0.46;
+    const bez = DISTRICTS.find((d) => d.id === window.currentDistrictId()) || DISTRICTS[0];
+    const akz = bez.accent || "#5fb0a4";
+
+    // Himmel und Boden in der Farbe des Bezirks — der Shooter bleibt Teil derselben Welt.
+    const himmel = c.createLinearGradient(0, 0, 0, cy);
+    himmel.addColorStop(0, shade(akz, -55));
+    himmel.addColorStop(1, shade(akz, 10));
+    c.fillStyle = himmel;
+    c.fillRect(0, 0, B, cy);
+    const boden = c.createLinearGradient(0, cy, 0, H);
+    boden.addColorStop(0, shade(akz, -30));
+    boden.addColorStop(1, "#07100e");
+    c.fillStyle = boden;
+    c.fillRect(0, cy, B, H - cy);
+
+    // Fluchtlinien und mitlaufende Querlinien geben die Tiefe.
+    c.strokeStyle = "rgba(255,255,255,.1)";
+    c.lineWidth = 1;
+    for (let i = -6; i <= 6; i++) {
+      c.beginPath();
+      c.moveTo(cx + i * 22, cy);
+      c.lineTo(cx + i * 230, H);
+      c.stroke();
+    }
+    for (let i = 0; i < 9; i++) {
+      const zz = ((i + (now / 1400) % 1) * 0.8) + 0.5;
+      const y = cy + JAGD_F / (zz * 3.4);
+      if (y > H) continue;
+      c.globalAlpha = Math.min(1, 0.5 / zz);
+      c.beginPath(); c.moveTo(0, y); c.lineTo(B, y); c.stroke();
+      c.globalAlpha = 1;
+    }
+
+    // Ziele von hinten nach vorn, damit nahe Wörter oben liegen.
+    const sortiert = [...this.ziele].sort((a, b) => b.z - a.z);
+    for (const z of sortiert) {
+      // Groesse macht die Tiefe, die Bahn bleibt fast gerade: so bleibt jedes Wort lesbar
+      // und fliegt nicht seitlich aus dem Bild, bevor man es lesen konnte.
+      const skala = JAGD_F / z.z;
+      const naeher = Math.max(0, 4.6 - z.z);
+      const spreiz = 1 + naeher * 0.05;
+      const sx = cx + z.x * B * 0.4 * spreiz;
+      const sy = cy + (z.y + Math.sin(z.schwung) * 0.05) * H * 0.34 * spreiz;
+      const groesse = clamp(skala * 0.085, 15, 38);
+      c.font = `800 ${groesse}px 'Bricolage Grotesque', 'Segoe UI', sans-serif`;
+      const tw = c.measureText(z.wort).width;
+      const pad = groesse * 0.45;
+      const w = tw + pad * 2, h = groesse * 1.65;
+      z.kasten = { x: sx - w / 2, y: sy - h / 2, w, h };
+      const nah = clamp(1.25 - z.z / 7, 0.25, 1);
+      c.globalAlpha = nah;
+      c.fillStyle = "rgba(8,18,16,.82)";
+      c.strokeStyle = shade(akz, 60);
+      c.lineWidth = Math.max(1, groesse * 0.06);
+      this.kasten(c, z.kasten.x, z.kasten.y, w, h, groesse * 0.35);
+      c.fill(); c.stroke();
+      c.fillStyle = "#f2f7f4";
+      c.textAlign = "center"; c.textBaseline = "middle";
+      c.fillText(z.wort, sx, sy + 1);
+      c.globalAlpha = 1;
+    }
+
+    for (const f of this.funken) {
+      c.globalAlpha = Math.max(0, f.leben);
+      c.fillStyle = f.farbe;
+      c.fillRect(f.x - 2, f.y - 2, 4, 4);
+    }
+    c.globalAlpha = 1;
+
+    // Schüsse: zwei Strahlen aus den unteren Ecken auf das Fadenkreuz.
+    for (const s of this.strahlen) {
+      c.strokeStyle = "rgba(255,214,120,.85)";
+      c.lineWidth = 2;
+      [[26, H], [B - 26, H]].forEach((p) => {
+        c.beginPath(); c.moveTo(p[0], p[1]); c.lineTo(s.x, s.y); c.stroke();
+      });
+    }
+
+    this.zeichneWaffe(c, B, H);
+    this.zeichneFadenkreuz(c);
+    this.zeichneHud(c, B, H, now);
+  },
+
+  kasten(c, x, y, w, h, r) {
+    c.beginPath();
+    c.moveTo(x + r, y);
+    c.arcTo(x + w, y, x + w, y + h, r);
+    c.arcTo(x + w, y + h, x, y + h, r);
+    c.arcTo(x, y + h, x, y, r);
+    c.arcTo(x, y, x + w, y, r);
+    c.closePath();
+  },
+
+  // Zwei Laeufe am unteren Bildrand — nur Andeutung, aber sie machen die Ich-Perspektive klar.
+  zeichneWaffe(c, B, H) {
+    const rs = this.rueckstoss * 16;
+    // dir zeigt jeweils ins Bild hinein: links nach rechts, rechts nach links.
+    [[1, 0], [-1, B]].forEach(([dir, basis]) => {
+      const x = basis - dir * 24;
+      const lauf = c.createLinearGradient(x, H, x + dir * 150, H - 110);
+      lauf.addColorStop(0, "#2c3f38");
+      lauf.addColorStop(1, "#5c7a70");
+      c.fillStyle = lauf;
+      c.strokeStyle = "rgba(0,0,0,.55)";
+      c.lineWidth = 2;
+      c.beginPath();
+      c.moveTo(x, H + rs);
+      c.lineTo(x + dir * 96, H - 104 + rs);
+      c.lineTo(x + dir * 152, H - 64 + rs);
+      c.lineTo(x + dir * 82, H + rs);
+      c.closePath();
+      c.fill(); c.stroke();
+      // Muendung: leuchtet kurz nach dem Schuss.
+      c.fillStyle = this.rueckstoss > 0.4 ? "rgba(255,214,120,.9)" : "rgba(180,200,192,.5)";
+      c.beginPath();
+      c.arc(x + dir * 108, H - 96 + rs, 7, 0, Math.PI * 2);
+      c.fill();
+    });
+  },
+
+  zeichneFadenkreuz(c) {
+    const x = this.krx, y = this.kry;
+    c.strokeStyle = "rgba(255,120,100,.95)";
+    c.lineWidth = 2;
+    c.beginPath(); c.arc(x, y, 13, 0, Math.PI * 2); c.stroke();
+    c.beginPath();
+    c.moveTo(x - 22, y); c.lineTo(x - 7, y);
+    c.moveTo(x + 7, y); c.lineTo(x + 22, y);
+    c.moveTo(x, y - 22); c.lineTo(x, y - 7);
+    c.moveTo(x, y + 7); c.lineTo(x, y + 22);
+    c.stroke();
+    c.fillStyle = "rgba(255,120,100,.95)";
+    c.fillRect(x - 1.5, y - 1.5, 3, 3);
+  },
+
+  zeichneHud(c, B, H, now) {
+    // Auftragsband oben
+    c.fillStyle = "rgba(6,14,12,.78)";
+    c.fillRect(0, 0, B, 54);
+    c.fillStyle = "#e0a94e";
+    c.font = "800 21px 'Bricolage Grotesque', 'Segoe UI', sans-serif";
+    c.textAlign = "left"; c.textBaseline = "middle";
+    c.fillText(`🎯 ${this.frage}`, 18, 27);
+
+    c.textAlign = "right";
+    c.fillStyle = "#eef2ef";
+    c.font = "700 17px 'IBM Plex Mono', monospace";
+    c.fillText(`${"❤".repeat(Math.max(0, this.leben))}  ${this.punkte}`, B - 18, 27);
+
+    // Zeitbalken
+    c.fillStyle = "rgba(255,255,255,.12)";
+    c.fillRect(0, 54, B, 5);
+    c.fillStyle = this.zeit < 15 ? "#e2795d" : "#5fb0a4";
+    c.fillRect(0, 54, B * (this.zeit / JAGD_ZEIT), 5);
+
+    if (this.serie >= 3) {
+      c.textAlign = "center";
+      c.fillStyle = "rgba(224,169,78,.9)";
+      c.font = "800 15px 'Bricolage Grotesque', sans-serif";
+      c.fillText(`${Lang.isEn() ? "Streak" : "Serie"} ×${this.serie}`, B / 2, 76);
+    }
+
+    if (this.hinweis) {
+      const farbe = this.hinweis.art === "gut" ? "#72c08e" : this.hinweis.art === "schlecht" ? "#e2795d" : "#a9beb7";
+      c.textAlign = "center";
+      c.fillStyle = "rgba(6,14,12,.8)";
+      const br = c.measureText(this.hinweis.text).width;
+      c.font = "700 18px 'Bricolage Grotesque', sans-serif";
+      c.fillRect(B / 2 - br / 2 - 60, H - 52, br + 120, 34);
+      c.fillStyle = farbe;
+      c.fillText(this.hinweis.text, B / 2, H - 35);
+    }
+  },
+
+  // ---------- Ende ----------
+  ende() {
+    this.stop();
+    const en = Lang.isEn();
+    const s = Minispiele.stand().jagd;
+    s.gespielt = (s.gespielt || 0) + 1;
+    s.beste = Math.max(s.beste || 0, this.punkte);
+    s.treffer = (s.treffer || 0) + this.treffer;
+    Economy.save();
+
+    const gesamt = this.treffer + this.fehler + this.verpasst;
+    const quote = gesamt ? Math.round((this.treffer / gesamt) * 100) : 0;
+    const xp = Math.min(150, Math.round(this.punkte * 0.35));
+    const bernstein = Math.floor(this.punkte / 60);
+    if (this.treffer > 0) Economy.incCombo();
+    Minispiele.belohne(xp, (this.auftrag && this.auftrag.attr) || "wortschatz", bernstein);
+
+    Minispiele.body.innerHTML = `
+      <div class="ms-leiste">${Minispiele.kopf(en ? "Word hunt" : "Wortjagd")}<div class="ms-punkte">${en ? "Best" : "Bestwert"} ${s.beste}</div></div>
+      <div class="jagd-ende">
+        <div class="je-punkte">${this.punkte}<span>${en ? "points" : "Punkte"}</span></div>
+        <div class="je-zahlen">
+          <div><strong>${this.treffer}</strong>${en ? "hits" : "Treffer"}</div>
+          <div><strong>${this.fehler}</strong>${en ? "wrong" : "Fehlschüsse"}</div>
+          <div><strong>${this.verpasst}</strong>${en ? "missed" : "verpasst"}</div>
+          <div><strong>${quote}%</strong>${en ? "accuracy" : "Trefferquote"}</div>
+          <div><strong>×${this.besteSerie}</strong>${en ? "best streak" : "beste Serie"}</div>
+        </div>
+        <div class="je-lohn">+${xp} XP${bernstein ? ` · +${bernstein} Bernstein` : ""}</div>
+        ${this.fehlerliste.length ? `
+          <div class="je-merken">
+            <div class="je-merken-kopf">📌 ${en ? "Worth remembering" : "Das solltest du dir merken"}</div>
+            ${this.fehlerliste.slice(0, 8).map((f) => `
+              <button class="je-wort" data-de="${f.de.replace(/"/g, "&quot;")}">
+                <span>${f.de}</span><span class="je-en">${f.en}</span><span class="je-ton">🔊</span>
+              </button>`).join("")}
+          </div>` : `<p class="je-perfekt">✨ ${en ? "No mistakes — strong round!" : "Kein Fehler — starke Runde!"}</p>`}
+        <div class="jagd-knoepfe">
+          <button class="ms-knopf" id="jagd-hub">${en ? "Arcade" : "Spielhalle"}</button>
+          <button class="ms-knopf primaer" id="jagd-nochmal">${en ? "Hunt again" : "Nochmal jagen"}</button>
+        </div>
+      </div>`;
+    Minispiele.bindZurueck();
+    Minispiele.body.querySelectorAll(".je-wort").forEach((b) =>
+      b.addEventListener("click", () => Sound.speak(b.dataset.de)));
+    document.getElementById("jagd-hub").addEventListener("click", () => { Sound.playClick(); Minispiele.hub(); });
+    document.getElementById("jagd-nochmal").addEventListener("click", () => { Sound.playClick(); this.start(); });
+  },
+
+  // ---------- Tastatur ----------
+  taste(e) {
+    const k = e.key.toLowerCase();
+    if (e.key === " " || e.key === "Spacebar" || e.key === "Enter") {
+      e.preventDefault();
+      if (!this.tasten[" "]) this.schuss();
+      this.tasten[" "] = true;
+      return;
+    }
+    if (["arrowleft", "arrowright", "arrowup", "arrowdown", "w", "a", "s", "d"].includes(k)) {
+      e.preventDefault();
+      this.tasten[k] = true;
+    }
+  },
+
+  tasteAuf(e) {
+    if (e.key === " " || e.key === "Spacebar" || e.key === "Enter") { this.tasten[" "] = false; return; }
+    this.tasten[e.key.toLowerCase()] = false;
+  },
+};
+
+
 // ===== ui.js =====
 // Der Strom — HUD & Skilltree-Panel (Abschnitt 7 & 8 des GDD)
 
@@ -14674,6 +16408,7 @@ const DOCK = {
   "map-toggle":        { icon: "🗺️", de: "Karte & Teleport", en: "Map & teleport" },
   "translator-toggle": { icon: "🧭", de: "Kompass", en: "Compass" },
   "vocab-toggle":      { icon: "🧠", de: "Vokabeltrainer", en: "Vocabulary trainer" },
+  "minispiele-toggle": { icon: "🎮", de: "Minispiele", en: "Mini games" },
   "lang-toggle":       { icon: "🌐", de: "Sprache: Deutsch", en: "Language: English" },
   "mute-toggle":       { icon: "🔊", de: "Ton", en: "Sound" },
   "settings-toggle":   { icon: "⚙️", de: "Einstellungen", en: "Settings" },
@@ -15096,6 +16831,7 @@ const MainMenu = {
   open() {
     if (Combat.active) Combat.close();
     Panels.closeAll();
+    if (Minispiele.isOpen()) Minispiele.close();
     if (MapView.isOpen()) MapView.close();
     if (House.isOpen()) House.close();
     player.target = null;
@@ -15246,6 +16982,7 @@ const HudAktionen = {
 window.HudAktionen = HudAktionen;
 Konto.init();
 HudAktionen.init();
+Minispiele.init();
 
 // #game-wrap darf nie scrollen: Fokuswechsel (z.B. Anmelde-Dialog) schob sonst das ganze Spielfeld
 // seitlich weg. overflow:clip verhindert das in neuen Browsern, das hier faengt aeltere ab.
@@ -15266,6 +17003,8 @@ function tippenInFeld(e) {
 }
 window.addEventListener("keydown", (e) => {
   if (tippenInFeld(e)) return;
+  // Spielhalle hat Vorrang: dort wird getippt (Wortle) und geschossen (Wortjagd).
+  if (Minispiele.isOpen()) { Minispiele.taste(e); return; }
   // Erklaerfilm hat Vorrang: Leertaste = Pause, Esc = schliessen.
   if (Erklaerfilm.isOpen()) {
     if (e.key === " " || e.key === "Spacebar") { e.preventDefault(); Erklaerfilm.umschalten(); }
@@ -15303,13 +17042,16 @@ window.addEventListener("keydown", (e) => {
   }
   if (e.key.toLowerCase() === "i" && !Combat.active && !Dialogue.active && !Settings.isOpen() && !Lesson.pending && !MapView.isOpen() && !House.isOpen() && !Story.isOpen() && !PathChoice.isOpen() && !MainMenu.isOpen() && !Customize.isOpen() && charSelected()) UI.toggleInventory();
 });
-window.addEventListener("keyup", (e) => { keys[e.key.toLowerCase()] = false; });
+window.addEventListener("keyup", (e) => {
+  if (Minispiele.isOpen()) { Minispiele.tasteAuf(e); return; }
+  keys[e.key.toLowerCase()] = false;
+});
 
 // ---------------- Eingabe: Maus (Klick-Bewegung, "alles anklickbar") ----------------
 canvas.addEventListener("mousedown", (e) => {
   // Klick ins Spielbild schliesst ein offenes Dock-Fenster — und bewegt die Figur dann NICHT.
   if (Panels.anyOpen()) { Panels.closeAll(); return; }
-  if (Combat.active || Dialogue.active || Settings.isOpen() || Lesson.pending || MapView.isOpen() || House.isOpen() || Story.isOpen() || PathChoice.isOpen() || MainMenu.isOpen() || Customize.isOpen() || !charSelected()) return;
+  if (Combat.active || Dialogue.active || Settings.isOpen() || Lesson.pending || MapView.isOpen() || House.isOpen() || Story.isOpen() || PathChoice.isOpen() || MainMenu.isOpen() || Customize.isOpen() || Minispiele.isOpen() || !charSelected()) return;
   const rect = canvas.getBoundingClientRect();
   const scaleX = canvas.width / rect.width, scaleY = canvas.height / rect.height;
   const cx = (e.clientX - rect.left) * scaleX;
@@ -15371,7 +17113,7 @@ function updatePickups(cfg, now) {
 function update(now) {
   const cfg = currentState.cfg;
 
-  if (!Combat.active && !Dialogue.active && !Settings.isOpen() && !Lesson.pending && !MapView.isOpen() && !House.isOpen() && !Story.isOpen() && !PathChoice.isOpen() && !MainMenu.isOpen() && !Customize.isOpen() && !Erklaerfilm.isOpen() && charSelected()) {
+  if (!Combat.active && !Dialogue.active && !Settings.isOpen() && !Lesson.pending && !MapView.isOpen() && !House.isOpen() && !Story.isOpen() && !PathChoice.isOpen() && !MainMenu.isOpen() && !Customize.isOpen() && !Erklaerfilm.isOpen() && !Minispiele.isOpen() && charSelected()) {
     let dx = 0, dy = 0;
     const kbActive = keys["w"] || keys["arrowup"] || keys["s"] || keys["arrowdown"] || keys["a"] || keys["arrowleft"] || keys["d"] || keys["arrowright"];
     if (kbActive) player.target = null;
