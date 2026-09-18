@@ -15380,6 +15380,8 @@ const MinispielDaten = {
   },
 
   // Nomen mit sicherem Artikel: { artikel, wort, en, theme }.
+  // Woerter mit zwei Artikeln (der/die Verlobte) fliegen ganz raus — im Artikel-Auftrag
+  // waeren sie gleichzeitig richtig und falsch.
   nomen() {
     const list = [];
     for (const w of this.woerter()) {
@@ -15389,7 +15391,14 @@ const MinispielDaten = {
     for (const n of ARTICLE_NOUNS) {
       if (!list.some((x) => x.wort === n.noun)) list.push({ artikel: n.article, wort: n.noun, en: n.en, theme: null });
     }
-    return list;
+    const artikel = {};
+    for (const n of list) artikel[n.wort] = artikel[n.wort] && artikel[n.wort] !== n.artikel ? "?" : n.artikel;
+    const gesehen = new Set();
+    return list.filter((n) => {
+      if (artikel[n.wort] === "?" || gesehen.has(n.wort)) return false;
+      gesehen.add(n.wort);
+      return true;
+    });
   },
 
   // Verben im Infinitiv: { wort, en }.
