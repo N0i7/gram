@@ -1328,6 +1328,51 @@ canvas{ filter:saturate(1.18) contrast(1.03); }
 }
 
 
+/* ---------------- Process: Lebensgeschichte des Spiels ---------------- */
+/* Ueber Hauptmenue (50) und Einstellungen (55). */
+.mainmenu-btn.klein{ font-size:.78rem; padding:6px 16px; align-self:center; opacity:.8; }
+.mainmenu-btn.klein:hover{ opacity:1; }
+#prozess-overlay{
+  position:absolute; inset:0; z-index:56; display:flex; align-items:center; justify-content:center;
+  background:rgba(6,10,9,.78);
+}
+#prozess-card{
+  width:700px; max-width:92%; max-height:90%; display:flex; flex-direction:column;
+  background:#132523; border:1px solid rgba(255,255,255,.14); border-radius:20px;
+  padding:22px 24px 18px; box-shadow:0 20px 60px rgba(0,0,0,.6);
+}
+#prozess-card h2{ margin:0 0 4px; font-size:1.2rem; }
+#prozess-card .cs-sub{ margin:0 0 14px; }
+#prozess-liste{ overflow-y:auto; flex:1; padding-right:6px; position:relative; }
+/* Zeitstrahl hinter den Mini-Bildschirmen */
+#prozess-liste::before{
+  content:""; position:absolute; left:79px; top:10px; bottom:10px; width:2px;
+  background:linear-gradient(180deg, var(--teal), var(--gold));
+  opacity:.35;
+}
+.prozess-eintrag{ position:relative; display:flex; gap:16px; align-items:flex-start; margin-bottom:14px; }
+.prozess-bild{
+  flex:0 0 160px; height:100px; border-radius:10px; position:relative;
+  border:1px solid rgba(255,255,255,.16); box-shadow:0 6px 16px rgba(0,0,0,.4);
+  display:flex; align-items:center; justify-content:center; overflow:hidden;
+}
+.prozess-bild svg{ position:absolute; inset:0; width:100%; height:100%; display:block; }
+.prozess-nr{
+  position:absolute; top:4px; left:6px; z-index:1; font-family:var(--font-mono); font-size:.6rem; text-shadow:0 1px 2px #000;
+  color:rgba(255,255,255,.7);
+}
+.prozess-text{ flex:1; min-width:0; }
+.prozess-kopf{ display:flex; flex-wrap:wrap; align-items:baseline; gap:4px 10px; margin-bottom:3px; }
+.prozess-kopf strong{ font-size:.92rem; }
+.prozess-datum{ font-family:var(--font-mono); font-size:.64rem; color:#87a39b; }
+.prozess-text p{ margin:0; font-size:.8rem; line-height:1.45; color:#c9d6d1; }
+.prozess-eintrag.aktuell .prozess-bild{ border-color:var(--gold); box-shadow:0 0 18px rgba(224,169,78,.35); }
+#prozess-close-btn{
+  margin-top:12px; padding:10px; border-radius:12px; border:none; background:var(--teal); color:#062522;
+  font-family:var(--font-display); font-weight:700; cursor:pointer;
+}
+
+
 /* ---- Website: Anmelde-Dialoge im hellen FLOß-Design ---- */
 .floss-overlay{
   --bg:#ffffff; --bg2:#f5f5f7; --text:#1d1d1f; --sec:#6e6e73; --line:#d2d2d7;
@@ -1348,6 +1393,7 @@ canvas{ filter:saturate(1.18) contrast(1.03); }
           <button id="mainmenu-continue" class="mainmenu-btn primary hidden">▶ Weiterspielen</button>
           <button id="mainmenu-new" class="mainmenu-btn">✦ Neues Spiel</button>
           <button id="mainmenu-settings" class="mainmenu-btn ghost">⚙️ Einstellungen</button>
+          <button id="mainmenu-prozess" class="mainmenu-btn ghost klein">🕰️ Process</button>
         </div>
         <p id="mainmenu-savenote" class="mainmenu-note hidden"></p>
         <div id="mainmenu-konto"></div>
@@ -1596,6 +1642,14 @@ canvas{ filter:saturate(1.18) contrast(1.03); }
       <button id="settings-close-btn">Zurück</button>
     </div>
   </div>
+  <div id="prozess-overlay" class="hidden">
+    <div id="prozess-card">
+      <h2 id="prozess-title">Process</h2>
+      <p class="cs-sub" id="prozess-sub"></p>
+      <div id="prozess-liste"></div>
+      <button id="prozess-close-btn">Zurück</button>
+    </div>
+  </div>
   </div><!-- /#game-shell -->
 
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
@@ -1629,6 +1683,11 @@ const STRINGS = {
   menuContinue:   { de: "▶ Weiterspielen",  en: "▶ Continue" },
   menuNew:        { de: "✦ Neues Spiel",    en: "✦ New game" },
   menuSettings:   { de: "⚙️ Einstellungen", en: "⚙️ Settings" },
+  menuProzess:    { de: "🕰️ Process",       en: "🕰️ Process" },
+  prozessTitel:   { de: "Process — so ist Der Strom entstanden", en: "Process — how Der Strom came to be" },
+  prozessSub:     { de: "Jede Version seit dem ersten Prototyp und was sich jeweils verändert hat.",
+                    en: "Every version since the first prototype and what changed each time." },
+  prozessZurueck: { de: "Zurück",           en: "Back" },
   saveInfo:       { de: "Spielstand",       en: "Save" },
   saveLessons:    { de: "Lektionen",        en: "lessons" },
 
@@ -14438,6 +14497,204 @@ document.getElementById("translator-toggle").addEventListener("click", () => { S
 Translator.input.addEventListener("input", () => Translator.render(Translator.input.value));
 
 
+// ===== prozess.js =====
+// ---------------- Process: die Lebensgeschichte des Spiels ----------------
+// Fenster ueber dem Hauptmenue. Jede Version bekommt einen Mini-Bildschirm (Farbwelt + Symbole,
+// die damals zu sehen waren), optional Kennzahlen und 1–3 kurze Saetze. Quelle: Aenderungsprotokoll
+// in der README. Neue Version = unten anhaengen.
+
+const PROZESS_VERSIONEN = [
+  {
+    nr: "0.1", datum: "Anfang Sept. 2026", titel: "Der Prototyp", titelEn: "The prototype",
+    farbe: ["#1e3a35", "#0b1b1f"], szene: "figur bernstein kiste",
+    text: "Ein Game Design Document und eine erste 2D-Welt von oben. Man läuft herum, sammelt Bernstein und öffnet Kisten — noch fast ohne Deutschaufgaben.",
+    textEn: "A game design document and a first top-down 2D world. You walk around, collect amber and open crates — with hardly any German tasks yet.",
+  },
+  {
+    nr: "0.2", datum: "Anfang Sept. 2026", titel: "Welt und Figur", titelEn: "World and character",
+    farbe: ["#24453c", "#0f231d"], szene: "haeuser figur bernstein",
+    text: "Startmenü, Charakterwahl mit Farbe und Ziellevel, das Heimatdorf mit Grammatik-Häusern. Dazu Buch, Karte, Kompass und das ganze Spiel auf Deutsch und Englisch.",
+    textEn: "Start menu, character creation with colour and target level, the home village with grammar houses. Plus book, map, compass and the whole game in German and English.",
+  },
+  {
+    nr: "0.3", datum: "11.09.2026", titel: "Mehr Aufgaben", titelEn: "More exercises", zahlen: "753 Wörter",
+    farbe: ["#27443f", "#10201d"], szene: "haeuser figur aufgabe",
+    text: "Neue Aufgabentypen: knifflige Auswahl, Verbinden, Wörter fangen, Umformen. Zwölf fehlende B1-Themen kamen dazu, der Wortschatz wuchs von 244 auf 753 Wörter.",
+    textEn: "New exercise types: tricky choice, matching, catching words, rewriting. Twelve missing B1 topics were added, vocabulary grew from 244 to 753 words.",
+  },
+  {
+    nr: "0.4", datum: "11.09.2026 abends", titel: "Hören", titelEn: "Listening",
+    farbe: ["#26404a", "#0e1b22"], szene: "haeuser figur hoeren",
+    text: "Hörverstehen von 12 auf 60 Sätze, passend zum Niveau des Bezirks. Freitext-Aufgaben werden innerhalb einer Lektion langsam schwerer.",
+    textEn: "Listening grew from 12 to 60 sentences, matched to each district's level. Free-text tasks now get harder step by step within a lesson.",
+  },
+  {
+    nr: "0.5", datum: "14./15.09.2026", titel: "Neun Bezirke und Bosse", titelEn: "Nine districts and bosses", zahlen: "9 Bezirke · 1.229 Wörter",
+    farbe: ["#3a2f52", "#150f22"], szene: "haeuser figur boss portal",
+    text: "Neun Bezirke statt fünf, jeder mit eigenem Boss. Die ersten Erklärfilme, und das Portal öffnet sich erst nach bestandenem Test.",
+    textEn: "Nine districts instead of five, each with its own boss. The first explainer films, and the portal only opens after passing the test.",
+  },
+  {
+    nr: "0.6", datum: "15.09.2026", titel: "Zehn Lektionen je Bezirk", titelEn: "Ten lessons per district", zahlen: "90 Lektionen",
+    farbe: ["#2f4a3a", "#102015"], szene: "lektionen haeuser figur boss",
+    text: "15 neue Grammatik-Lektionen, jetzt zehn pro Bezirk. Nach der fünften Lektion wartet ein Zwischentest mit eigenem Wächter.",
+    textEn: "15 new grammar lessons, now ten per district. After the fifth lesson a mid-test with its own guardian is waiting.",
+  },
+  {
+    nr: "0.7", datum: "15.09.2026", titel: "Filme, Bosse, Farbe", titelEn: "Films, bosses, colour",
+    farbe: ["#4a2f45", "#1d0f1b"], szene: "lektionen falter figur boss bossleiste film",
+    text: "Erklärfilme bekommen Dialoge und ein Mitmach-Quiz. Bosse haben eine Lebensleiste und eine zweite Phase, in den Bezirken fliegen Schmetterlinge und Glühwürmchen.",
+    textEn: "Explainer films get dialogues and an interactive quiz. Bosses get a health bar and a second phase; butterflies and fireflies fly through the districts.",
+  },
+  {
+    nr: "0.8", datum: "15.09.2026", titel: "Online mit FLOß-Login", titelEn: "Online with FLOß login",
+    farbe: ["#1f3b52", "#0b1722"], szene: "lektionen haeuser figur dock login",
+    text: "Das Spiel läuft auf der FLOß-Website, mit Konto und gespeichertem Fortschritt. Neue Knöpfe für Reisen und Konto, dazu echte Musik statt Computertöne.",
+    textEn: "The game runs on the FLOß website, with an account and saved progress. New buttons for travel and account, plus real music instead of computer beeps.",
+  },
+  {
+    nr: "0.9", datum: "17.09.2026", titel: "Unity-Fassung", titelEn: "Unity version",
+    farbe: ["#2b2b3a", "#101018"], szene: "lektionen haeuser figur unity",
+    text: "Das ganze Spiel noch einmal als Unity-Projekt in C#. Die Inhalte kommen automatisch aus der Web-Version, beide teilen sich den Spielstand.",
+    textEn: "The whole game rebuilt as a Unity project in C#. Content is exported automatically from the web version, and both share the save game.",
+  },
+  {
+    nr: "1.0", datum: "17.09.2026", titel: "Die Spielhalle", titelEn: "The arcade",
+    farbe: ["#3d2a55", "#150c22"], szene: "lektionen haeuser figur dock wortle",
+    text: "Zwei Minispiele: Wortle (Wort in sechs Versuchen erraten) und Wortjagd (die richtigen Wörter abschießen). Beide nutzen den Wortschatz, den man schon gelernt hat.",
+    textEn: "Two mini games: Wortle (guess the word in six tries) and Word Hunt (shoot the right words). Both use the vocabulary you have already learned.",
+  },
+  {
+    nr: "1.1", datum: "18.09.2026", titel: "Viel mehr Inhalt", titelEn: "Much more content", zahlen: "1.391 Wörter · 23 Lesetexte",
+    farbe: ["#2e4a44", "#0f1f1b"], szene: "lektionen haeuser figur dialog",
+    text: "Mehr Konjunktiv-Formen, 24 E-Mail-Aufgaben, 26 Alltagsdialoge und 7 neue Lesetexte. Zehn neue Wortschatz-Themen, zum Beispiel Bahnhof, Pflege und Büro.",
+    textEn: "More subjunctive forms, 24 email tasks, 26 everyday dialogues and 7 new reading texts. Ten new vocabulary topics such as station, nursing and office.",
+  },
+  {
+    nr: "1.2", datum: "18.09.2026", titel: "Serie und Umlaute", titelEn: "Streaks and umlauts",
+    farbe: ["#4a3a1b", "#1e1608"], szene: "lektionen figur serie boss wortjagd",
+    text: "Richtige Antworten am Stück ergeben eine Serie, die leuchtet. ae/oe/ue/ss zählen wie ä/ö/ü/ß — wichtig für philippinische Tastaturen. Minispiele tauchen jetzt auch mitten im Kampf auf.",
+    textEn: "Correct answers in a row build a glowing streak. ae/oe/ue/ss count as ä/ö/ü/ß — important for Philippine keyboards. Mini games now also appear in the middle of a fight.",
+  },
+  {
+    nr: "1.3", datum: "25.09.2026", titel: "Tests prüfen alles", titelEn: "Tests check everything", zahlen: "96 Lektionen · 10 Bezirke",
+    farbe: ["#1e3a35", "#081512"], szene: "lektionen falter figur boss warum",
+    text: "Nach jedem Fehler erklärt ein „💡 Warum?“-Kasten die Regel. Jeder Test fragt jetzt jede Lektion ab, nicht nur die Hälfte. Sechs neue Prüfungs-Lektionen, etwa „denn“ und „lassen“.",
+    textEn: "After every mistake a “💡 Why?” box explains the rule. Every test now checks every lesson, not just half of them. Six new exam lessons, e.g. “denn” and “lassen”.",
+  },
+  {
+    nr: "1.4", datum: "25.09.2026", titel: "Process", titelEn: "Process",
+    farbe: ["#1e3a35", "#060f0d"], szene: "lektionen haeuser falter figur boss dock fenster",
+    text: "Dieses Fenster: die Lebensgeschichte des Spiels, Version für Version.",
+    textEn: "This window: the life story of the game, version by version.",
+  },
+];
+
+// Bausteine fuer die Mini-Szenen (SVG, 160 × 100). Jede Version zeigt Welt + Figur plus das, was
+// damals dazukam. Rechts oben (x 96–152, y 14–52) ist Platz fuer genau ein "Fenster" (Karte).
+const PROZESS_KARTE = (rand) => `<rect x="96" y="14" width="56" height="38" rx="5" fill="#132523" stroke="${rand}" stroke-opacity=".75"/>`;
+const PROZESS_TEILE = {
+  welt: `<circle cx="18" cy="52" r="1.4" fill="#72c08e" opacity=".5"/><circle cx="66" cy="40" r="1.2" fill="#72c08e" opacity=".5"/>
+    <circle cx="88" cy="66" r="1.4" fill="#72c08e" opacity=".5"/><circle cx="8" cy="36" r="1" fill="#72c08e" opacity=".5"/>
+    <path d="M-2 76 C30 66 60 92 100 78 S140 68 162 74 V102 H-2Z" fill="#4f9fd6" opacity=".45"/>
+    <path d="M-2 82 C30 74 60 96 100 84 S140 76 162 80" stroke="#8fd6c9" stroke-width="1" fill="none" opacity=".55"/>`,
+  figur: `<ellipse cx="42" cy="68" rx="6" ry="2" fill="#000" opacity=".3"/><rect x="37" y="55" width="10" height="12" rx="4" fill="#e0a94e"/>
+    <circle cx="42" cy="51" r="5" fill="#f5d6a8"/><circle cx="40" cy="50" r=".9" fill="#142523"/><circle cx="44" cy="50" r=".9" fill="#142523"/>`,
+  bernstein: `<circle cx="62" cy="60" r="2.6" fill="#f2c14e"/><circle cx="74" cy="46" r="2.6" fill="#f2c14e"/><circle cx="22" cy="64" r="2.6" fill="#f2c14e"/>
+    <circle cx="62" cy="60" r="5" fill="#f2c14e" opacity=".2"/><circle cx="74" cy="46" r="5" fill="#f2c14e" opacity=".2"/>`,
+  kiste: `<rect x="78" y="54" width="15" height="11" rx="1.5" fill="#8a5a2b"/><rect x="78" y="54" width="15" height="3.5" fill="#a8703a"/>
+    <rect x="84.5" y="56" width="2" height="4" fill="#f2c14e"/>`,
+  haeuser: [8, 28, 48].map((x, i) => `<rect x="${x}" y="24" width="14" height="12" fill="${["#c9b18a", "#b8c4a0", "#c4a9b8"][i]}"/>
+    <path d="M${x - 2} 24 L${x + 7} 16 L${x + 16} 24Z" fill="${["#b5533c", "#4f7fa6", "#8a5a9c"][i]}"/><rect x="${x + 5}" y="30" width="4" height="6" fill="#5a3a22"/>`).join(""),
+  lektionen: Array.from({ length: 10 }, (_, i) => `<circle cx="${38 + i * 9}" cy="6" r="2.6" fill="${i < 6 ? "#f2c14e" : "none"}" stroke="#f2c14e" stroke-width=".8"/>`).join(""),
+  boss: `<circle cx="128" cy="74" r="16" fill="none" stroke="#a78bfa" stroke-dasharray="3 3" opacity=".7"/><circle cx="128" cy="72" r="11" fill="#6b3fa0"/>
+    <path d="M119 64 l-3 -6 l6 3z M137 64 l3 -6 l-6 3z" fill="#6b3fa0"/>
+    <circle cx="124.5" cy="70" r="2.2" fill="#fff"/><circle cx="131.5" cy="70" r="2.2" fill="#fff"/>
+    <circle cx="124.5" cy="70" r="1" fill="#e2637b"/><circle cx="131.5" cy="70" r="1" fill="#e2637b"/>
+    <path d="M123 76 Q128 79 133 76" stroke="#fff" stroke-width="1.2" fill="none"/>`,
+  portal: `<ellipse cx="148" cy="34" rx="7" ry="13" fill="#a78bfa" opacity=".3" stroke="#c4b5fd"/><ellipse cx="148" cy="34" rx="3.5" ry="8" fill="#c4b5fd" opacity=".4"/>`,
+  bossleiste: `<rect x="112" y="92" width="32" height="3.5" rx="1.7" fill="#2a3f3b"/><rect x="112" y="92" width="17" height="3.5" rx="1.7" fill="#e2637b"/>`,
+  falter: `<path d="M72 30 l-4 -3 v6z M72 30 l4 -3 v6z" fill="#f062a6"/><path d="M86 42 l-3 -2.5 v5z M86 42 l3 -2.5 v5z" fill="#c78bf0"/>
+    <path d="M16 46 l-3 -2.5 v5z M16 46 l3 -2.5 v5z" fill="#f2c14e"/>`,
+  dock: [8, 18, 28, 38].map((x, i) => `<circle cx="${x}" cy="93" r="3.6" fill="#132523" stroke="${["#f2c14e", "#8fd6c9", "#a78bfa", "#f062a6"][i]}"/>`).join(""),
+  aufgabe: PROZESS_KARTE("#8fd6c9") + `<rect x="102" y="20" width="38" height="3" rx="1.5" fill="#eef2ef" opacity=".85"/>
+    <rect x="102" y="26" width="26" height="3" rx="1.5" fill="#eef2ef" opacity=".5"/>
+    <rect x="102" y="36" width="21" height="10" rx="5" fill="#72c08e"/><rect x="125" y="36" width="21" height="10" rx="5" fill="#2a3f3b"/>`,
+  hoeren: PROZESS_KARTE("#4f9fd6") + `<path d="M112 36 a12 12 0 0 1 24 0" stroke="#eef2ef" stroke-width="2.5" fill="none"/>
+    <rect x="109" y="33" width="5" height="10" rx="2" fill="#4f9fd6"/><rect x="134" y="33" width="5" height="10" rx="2" fill="#4f9fd6"/>
+    <path d="M144 22 q3 4 0 8 M148 19 q5 7 0 14" stroke="#8fd6c9" fill="none" stroke-width="1.2"/>`,
+  film: `<rect x="96" y="14" width="56" height="38" rx="4" fill="#0b1416" stroke="#f2c14e" stroke-opacity=".8"/>`
+    + Array.from({ length: 7 }, (_, i) => `<rect x="${100 + i * 7.4}" y="16.5" width="3.5" height="2.5" fill="#f2c14e" opacity=".6"/><rect x="${100 + i * 7.4}" y="47" width="3.5" height="2.5" fill="#f2c14e" opacity=".6"/>`).join("")
+    + `<path d="M119 25 l12 8 l-12 8z" fill="#f2c14e"/>`,
+  login: PROZESS_KARTE("#4f9fd6") + `<circle cx="113" cy="27" r="5" fill="#8fd6c9"/><path d="M104 42 a9 8 0 0 1 18 0z" fill="#8fd6c9"/>
+    <rect x="128" y="22" width="18" height="3" rx="1.5" fill="#eef2ef" opacity=".7"/><rect x="128" y="36" width="18" height="8" rx="4" fill="#0071e3"/>`,
+  unity: PROZESS_KARTE("#eef2ef") + `<path d="M124 19 l12 7 v14 l-12 7 l-12 -7 v-14z" fill="#2a2a3a" stroke="#eef2ef"/>
+    <path d="M112 26 l12 7 l12 -7 M124 33 v14" stroke="#eef2ef" fill="none"/>`,
+  wortle: PROZESS_KARTE("#c78bf0") + [["#3a3a3c", "#c9b458", "#3a3a3c", "#3a3a3c", "#c9b458"], ["#6aaa64", "#3a3a3c", "#c9b458", "#6aaa64", "#3a3a3c"], ["#6aaa64", "#6aaa64", "#6aaa64", "#6aaa64", "#6aaa64"]]
+    .map((reihe, r) => reihe.map((f, c) => `<rect x="${104 + c * 8.4}" y="${18 + r * 10.4}" width="7.2" height="8.8" rx="1" fill="${f}"/>`).join("")).join(""),
+  dialog: `<rect x="96" y="14" width="42" height="14" rx="6" fill="#eef2ef"/><path d="M104 28 l2 5 l4 -5z" fill="#eef2ef"/>
+    <rect x="100" y="19.5" width="28" height="2.5" rx="1.2" fill="#132523" opacity=".6"/>
+    <rect x="110" y="34" width="42" height="14" rx="6" fill="#5fb0a4"/><path d="M144 48 l-2 5 l-4 -5z" fill="#5fb0a4"/>
+    <rect x="116" y="39.5" width="30" height="2.5" rx="1.2" fill="#062522" opacity=".6"/>`,
+  serie: `<circle cx="42" cy="58" r="12" fill="#f2994a" opacity=".18"/><path d="M42 40 c-5 -5 0 -9 -1 -13 c6 4 7 9 4 13z" fill="#f2994a"/>
+    <path d="M42 40 c-2 -3 0 -5 0 -7 c3 2 3 5 1 7z" fill="#f2c14e"/>`,
+  wortjagd: [[98, 17, "#e0a94e"], [126, 26, "#8fd6c9"], [104, 40, "#f062a6"]].map(([x, y, f]) => `<rect x="${x}" y="${y}" width="22" height="8" rx="2" fill="#132523" stroke="${f}"/><rect x="${x + 4}" y="${y + 3}" width="14" height="2" rx="1" fill="${f}"/>`).join("")
+    + `<circle cx="137" cy="30" r="7" fill="none" stroke="#e2637b" stroke-width="1.4"/><path d="M137 20 v6 M137 34 v6 M127 30 h6 M141 30 h6" stroke="#e2637b" stroke-width="1.4"/>`,
+  warum: PROZESS_KARTE("#f2c14e") + `<circle cx="110" cy="28" r="6" fill="#f2c14e"/><rect x="107.5" y="34" width="5" height="4" rx="1" fill="#c9b18a"/>
+    <path d="M110 18 v-2 M101 28 h-2 M119 28 h2 M104 21 l-1.5 -1.5 M116 21 l1.5 -1.5" stroke="#f2c14e" stroke-width="1"/>
+    <rect x="122" y="22" width="24" height="3" rx="1.5" fill="#eef2ef" opacity=".8"/><rect x="122" y="28" width="18" height="3" rx="1.5" fill="#eef2ef" opacity=".5"/>
+    <rect x="102" y="42" width="44" height="5" rx="2.5" fill="#72c08e" opacity=".8"/>`,
+  fenster: PROZESS_KARTE("#f2c14e") + `<path d="M106 19 v29" stroke="#f2c14e" opacity=".5"/>`
+    + [0, 1, 2, 3].map((i) => `<rect x="102" y="${19 + i * 7.5}" width="8" height="5" rx="1" fill="${["#1e3a35", "#3a2f52", "#3d2a55", "#f2c14e"][i]}" stroke="#eef2ef" stroke-width=".4"/><rect x="114" y="${20.5 + i * 7.5}" width="${30 - i * 3}" height="2" rx="1" fill="#eef2ef" opacity=".6"/>`).join(""),
+};
+
+function prozessSzene(v) {
+  const teile = ["welt", ...v.szene.split(" ")].map((k) => PROZESS_TEILE[k] || "").join("");
+  return `<svg viewBox="0 0 160 100" preserveAspectRatio="xMidYMid slice" aria-hidden="true">${teile}</svg>`;
+}
+
+const Prozess = {
+  overlay: document.getElementById("prozess-overlay"),
+
+  render() {
+    document.getElementById("prozess-title").textContent = t("prozessTitel");
+    document.getElementById("prozess-sub").textContent = t("prozessSub");
+    document.getElementById("prozess-close-btn").textContent = t("prozessZurueck");
+    const liste = document.getElementById("prozess-liste");
+    liste.innerHTML = "";
+    PROZESS_VERSIONEN.forEach((v, i) => {
+      const el = document.createElement("div");
+      el.className = "prozess-eintrag" + (i === PROZESS_VERSIONEN.length - 1 ? " aktuell" : "");
+      el.innerHTML = `
+        <div class="prozess-bild" style="background:linear-gradient(160deg, ${v.farbe[0]}, ${v.farbe[1]})">
+          ${prozessSzene(v)}
+          <span class="prozess-nr">v${v.nr}</span>
+        </div>
+        <div class="prozess-text">
+          <div class="prozess-kopf"><strong></strong><span class="prozess-datum"></span></div>
+          <p></p>
+        </div>`;
+      el.querySelector("strong").textContent = tf(v, "titel");
+      el.querySelector(".prozess-datum").textContent = v.zahlen ? `${v.datum} · ${v.zahlen}` : v.datum;
+      el.querySelector("p").textContent = tf(v, "text");
+      liste.appendChild(el);
+    });
+  },
+
+  open() {
+    this.render();
+    this.overlay.classList.remove("hidden");
+    // Die Geschichte liest man von oben (Prototyp) nach unten (heute).
+    document.getElementById("prozess-liste").scrollTop = 0;
+  },
+  close() { this.overlay.classList.add("hidden"); },
+  isOpen() { return !this.overlay.classList.contains("hidden"); },
+};
+
+document.getElementById("prozess-close-btn").addEventListener("click", () => Prozess.close());
+Prozess.overlay.addEventListener("mousedown", (e) => { if (e.target === Prozess.overlay) Prozess.close(); });
+
+
 // ===== konto.js =====
 // Der Strom — Anmeldung ueber das FLOß-Konto (dieselbe Supabase-Anmeldung wie die Website).
 //
@@ -18064,6 +18321,8 @@ const UI = {
     set("mainmenu-continue", t("menuContinue"));
     set("mainmenu-new", t("menuNew"));
     set("mainmenu-settings", t("menuSettings"));
+    set("mainmenu-prozess", t("menuProzess"));
+    if (Prozess.isOpen()) Prozess.render();
 
     set("charselect-eyebrow", t("charEyebrow"));
     set("charselect-title", t("charTitle"));
@@ -18248,6 +18507,10 @@ const MainMenu = {
     document.getElementById("mainmenu-settings").addEventListener("click", () => {
       Sound.ensureContext(); Sound.playClick();
       Settings.open();
+    });
+    document.getElementById("mainmenu-prozess").addEventListener("click", () => {
+      Sound.ensureContext(); Sound.playClick();
+      Prozess.open();
     });
   },
 
@@ -18463,6 +18726,7 @@ window.addEventListener("keydown", (e) => {
     else if (Dialogue.active) Dialogue.close();
     else if (House.isOpen()) House.close();
     else if (MapView.isOpen()) MapView.close();
+    else if (Prozess.isOpen()) Prozess.close();
     else if (Settings.isOpen()) Settings.close();
     else if (Lesson.pending) { /* Lektions-Intro muss ueber den Button bestaetigt werden */ }
     else if (charSelected() && !MainMenu.isOpen() && !Customize.isOpen()) { Sound.ensureContext(); Settings.open(); }
