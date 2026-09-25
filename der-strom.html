@@ -1332,6 +1332,11 @@ canvas{ filter:saturate(1.18) contrast(1.03); }
 /* Ueber Hauptmenue (50) und Einstellungen (55). */
 .mainmenu-btn.klein{ font-size:.78rem; padding:6px 16px; align-self:center; opacity:.8; }
 .mainmenu-btn.klein:hover{ opacity:1; }
+#settings-prozess-btn{
+  width:100%; padding:10px; margin-top:6px; border-radius:12px; border:1px solid rgba(224,169,78,.4);
+  background:rgba(224,169,78,.08); color:var(--gold); font-family:var(--font-display); font-weight:700; cursor:pointer;
+}
+#settings-prozess-btn:hover{ background:rgba(224,169,78,.16); }
 #prozess-overlay{
   position:absolute; inset:0; z-index:56; display:flex; align-items:center; justify-content:center;
   background:rgba(6,10,9,.78);
@@ -1638,6 +1643,7 @@ canvas{ filter:saturate(1.18) contrast(1.03); }
         <input type="checkbox" id="ambient-checkbox" />
         <span id="settings-ambient-label">Hintergrundmusik</span>
       </label>
+      <button id="settings-prozess-btn">🕰️ Process</button>
       <button id="reset-save-btn">Spielstand zurücksetzen</button>
       <button id="settings-close-btn">Zurück</button>
     </div>
@@ -14693,6 +14699,8 @@ const Prozess = {
 
 document.getElementById("prozess-close-btn").addEventListener("click", () => Prozess.close());
 Prozess.overlay.addEventListener("mousedown", (e) => { if (e.target === Prozess.overlay) Prozess.close(); });
+// Auch mitten im Spiel erreichbar: Knopf im Einstellungs-/Pausenmenue (liegt darueber, z-index 56 > 55).
+document.getElementById("settings-prozess-btn").addEventListener("click", () => { Sound.playClick(); Prozess.open(); });
 
 
 // ===== konto.js =====
@@ -18338,6 +18346,7 @@ const UI = {
     set("settings-ambient-label", t("settingsAmbient"));
     set("reset-save-btn", t("settingsReset"));
     set("settings-close-btn", t("settingsBack"));
+    set("settings-prozess-btn", t("menuProzess"));
 
     set("book-title", t("bookTitle"));
     set("inventory-title", t("invTitle"));
