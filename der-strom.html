@@ -1257,6 +1257,76 @@ canvas{ filter:saturate(1.18) contrast(1.03); }
 .je-wort .je-en{ font-family:var(--font-mono); font-size:.72rem; color:#a9beb7; }
 .je-wort .je-ton{ margin-left:auto; }
 
+/* ---------------- Serie: je laenger die Kette richtiger Antworten, desto staerker leuchtet alles ---------------- */
+/* Stufen 1–5 = 3 / 5 / 8 / 12 / 20 richtige Antworten am Stueck (Economy.serieStufe). */
+.serie-abzeichen{
+  font-family:var(--font-mono); font-size:.72rem; letter-spacing:.04em; color:var(--gold);
+  padding:2px 10px; border-radius:100px; background:rgba(224,169,78,.14);
+  border:1px solid rgba(224,169,78,.35); white-space:nowrap;
+}
+.serie-abzeichen:empty{ display:none; }
+.serie-abzeichen strong{ font-size:.86rem; }
+.serie-abzeichen.s3{ box-shadow:0 0 12px rgba(224,169,78,.45); }
+.serie-abzeichen.s4{ box-shadow:0 0 18px rgba(255,170,80,.6); background:rgba(255,150,60,.2); }
+.serie-abzeichen.s5{
+  box-shadow:0 0 26px rgba(255,120,60,.8); background:rgba(255,110,50,.28);
+  border-color:rgba(255,170,90,.8); color:#ffe6bd; animation:serie-puls 1.1s ease-in-out infinite;
+}
+
+/* Die Kampfkarte selbst glimmt mit — von einem Hauch bis zum Vollbrand. */
+#encounter-card.serie1{ box-shadow:0 20px 60px rgba(0,0,0,.6), 0 0 22px rgba(224,169,78,.18); border-color:rgba(224,169,78,.3); }
+#encounter-card.serie2{ box-shadow:0 20px 60px rgba(0,0,0,.6), 0 0 34px rgba(224,169,78,.3); border-color:rgba(224,169,78,.45); }
+#encounter-card.serie3{ box-shadow:0 20px 60px rgba(0,0,0,.6), 0 0 48px rgba(255,170,80,.42); border-color:rgba(255,170,80,.6); }
+#encounter-card.serie4{
+  box-shadow:0 20px 60px rgba(0,0,0,.6), 0 0 64px rgba(255,140,60,.55); border-color:rgba(255,160,70,.8);
+  animation:serie-glut 2.2s ease-in-out infinite;
+}
+#encounter-card.serie5{
+  box-shadow:0 20px 60px rgba(0,0,0,.6), 0 0 90px rgba(255,120,50,.75), 0 0 140px rgba(255,80,40,.35);
+  border-color:rgba(255,200,120,.95); animation:serie-glut 1.3s ease-in-out infinite;
+}
+@keyframes serie-glut{ 50%{ filter:brightness(1.12) saturate(1.15); } }
+@keyframes serie-puls{ 50%{ transform:scale(1.07); } }
+
+/* HUD-Anzeige oben: dieselbe Hitze, kleiner. */
+#hud-combo.serie3{ box-shadow:0 0 12px rgba(224,169,78,.5); }
+#hud-combo.serie4{ box-shadow:0 0 18px rgba(255,150,70,.65); }
+#hud-combo.serie5{ box-shadow:0 0 26px rgba(255,120,50,.85); animation:serie-puls 1.1s ease-in-out infinite; }
+
+/* ---------------- Erklaerung unter der Loesung ---------------- */
+.warum{
+  display:flex; gap:10px; align-items:baseline; margin-top:10px; padding:9px 12px;
+  background:rgba(95,176,164,.12); border:1px solid rgba(95,176,164,.3); border-radius:12px;
+}
+.warum-label{
+  font-family:var(--font-mono); font-size:.66rem; text-transform:uppercase; letter-spacing:.05em;
+  color:var(--teal); flex:0 0 auto;
+}
+.warum p{ margin:0; font-size:.88rem; line-height:1.6; color:#dbe9e5; }
+.warum b{ color:#fff3d8; }
+
+/* Der kleine Umlaut-Hinweis unter Eingabefeldern. */
+.umlaut-tipp{ display:inline-block; margin-left:8px; font-size:.68rem; color:#7f978f; }
+
+/* ---------------- Minispiele im Kampf (Duell) ---------------- */
+#encounter-card.duell{ width:900px; max-width:96%; }
+.duell-kopf{
+  display:flex; gap:12px; align-items:center; margin-bottom:12px; padding:9px 13px;
+  background:rgba(114,192,142,.1); border:1px solid rgba(114,192,142,.3); border-radius:14px;
+}
+.duell-icon{ font-size:1.5rem; }
+.duell-kopf strong{ display:block; font-size:.98rem; color:#dff3e6; }
+.duell-kopf span{ font-size:.8rem; color:#a9beb7; }
+#encounter-body .wortle-feld{ width:42px; height:42px; font-size:1.35rem; }
+#encounter-body .wt-taste{ min-width:30px; height:34px; font-size:.82rem; padding:0 6px; }
+#encounter-body #jagd-leinwand{ display:block; width:100%; border-radius:14px; border:1px solid rgba(255,255,255,.14); background:#07100e; cursor:crosshair; }
+
+/* Warnung im Boss-Intro, wenn noch Lektionen offen sind. */
+.boss-warnung{
+  margin:10px 0 0; padding:8px 12px; font-size:.82rem; line-height:1.55; color:#f0d2a1;
+  background:rgba(224,169,78,.12); border:1px solid rgba(224,169,78,.34); border-radius:12px;
+}
+
 
 /* ---- Website: Anmelde-Dialoge im hellen FLOß-Design ---- */
 .floss-overlay{
@@ -1415,6 +1485,7 @@ canvas{ filter:saturate(1.18) contrast(1.03); }
     <div id="encounter-card">
       <div id="encounter-header">
         <span id="encounter-enemy-name">Verbwirbel</span>
+        <span id="encounter-serie" class="serie-abzeichen"></span>
         <span id="encounter-hp"></span>
       </div>
       <div id="encounter-body"></div>
@@ -8630,12 +8701,560 @@ const LEKTIONEN_PLUS = {};
     },
   });
 
+  // =====================================================================
+  // Pruefungs-Kern (25.09.2026): Themen der Goethe-/telc-Liste A1–B1, die bisher fehlten.
+  // Jede Lektion hat einen eigenen Erklaerfilm in erklaerfilme-plus.js.
+
+  // A1.2 — es gibt & man
+  g("schilf-es-gibt", "esgibt", 5, {
+    lektion: {
+      title: "es gibt & man — was es gibt und was man macht", titleEn: "es gibt & man — what there is and what people do",
+      explain: [
+        "Mit „es gibt“ sagst du, dass etwas da ist oder existiert: Es gibt einen Supermarkt in der Nähe.",
+        "„es gibt“ ändert sich nie. Es gibt ein Problem — es gibt zwei Probleme. Immer „gibt“, nie „es geben“.",
+        "Nach „es gibt“ steht der Akkusativ. Nur maskulin ändert sich: der Park → Es gibt einen Park. Bei die und das bleibt alles gleich: eine Apotheke, ein Café.",
+        "Die Frage dazu stellst du mit dem Verb vorn: Gibt es hier WLAN? Gibt es noch Fragen?",
+        "Verneinen kannst du mit kein: Es gibt keinen Aufzug. Es gibt kein Brot mehr.",
+        "Das zweite kleine Wort heißt „man“. Es bedeutet: alle Leute, irgendeine Person. In Deutschland isst man um 12 Uhr zu Mittag.",
+        "„man“ hat dieselbe Verbform wie er/sie/es: man spricht, man kann, man muss.",
+        "Mit man erklärst du Regeln und fragst nach Gewohnheiten: Hier darf man nicht rauchen. Wie sagt man das auf Deutsch?",
+        "Achtung beim Schreiben: man hat ein n. „der Mann“ mit zwei n ist ein Mensch.",
+      ],
+      explainEn: [
+        "With “es gibt” you say that something is there or exists: Es gibt einen Supermarkt in der Nähe (there is a supermarket nearby).",
+        "“es gibt” never changes. Es gibt ein Problem — es gibt zwei Probleme. Always “gibt”, never “es geben”.",
+        "After “es gibt” comes the accusative. Only masculine changes: der Park → Es gibt einen Park. With die and das nothing changes: eine Apotheke, ein Café.",
+        "To ask, put the verb first: Gibt es hier WLAN? Gibt es noch Fragen?",
+        "Negate it with kein: Es gibt keinen Aufzug. Es gibt kein Brot mehr.",
+        "The second little word is “man”. It means: people in general, anyone. In Deutschland isst man um 12 Uhr zu Mittag.",
+        "“man” takes the same verb form as er/sie/es: man spricht, man kann, man muss.",
+        "With man you explain rules and ask about habits: Hier darf man nicht rauchen. Wie sagt man das auf Deutsch?",
+        "Careful when writing: man has one n. “der Mann” with two n is a person.",
+      ],
+      beispiele: [
+        { de: "Gibt es hier eine Apotheke?", en: "Is there a pharmacy here?" },
+        { de: "Es gibt leider keinen Aufzug.", en: "Unfortunately there is no lift. (der Aufzug → keinen)" },
+        { de: "Wie sagt man „thank you“ auf Deutsch?", en: "How do you say “thank you” in German?" },
+      ],
+      fehler: [
+        "„Es gibt ein Park.“ — der Park steht nach es gibt im Akkusativ: Es gibt einen Park.",
+        "„Hier dürfen man nicht rauchen.“ — man wie er/sie/es: Hier darf man nicht rauchen.",
+      ],
+      fehlerEn: [
+        "“Es gibt ein Park.” — der Park takes the accusative after es gibt: Es gibt einen Park.",
+        "“Hier dürfen man nicht rauchen.” — man works like er/sie/es: Hier darf man nicht rauchen.",
+      ],
+      merk: "es gibt + Akkusativ (einen, eine, ein) · man = alle Leute, Verb wie bei er: man kann, man muss.",
+      merkEn: "es gibt + accusative (einen, eine, ein) · man = people in general, verb like er: man kann, man muss.",
+      reminder: "es gibt + Akkusativ · man + Verb wie er/sie/es.",
+      reminderEn: "es gibt + accusative · man + verb like er/sie/es.",
+    },
+    uebung: {
+      luecke: [
+        { satz: "In Cebu ___ viele Strände.", correct: "gibt es", options: ["gibt es", "ist es", "sind es", "hat es"], hint: "etwas existiert → es gibt", en: "There are many beaches in Cebu." },
+        { satz: "Es gibt ___ Supermarkt in der Nähe.", correct: "einen", options: ["einen", "ein", "einer", "einem"], hint: "der Supermarkt → Akkusativ", en: "There is a supermarket nearby." },
+        { satz: "Hier ___ man nicht rauchen.", correct: "darf", options: ["darf", "dürfen", "darfst", "dürft"], hint: "man → wie er/sie/es", en: "You mustn't smoke here." },
+        { satz: "Wie ___ man das auf Deutsch?", correct: "sagt", options: ["sagt", "sagen", "sage", "sagst"], hint: "man → wie er/sie/es", en: "How do you say that in German?" },
+        { satz: "Es gibt leider ___ Aufzug.", correct: "keinen", options: ["keinen", "kein", "keine", "nicht"], hint: "der Aufzug → kein im Akkusativ", en: "Unfortunately there is no lift." },
+        { satz: "___ es hier WLAN?", correct: "Gibt", options: ["Gibt", "Ist", "Hat", "Geben"], hint: "Ja/Nein-Frage: Verb auf Platz 1", en: "Is there Wi-Fi here?" },
+        { satz: "In Deutschland ___ man oft Brot zum Abendessen.", correct: "isst", options: ["isst", "essen", "esse", "esst"], hint: "man → wie er/sie/es", en: "In Germany people often eat bread for dinner." },
+        { satz: "Im Zimmer gibt es ___ Bett und einen Tisch.", correct: "ein", options: ["ein", "einen", "eine", "einem"], hint: "das Bett → ein", en: "There is a bed and a table in the room." },
+      ],
+      schwer: [
+        { ...wf, options: ["Es gibt einen Park in der Nähe.", "Es gibt ein Park in der Nähe.", "Es gibt einen Park in die Nähe.", "Es gebt einen Park in der Nähe."], correct: "Es gibt einen Park in der Nähe.",
+          warum: "der Park → nach es gibt Akkusativ: einen Park. gibt ändert sich nie.", warumEn: "der Park → accusative after es gibt: einen Park. gibt never changes." },
+        { ...wf, options: ["Hier darf man nicht parken.", "Hier dürfen man nicht parken.", "Hier darf man nicht geparkt.", "Hier darf Mann nicht parken."], correct: "Hier darf man nicht parken.",
+          warum: "man + Verb wie er: man darf. man schreibt man mit einem n.", warumEn: "man + verb like er: man darf. man is spelled with one n." },
+        { ...wf, options: ["Gibt es hier eine Apotheke?", "Gibt es hier einen Apotheke?", "Gibt es hier ein Apotheke?", "Gibt hier es eine Apotheke?"], correct: "Gibt es hier eine Apotheke?",
+          warum: "Ja/Nein-Frage: Gibt auf Platz 1, dann es. die Apotheke → eine.", warumEn: "Yes/no question: Gibt in position 1, then es. die Apotheke → eine." },
+        { frage: "Du willst im Laden wissen, ob noch Brot da ist. Was sagst du?", frageEn: "In the shop you want to know if there's any bread left. What do you say?", satz: "Entschuldigung, …",
+          options: ["Gibt es noch Brot?", "Ist es noch Brot?", "Hat es noch Brot?", "Geben es noch Brot?"], correct: "Gibt es noch Brot?",
+          warum: "Nach etwas fragen, das da ist: Gibt es …?", warumEn: "Asking whether something is there: Gibt es …?" },
+        { ...wf, options: ["Man spricht hier Deutsch.", "Man sprechen hier Deutsch.", "Man sprichst hier Deutsch.", "Mann spricht hier Deutsch."], correct: "Man spricht hier Deutsch.",
+          warum: "man → wie er/sie/es: man spricht.", warumEn: "man → like er/sie/es: man spricht." },
+      ],
+      paare: [
+        { auftrag: "Verbinde das Nomen mit der Form nach „es gibt“.", auftragEn: "Connect the noun with its form after “es gibt”.",
+          paare: [["der Park", "einen Park"], ["die Bank", "eine Bank"], ["das Café", "ein Café"], ["die Stühle (Plural)", "Stühle"]] },
+        { auftrag: "Verbinde Frage und Antwort.", auftragEn: "Connect question and answer.",
+          paare: [["Gibt es hier WLAN?", "Ja, das Passwort steht an der Tür."], ["Wie sagt man „thank you“?", "Man sagt „danke“."], ["Darf man hier rauchen?", "Nein, das ist verboten."], ["Wo gibt es Briefmarken?", "Bei der Post."]] },
+      ],
+      fliegen: [
+        { auftrag: "Fang alle korrekten Sätze mit „es gibt“!", auftragEn: "Catch every correct sentence with “es gibt”!",
+          richtig: ["Es gibt einen Bus.", "Es gibt eine Bank.", "Es gibt ein Kino.", "Es gibt keinen Arzt.", "Gibt es Kaffee?"],
+          falsch: ["Es gibt ein Bus.", "Es gibt einen Bank.", "Es geben ein Kino.", "Es gibt kein Arzt.", "Ist es Kaffee?"] },
+        { auftrag: "Fang alle richtigen Formen mit „man“!", auftragEn: "Catch every correct form with “man”!",
+          richtig: ["man kann", "man muss", "man darf", "man spricht", "man isst", "man hat"],
+          falsch: ["man können", "man müssen", "man dürft", "man sprechen", "man esst", "man haben"] },
+      ],
+      umformen: [
+        umf("Schreib mit „es gibt“:", "Write with “es gibt”:", "Hier ist ein Supermarkt.", ["Hier gibt es einen Supermarkt.", "Es gibt hier einen Supermarkt."], "There is a supermarket here."),
+        umf("Verneine mit „kein“:", "Negate with “kein”:", "Es gibt einen Aufzug.", ["Es gibt keinen Aufzug."], "There is no lift."),
+        umf("Mach eine Frage:", "Make it a question:", "Es gibt hier eine Toilette.", ["Gibt es hier eine Toilette?"], "Is there a toilet here?"),
+        umf("Schreib mit „man“:", "Write with “man”:", "Alle Leute sagen das so.", ["Man sagt das so."], "That's how people say it."),
+      ],
+    },
+  });
+
+  // A1.3 — und, aber, oder, denn, sondern (Position 0)
+  g("dorf-konnektoren", "hauptkonn", 6, {
+    lektion: {
+      title: "und, aber, oder, denn, sondern — Sätze verbinden", titleEn: "und, aber, oder, denn, sondern — joining sentences",
+      explain: [
+        "Mit fünf kleinen Wörtern verbindest du zwei ganze Sätze: und, aber, oder, denn, sondern.",
+        "und = plus: Ich arbeite, und du lernst. · aber = Gegensatz: Ich bin müde, aber ich arbeite. · oder = Wahl: Kommst du, oder bleibst du?",
+        "denn nennt einen Grund, genau wie weil: Ich lerne Deutsch, denn ich möchte in Deutschland arbeiten.",
+        "sondern korrigiert etwas nach nicht oder kein: Ich komme nicht aus Manila, sondern aus Cebu. Das Erste ist falsch, das Zweite stimmt.",
+        "Das Besondere an diesen fünf Wörtern: Sie stehen auf Platz 0. Sie zählen nicht mit! Danach geht der Satz ganz normal weiter — Subjekt, Verb auf Platz 2.",
+        "Vergleiche: „…, denn ich habe keine Zeit.“ (Verb auf Platz 2) — „…, weil ich keine Zeit habe.“ (Verb am Ende). Gleiche Bedeutung, andere Wortstellung.",
+        "Ein Merkwort hilft: ADUSO — aber, denn, und, sondern, oder. Diese fünf ändern die Wortstellung nicht.",
+        "aber oder sondern? sondern = statt dessen (das Erste stimmt nicht). aber = trotzdem (beides stimmt): Das Zimmer ist klein, aber schön.",
+        "Vor aber, denn und sondern steht ein Komma. Vor und und oder meistens nicht.",
+      ],
+      explainEn: [
+        "With five little words you join two whole sentences: und (and), aber (but), oder (or), denn (because), sondern (but rather).",
+        "und = plus: Ich arbeite, und du lernst. · aber = contrast: Ich bin müde, aber ich arbeite. · oder = choice: Kommst du, oder bleibst du?",
+        "denn gives a reason, just like weil: Ich lerne Deutsch, denn ich möchte in Deutschland arbeiten.",
+        "sondern corrects something after nicht or kein: Ich komme nicht aus Manila, sondern aus Cebu. The first part is wrong, the second is right.",
+        "The special thing about these five words: they sit in position 0. They don't count! After them the sentence goes on as normal — subject, verb in position 2.",
+        "Compare: “…, denn ich habe keine Zeit.” (verb in position 2) — “…, weil ich keine Zeit habe.” (verb at the end). Same meaning, different word order.",
+        "A memory word helps: ADUSO — aber, denn, und, sondern, oder. These five don't change the word order.",
+        "aber or sondern? sondern = instead (the first part isn't true). aber = still (both are true): Das Zimmer ist klein, aber schön.",
+        "Put a comma before aber, denn and sondern. Usually none before und and oder.",
+      ],
+      beispiele: [
+        { de: "Ich bin müde, aber ich gehe noch einkaufen.", en: "I'm tired, but I'm still going shopping." },
+        { de: "Er bleibt im Bett, denn er hat Fieber.", en: "He's staying in bed because he has a fever. (verb in position 2)" },
+        { de: "Das ist nicht mein Handy, sondern deins.", en: "That's not my phone, it's yours." },
+      ],
+      fehler: [
+        "„…, denn ich krank bin.“ — Nach denn bleibt das Verb auf Platz 2: …, denn ich bin krank.",
+        "„Ich komme nicht aus Manila, aber aus Cebu.“ — Korrektur nach nicht: sondern aus Cebu.",
+        "„…, aber bin ich müde.“ — aber zählt nicht mit. Danach erst das Subjekt: …, aber ich bin müde.",
+      ],
+      fehlerEn: [
+        "“…, denn ich krank bin.” — After denn the verb stays in position 2: …, denn ich bin krank.",
+        "“Ich komme nicht aus Manila, aber aus Cebu.” — Correction after nicht: sondern aus Cebu.",
+        "“…, aber bin ich müde.” — aber doesn't count. The subject comes first: …, aber ich bin müde.",
+      ],
+      merk: "und · aber · oder · denn · sondern = Platz 0 → danach Subjekt + Verb wie im normalen Satz.",
+      merkEn: "und · aber · oder · denn · sondern = position 0 → then subject + verb as in a normal sentence.",
+      reminder: "ADUSO: aber, denn, und, sondern, oder — das Verb bleibt auf Platz 2.",
+      reminderEn: "ADUSO: aber, denn, und, sondern, oder — the verb stays in position 2.",
+    },
+    uebung: {
+      luecke: [
+        { satz: "Ich trinke Kaffee, ___ meine Frau trinkt Tee.", correct: "aber", options: ["aber", "denn", "oder", "sondern"], hint: "Gegensatz", en: "I drink coffee, but my wife drinks tea." },
+        { satz: "Ich bleibe zu Hause, ___ ich bin krank.", correct: "denn", options: ["denn", "aber", "oder", "und"], hint: "Grund", en: "I'm staying at home because I'm ill." },
+        { satz: "Er kommt nicht aus Manila, ___ aus Davao.", correct: "sondern", options: ["sondern", "aber", "denn", "oder"], hint: "Korrektur nach nicht", en: "He isn't from Manila but from Davao." },
+        { satz: "Möchtest du Tee ___ Kaffee?", correct: "oder", options: ["oder", "und", "aber", "denn"], hint: "Wahl", en: "Would you like tea or coffee?" },
+        { satz: "Ich stehe um sechs Uhr auf ___ trinke einen Kaffee.", correct: "und", options: ["und", "denn", "sondern", "aber"], hint: "plus", en: "I get up at six and drink a coffee." },
+        { satz: "Ich lerne jeden Tag, denn ___.", correct: "ich möchte die Prüfung bestehen", options: ["ich möchte die Prüfung bestehen", "ich die Prüfung bestehen möchte", "möchte ich die Prüfung bestehen", "die Prüfung ich bestehen möchte"], hint: "denn: Subjekt, dann Verb auf Platz 2", en: "I study every day because I want to pass the exam." },
+        { satz: "Das Zimmer ist klein, ___ es ist sehr schön.", correct: "aber", options: ["aber", "sondern", "denn", "oder"], hint: "beides stimmt → Gegensatz", en: "The room is small, but it's very nice." },
+        { satz: "Wir nehmen nicht den Bus, ___ wir gehen zu Fuß.", correct: "sondern", options: ["sondern", "aber", "oder", "und"], hint: "Korrektur nach nicht", en: "We're not taking the bus, we're walking instead." },
+      ],
+      schwer: [
+        { ...wf, options: ["Ich komme heute nicht, denn ich bin krank.", "Ich komme heute nicht, denn ich krank bin.", "Ich komme heute nicht, weil ich bin krank.", "Ich komme heute nicht, denn bin ich krank."], correct: "Ich komme heute nicht, denn ich bin krank.",
+          warum: "denn steht auf Platz 0: danach Subjekt, dann das Verb — wie im normalen Satz.", warumEn: "denn sits in position 0: then subject, then the verb — like a normal sentence." },
+        { ...wf, options: ["Ich wohne nicht in Manila, sondern in Cebu.", "Ich wohne nicht in Manila, aber in Cebu.", "Ich wohne nicht in Manila, oder in Cebu.", "Ich wohne nicht in Manila, denn in Cebu."], correct: "Ich wohne nicht in Manila, sondern in Cebu.",
+          warum: "Korrektur nach nicht → sondern: Das Erste ist falsch, das Zweite richtig.", warumEn: "Correction after nicht → sondern: the first part is wrong, the second right." },
+        { ...wf, options: ["Er ist müde, aber er arbeitet weiter.", "Er ist müde, sondern er arbeitet weiter.", "Er ist müde, aber arbeitet er weiter.", "Er ist müde, aber weiter er arbeitet."], correct: "Er ist müde, aber er arbeitet weiter.",
+          warum: "Gegensatz, beides stimmt → aber. Nach aber: erst Subjekt, dann Verb.", warumEn: "Contrast, both are true → aber. After aber: subject first, then verb." },
+        { frage: "Du nennst einen Grund. Welches Wort passt?", frageEn: "You give a reason. Which word fits?", satz: "Ich spare Geld, ___ ich möchte nach Deutschland fliegen.",
+          options: ["denn", "weil", "sondern", "oder"], correct: "denn", en: "I'm saving money because I want to fly to Germany.",
+          warum: "Grund und das Verb (möchte) auf Platz 2 → denn. Mit weil müsste möchte ans Ende.", warumEn: "A reason with the verb (möchte) in position 2 → denn. With weil, möchte would go to the end." },
+        { ...wf, options: ["Trinkst du Wasser oder Saft?", "Trinkst du Wasser sondern Saft?", "Trinkst du Wasser denn Saft?", "Trinkst du Wasser aber Saft?"], correct: "Trinkst du Wasser oder Saft?",
+          warum: "Wahl zwischen zwei Dingen → oder.", warumEn: "A choice between two things → oder." },
+      ],
+      paare: [
+        { auftrag: "Verbinde das Wort mit seiner Bedeutung.", auftragEn: "Connect the word with its meaning.",
+          paare: [["und", "plus"], ["aber", "Gegensatz"], ["oder", "Wahl"], ["denn", "Grund"], ["sondern", "Korrektur"]] },
+        { auftrag: "Verbinde die Satzhälften.", auftragEn: "Connect the halves of the sentence.",
+          paare: [["Ich bin müde,", "aber ich gehe noch einkaufen."], ["Er bleibt im Bett,", "denn er hat Fieber."], ["Das ist nicht mein Handy,", "sondern deins."], ["Kommst du mit,", "oder bleibst du hier?"]] },
+      ],
+      fliegen: [
+        { auftrag: "Fang alle Wörter, nach denen das Verb auf Platz 2 BLEIBT!", auftragEn: "Catch every word after which the verb STAYS in position 2!",
+          richtig: ["und", "aber", "oder", "denn", "sondern"], falsch: ["weil", "dass", "wenn", "obwohl", "ob"] },
+        { auftrag: "Fang alle korrekten Satzenden!", auftragEn: "Catch every correct sentence ending!",
+          richtig: ["…, denn ich bin krank.", "…, aber ich komme.", "…, und er lernt.", "…, oder du bleibst."],
+          falsch: ["…, denn ich krank bin.", "…, aber komme ich.", "…, und lernt er.", "…, weil ich bin krank."] },
+      ],
+      umformen: [
+        umf("Verbinde mit „denn“:", "Connect with “denn”:", "Ich lerne Deutsch. Ich möchte in Deutschland arbeiten.", ["Ich lerne Deutsch, denn ich möchte in Deutschland arbeiten."], "I'm learning German because I want to work in Germany."),
+        umf("Verbinde mit „aber“:", "Connect with “aber”:", "Die Wohnung ist teuer. Sie ist schön.", ["Die Wohnung ist teuer, aber sie ist schön.", "Die Wohnung ist teuer, aber schön."], "The flat is expensive, but it's nice."),
+        umf("Verbinde mit „sondern“:", "Connect with “sondern”:", "Ich trinke keinen Kaffee. Ich trinke Tee.", ["Ich trinke keinen Kaffee, sondern Tee.", "Ich trinke keinen Kaffee, sondern ich trinke Tee."], "I don't drink coffee, I drink tea."),
+        umf("Schreib mit „denn“ statt „weil“:", "Write with “denn” instead of “weil”:", "Ich komme nicht, weil ich keine Zeit habe.", ["Ich komme nicht, denn ich habe keine Zeit."], "I'm not coming because I have no time."),
+      ],
+    },
+  });
+
+  // A2.1 — dieser, jeder, alle
+  g("handelsstadt-dieser", "demonstrativ", 6, {
+    lektion: {
+      title: "dieser, jeder, alle — genau dieses Ding", titleEn: "dieser, jeder, alle — exactly this thing",
+      explain: [
+        "Mit „dieser“ zeigst du auf etwas Bestimmtes: Dieser Pullover gefällt mir. Gemeint ist genau der hier, nicht irgendeiner.",
+        "dieser bekommt dieselbe Endung wie der Artikel: der → dieser, die → diese, das → dieses, Plural die → diese.",
+        "Ein Trick: Schau auf den letzten Buchstaben vom Artikel. deR → dieseR, diE → diesE, daS → dieseS.",
+        "Im Akkusativ ändert sich nur maskulin: den → diesen. Ich nehme diesen Pullover.",
+        "Im Dativ: dem → diesem, der → dieser. Ich fahre mit diesem Bus. Ich wohne in dieser Stadt.",
+        "„jeder“ funktioniert genauso — aber nur im Singular: jeder Tag, jede Woche, jedes Jahr.",
+        "Für den Plural sagst du „alle“: alle Kinder, alle Patienten. Dann steht auch das Verb im Plural: Alle Patienten schlafen.",
+        "Im Laden hörst du das ständig: Was kostet dieser Rock? Ich nehme diese Schuhe. Und im Dienstplan: jeden Montag, jede Woche.",
+      ],
+      explainEn: [
+        "With “dieser” you point at something specific: Dieser Pullover gefällt mir. You mean exactly this one, not just any.",
+        "dieser takes the same ending as the article: der → dieser, die → diese, das → dieses, plural die → diese.",
+        "A trick: look at the last letter of the article. deR → dieseR, diE → diesE, daS → dieseS.",
+        "In the accusative only masculine changes: den → diesen. Ich nehme diesen Pullover.",
+        "In the dative: dem → diesem, der → dieser. Ich fahre mit diesem Bus. Ich wohne in dieser Stadt.",
+        "“jeder” (every) works the same way — but only in the singular: jeder Tag, jede Woche, jedes Jahr.",
+        "For the plural say “alle” (all): alle Kinder, alle Patienten. Then the verb is plural too: Alle Patienten schlafen.",
+        "In shops you hear this all the time: Was kostet dieser Rock? Ich nehme diese Schuhe. And on rosters: jeden Montag, jede Woche.",
+      ],
+      beispiele: [
+        { de: "Was kostet dieser Rock?", en: "How much is this skirt? (der Rock)" },
+        { de: "Ich nehme diesen Pullover.", en: "I'll take this jumper. (accusative: den → diesen)" },
+        { de: "Jede Woche habe ich zwei Nachtdienste.", en: "Every week I have two night shifts." },
+      ],
+      fehler: [
+        "„Ich nehme dieser Pullover.“ — Akkusativ maskulin: den → diesen Pullover.",
+        "„Jeder Kinder bekommen ein Eis.“ — jeder nur im Singular. Plural: Alle Kinder bekommen ein Eis.",
+      ],
+      fehlerEn: [
+        "“Ich nehme dieser Pullover.” — Accusative masculine: den → diesen Pullover.",
+        "“Jeder Kinder bekommen ein Eis.” — jeder is singular only. Plural: Alle Kinder bekommen ein Eis.",
+      ],
+      merk: "dieser/jeder = Endung wie der Artikel: der→dieser, die→diese, das→dieses, den→diesen, dem→diesem · Plural: alle.",
+      merkEn: "dieser/jeder = same ending as the article: der→dieser, die→diese, das→dieses, den→diesen, dem→diesem · plural: alle.",
+      reminder: "Letzter Buchstabe vom Artikel: der → dieser, die → diese, das → dieses, den → diesen.",
+      reminderEn: "Last letter of the article: der → dieser, die → diese, das → dieses, den → diesen.",
+    },
+    uebung: {
+      luecke: [
+        { satz: "___ Pullover ist zu teuer.", correct: "Dieser", options: ["Dieser", "Diese", "Dieses", "Diesen"], hint: "der Pullover · Nominativ", en: "This jumper is too expensive." },
+        { satz: "Ich nehme ___ Tasche.", correct: "diese", options: ["diese", "dieser", "dieses", "diesem"], hint: "die Tasche · Akkusativ", en: "I'll take this bag." },
+        { satz: "Wie findest du ___ Kleid?", correct: "dieses", options: ["dieses", "dieser", "diese", "diesem"], hint: "das Kleid · Akkusativ", en: "What do you think of this dress?" },
+        { satz: "Ich kaufe ___ Tisch.", correct: "diesen", options: ["diesen", "dieser", "dieses", "diesem"], hint: "der Tisch · Akkusativ: den → diesen", en: "I'm buying this table." },
+        { satz: "Ich fahre mit ___ Bus.", correct: "diesem", options: ["diesem", "diesen", "dieser", "dieses"], hint: "mit + Dativ · der Bus", en: "I'm taking this bus." },
+        { satz: "Ich lerne ___ Tag Deutsch.", correct: "jeden", options: ["jeden", "jeder", "jedes", "jedem"], hint: "der Tag · Zeitangabe im Akkusativ", en: "I study German every day." },
+        { satz: "___ Patienten bekommen um 12 Uhr Essen.", correct: "Alle", options: ["Alle", "Jede", "Jeder", "Dieser"], hint: "Plural → alle", en: "All patients get food at 12." },
+        { satz: "___ Woche habe ich zwei Nachtdienste.", correct: "Jede", options: ["Jede", "Jeder", "Jedes", "Jeden"], hint: "die Woche", en: "Every week I have two night shifts." },
+      ],
+      schwer: [
+        { ...wf, options: ["Ich nehme diesen Mantel.", "Ich nehme dieser Mantel.", "Ich nehme dieses Mantel.", "Ich nehme diesem Mantel."], correct: "Ich nehme diesen Mantel.",
+          warum: "der Mantel im Akkusativ → den → diesen.", warumEn: "der Mantel in the accusative → den → diesen." },
+        { ...wf, options: ["In dieser Stadt wohne ich.", "In diesem Stadt wohne ich.", "In diese Stadt wohne ich.", "In dieses Stadt wohne ich."], correct: "In dieser Stadt wohne ich.",
+          warum: "in + Dativ (wo?) · die Stadt → der → dieser.", warumEn: "in + dative (where?) · die Stadt → der → dieser." },
+        { ...wf, options: ["Jedes Kind bekommt ein Geschenk.", "Jeder Kind bekommt ein Geschenk.", "Alle Kind bekommt ein Geschenk.", "Jedes Kind bekommen ein Geschenk."], correct: "Jedes Kind bekommt ein Geschenk.",
+          warum: "das Kind → jedes. Singular → bekommt.", warumEn: "das Kind → jedes. Singular → bekommt." },
+        { ...wf, options: ["Alle Kollegen sind nett.", "Jeder Kollegen sind nett.", "Alle Kollegen ist nett.", "Alles Kollegen sind nett."], correct: "Alle Kollegen sind nett.",
+          warum: "Plural → alle, und das Verb im Plural: sind.", warumEn: "Plural → alle, and the verb in the plural: sind." },
+        { frage: "Du zeigst im Laden auf eine Jacke. Was sagst du?", frageEn: "In the shop you point at a jacket. What do you say?",
+          options: ["Was kostet diese Jacke?", "Was kostet dieser Jacke?", "Was kostet dieses Jacke?", "Was kosten diese Jacke?"], correct: "Was kostet diese Jacke?",
+          warum: "die Jacke → diese. Eine Jacke → kostet.", warumEn: "die Jacke → diese. One jacket → kostet." },
+      ],
+      paare: [
+        { auftrag: "Verbinde den Artikel mit der Form von „dieser“.", auftragEn: "Connect the article with the form of “dieser”.",
+          paare: [["der Tag", "dieser Tag"], ["die Woche", "diese Woche"], ["das Jahr", "dieses Jahr"], ["den Tag (Akk.)", "diesen Tag"], ["dem Tag (Dat.)", "diesem Tag"]] },
+        { auftrag: "Singular und Plural: Verbinde.", auftragEn: "Singular and plural: connect.",
+          paare: [["jeder Patient", "alle Patienten"], ["jede Pflegerin", "alle Pflegerinnen"], ["jedes Zimmer", "alle Zimmer"], ["jeder Tag", "alle Tage"]] },
+      ],
+      fliegen: [
+        { auftrag: "Fang alle richtigen Paare!", auftragEn: "Catch every correct pair!",
+          richtig: ["dieser Mann", "diese Frau", "dieses Kind", "jeder Tag", "jede Woche", "alle Kinder"],
+          falsch: ["dieses Mann", "dieser Kind", "diese Kind", "jedes Tag", "jeder Woche", "alle Kind"] },
+        { auftrag: "Fang alle Formen, die zu „das“ passen!", auftragEn: "Catch every form that goes with “das”!",
+          richtig: ["dieses", "jedes", "welches"], falsch: ["dieser", "jeder", "welcher", "diese", "jede"] },
+      ],
+      umformen: [
+        umf("Zeig auf das Ding — schreib mit „dieser“:", "Point at the thing — write with “dieser”:", "Der Pullover ist schön.", ["Dieser Pullover ist schön."], "This jumper is nice."),
+        umf("Schreib mit „dieser“:", "Write with “dieser”:", "Ich nehme den Rock.", ["Ich nehme diesen Rock."], "I'll take this skirt."),
+        umf("Schreib im Plural mit „alle“:", "Write in the plural with “alle”:", "Jeder Schüler hat ein Buch.", ["Alle Schüler haben ein Buch."], "All students have a book."),
+        umf("Schreib im Singular mit „jeder“:", "Write in the singular with “jeder”:", "Alle Kinder bekommen ein Eis.", ["Jedes Kind bekommt ein Eis."], "Every child gets an ice cream."),
+      ],
+    },
+  });
+
+  // A2.3 — jemand, niemand, etwas, nichts, alles
+  g("stromschnellen-indefinit", "indefinit", 6, {
+    lektion: {
+      title: "jemand, niemand, etwas, nichts, alles", titleEn: "jemand, niemand, etwas, nichts, alles",
+      explain: [
+        "Manchmal weißt du nicht, wer oder was genau. Dann brauchst du diese Wörter: jemand, niemand, etwas, nichts, alles.",
+        "Für Personen: jemand = eine Person, egal wer · niemand = keine Person · alle = jede Person.",
+        "Für Dinge: etwas = ein Ding, egal was · nichts = kein Ding · alles = jedes Ding.",
+        "Das Verb steht im Singular: Jemand hat angerufen. Niemand weiß es. Alles ist gut. Nur „alle“ ist Plural: Alle sind da.",
+        "niemand und nichts sind schon verneint. Kein zusätzliches nicht! Richtig: Ich sehe nichts. Falsch: Ich sehe nicht nichts.",
+        "So fragst und antwortest du: Hat jemand Zeit? — Nein, niemand. Möchtest du etwas trinken? — Nein danke, nichts.",
+        "etwas, nichts + Adjektiv: Das Adjektiv wird großgeschrieben und bekommt -es: etwas Neues, nichts Besonderes. Nach alles: -e — Alles Gute!",
+        "Im Alltag hörst du oft „was“ statt „etwas“: Möchtest du was trinken? Das ist Umgangssprache — schreib lieber etwas.",
+      ],
+      explainEn: [
+        "Sometimes you don't know exactly who or what. Then you need these words: jemand (someone), niemand (no one), etwas (something), nichts (nothing), alles (everything).",
+        "For people: jemand = a person, no matter who · niemand = no person · alle = every person.",
+        "For things: etwas = a thing, no matter what · nichts = no thing · alles = every thing.",
+        "The verb is singular: Jemand hat angerufen. Niemand weiß es. Alles ist gut. Only “alle” is plural: Alle sind da.",
+        "niemand and nichts are already negative. No extra nicht! Correct: Ich sehe nichts. Wrong: Ich sehe nicht nichts.",
+        "This is how you ask and answer: Hat jemand Zeit? — Nein, niemand. Möchtest du etwas trinken? — Nein danke, nichts.",
+        "etwas, nichts + adjective: the adjective is capitalised and gets -es: etwas Neues, nichts Besonderes. After alles: -e — Alles Gute!",
+        "In everyday speech you often hear “was” instead of “etwas”: Möchtest du was trinken? That's colloquial — better write etwas.",
+      ],
+      beispiele: [
+        { de: "Hat jemand meinen Schlüssel gesehen?", en: "Has anyone seen my key?" },
+        { de: "Nein danke, ich brauche nichts.", en: "No thanks, I don't need anything." },
+        { de: "Heute ist nichts Besonderes passiert.", en: "Nothing special happened today." },
+      ],
+      fehler: [
+        "„Ich habe nicht nichts gesehen.“ — nichts ist schon verneint: Ich habe nichts gesehen.",
+        "„Niemand wissen die Antwort.“ — Das Verb steht im Singular: Niemand weiß die Antwort.",
+      ],
+      fehlerEn: [
+        "“Ich habe nicht nichts gesehen.” — nichts is already negative: Ich habe nichts gesehen.",
+        "“Niemand wissen die Antwort.” — The verb is singular: Niemand weiß die Antwort.",
+      ],
+      merk: "jemand ↔ niemand (Personen) · etwas ↔ nichts (Dinge) · Verb im Singular · nie doppelt verneinen.",
+      merkEn: "jemand ↔ niemand (people) · etwas ↔ nichts (things) · verb in the singular · never a double negative.",
+      reminder: "Person: jemand / niemand · Ding: etwas / nichts · kein extra nicht.",
+      reminderEn: "Person: jemand / niemand · thing: etwas / nichts · no extra nicht.",
+    },
+    uebung: {
+      luecke: [
+        { satz: "Hat ___ meinen Schlüssel gesehen?", correct: "jemand", options: ["jemand", "etwas", "nichts", "alles"], hint: "eine Person, egal wer", en: "Has anyone seen my key?" },
+        { satz: "Ich habe Hunger, aber im Kühlschrank ist ___.", correct: "nichts", options: ["nichts", "niemand", "etwas", "nicht"], hint: "kein Ding", en: "I'm hungry, but there's nothing in the fridge." },
+        { satz: "Die Tür ist zu und alles ist dunkel. ___ ist zu Hause.", correct: "Niemand", options: ["Niemand", "Nichts", "Etwas", "Alles"], hint: "keine Person", en: "The door is shut and it's all dark. Nobody is home." },
+        { satz: "Möchten Sie ___ trinken?", correct: "etwas", options: ["etwas", "jemand", "alles", "niemand"], hint: "ein Getränk, egal welches", en: "Would you like something to drink?" },
+        { satz: "Vielen Dank für ___!", correct: "alles", options: ["alles", "alle", "jemand", "niemand"], hint: "jedes Ding", en: "Thank you for everything!" },
+        { satz: "Zum Geburtstag wünsche ich dir alles ___!", correct: "Gute", options: ["Gute", "gute", "Guten", "Gutes"], hint: "alles + Adjektiv → groß, -e", en: "Happy birthday — all the best!" },
+        { satz: "Heute ist ___ Besonderes passiert.", correct: "nichts", options: ["nichts", "niemand", "nicht", "kein"], hint: "kein Ding", en: "Nothing special happened today." },
+        { satz: "___ sind schon im Kursraum.", correct: "Alle", options: ["Alle", "Alles", "Jemand", "Niemand"], hint: "alle Personen → Verb im Plural", en: "Everyone is already in the classroom." },
+      ],
+      schwer: [
+        { ...wf, options: ["Ich habe nichts gesehen.", "Ich habe nicht nichts gesehen.", "Ich habe kein nichts gesehen.", "Ich habe nichts gesieht."], correct: "Ich habe nichts gesehen.",
+          warum: "nichts ist schon verneint — kein extra nicht. Partizip: gesehen.", warumEn: "nichts is already negative — no extra nicht. Participle: gesehen." },
+        { ...wf, options: ["Jemand hat für dich angerufen.", "Jemand haben für dich angerufen.", "Jemand hat für dich angeruft.", "Jemand hat für dich anrufen."], correct: "Jemand hat für dich angerufen.",
+          warum: "Eine Person → jemand. Verb im Singular: hat.", warumEn: "A person → jemand. Singular verb: hat." },
+        { ...wf, options: ["Niemand weiß die Antwort.", "Niemand wissen die Antwort.", "Niemand weiß nicht die Antwort.", "Niemand weißt die Antwort."], correct: "Niemand weiß die Antwort.",
+          warum: "Person → niemand. Singular: weiß. niemand ist schon verneint.", warumEn: "Person → niemand. Singular: weiß. niemand is already negative." },
+        { frage: "Die Kollegin fragt: „Brauchst du noch etwas?“ Du brauchst nichts. Was sagst du?", frageEn: "Your colleague asks: “Do you need anything else?” You don't. What do you say?", satz: "„Brauchst du noch etwas?“",
+          options: ["Nein danke, ich brauche nichts.", "Nein danke, ich brauche nicht etwas.", "Nein danke, ich brauche nicht nichts.", "Nein danke, ich brauche kein nichts."], correct: "Nein danke, ich brauche nichts.",
+          warum: "Ding → nichts. „nicht etwas“ sagt man nicht.", warumEn: "A thing → nichts. People don't say “nicht etwas”." },
+        { ...wf, options: ["Hier gibt es etwas Neues.", "Hier gibt es etwas neues.", "Hier gibt es etwas Neue.", "Hier gibt es etwas Neuen."], correct: "Hier gibt es etwas Neues.",
+          warum: "etwas + Adjektiv: groß und mit -es: etwas Neues.", warumEn: "etwas + adjective: capitalised with -es: etwas Neues." },
+      ],
+      paare: [
+        { auftrag: "Person oder Ding? Verbinde.", auftragEn: "Person or thing? Connect.",
+          paare: [["jemand", "eine Person"], ["niemand", "keine Person"], ["etwas", "ein Ding"], ["nichts", "kein Ding"], ["alles", "jedes Ding"]] },
+        { auftrag: "Verbinde Frage und Antwort.", auftragEn: "Connect question and answer.",
+          paare: [["Ist jemand da?", "Nein, niemand."], ["Möchtest du etwas essen?", "Nein danke, nichts."], ["Ist alles in Ordnung?", "Ja, alles gut."], ["Sind alle da?", "Ja, wir sind komplett."]] },
+      ],
+      fliegen: [
+        { auftrag: "Fang alle Wörter für PERSONEN!", auftragEn: "Catch every word for PEOPLE!",
+          richtig: ["jemand", "niemand", "alle", "man"], falsch: ["etwas", "nichts", "alles", "was"] },
+        { auftrag: "Fang alle korrekten Sätze!", auftragEn: "Catch every correct sentence!",
+          richtig: ["Niemand ist da.", "Ich sehe nichts.", "Alle sind da.", "Alles ist gut.", "Jemand kommt."],
+          falsch: ["Niemand sind da.", "Ich sehe nicht nichts.", "Alle ist da.", "Alles sind gut.", "Jemand kommen."] },
+      ],
+      umformen: [
+        umf("Verneine:", "Negate:", "Jemand ist im Büro.", ["Niemand ist im Büro."], "Nobody is in the office."),
+        umf("Verneine:", "Negate:", "Ich habe etwas gekauft.", ["Ich habe nichts gekauft."], "I didn't buy anything."),
+        umf("Schreib das Gegenteil:", "Write the opposite:", "Niemand hat angerufen.", ["Jemand hat angerufen."], "Someone called."),
+        umf("Schreib mit „etwas“ + Adjektiv (neu):", "Write with “etwas” + adjective (neu):", "Ich lerne jeden Tag ein neues Ding.", ["Ich lerne jeden Tag etwas Neues."], "I learn something new every day."),
+      ],
+    },
+  });
+
+  // B1.1 — lassen
+  g("schleuse-lassen", "lassen", 6, {
+    lektion: {
+      title: "lassen: Ich lasse mein Auto reparieren", titleEn: "lassen: I'm having my car repaired",
+      explain: [
+        "„lassen“ hat im Alltag drei wichtige Bedeutungen. Die erste ist die häufigste.",
+        "1. Jemand anderes macht es für mich: Ich lasse mein Auto reparieren. Nicht ich repariere — die Werkstatt.",
+        "2. Erlauben: Meine Eltern lassen mich nach Deutschland gehen. Sie erlauben es.",
+        "3. Etwas nicht mitnehmen: Ich habe mein Handy im Bus gelassen.",
+        "lassen funktioniert wie ein Modalverb: lassen auf Platz 2, der zweite Infinitiv ohne zu ganz ans Ende.",
+        "Die Formen: ich lasse, du lässt, er/sie/es lässt, wir lassen, ihr lasst, sie/Sie lassen. Achtung: du und er/sie/es bekommen ä.",
+        "Beim Arzt, beim Amt und in der Pflege hörst du das oft: Ich lasse mich impfen. Sie lässt ihre Zeugnisse übersetzen. Wir lassen den Patienten untersuchen.",
+        "Wenn es um deinen Körper geht, steht oft mich oder mir dabei: Ich lasse mich untersuchen. Ich lasse mir die Haare schneiden.",
+        "Im Perfekt mit einem zweiten Verb stehen am Ende zwei Infinitive: Ich habe mein Auto reparieren lassen. Das musst du auf B1 vor allem verstehen.",
+      ],
+      explainEn: [
+        "In everyday life “lassen” has three important meanings. The first is the most common.",
+        "1. Someone else does it for me: Ich lasse mein Auto reparieren (I'm having my car repaired). Not me — the garage.",
+        "2. To allow: Meine Eltern lassen mich nach Deutschland gehen. They allow it.",
+        "3. To leave something behind: Ich habe mein Handy im Bus gelassen.",
+        "lassen works like a modal verb: lassen in position 2, the second infinitive without zu right at the end.",
+        "The forms: ich lasse, du lässt, er/sie/es lässt, wir lassen, ihr lasst, sie/Sie lassen. Careful: du and er/sie/es get ä.",
+        "At the doctor's, at offices and in nursing you hear it a lot: Ich lasse mich impfen. Sie lässt ihre Zeugnisse übersetzen. Wir lassen den Patienten untersuchen.",
+        "When it's about your body you'll often see mich or mir: Ich lasse mich untersuchen. Ich lasse mir die Haare schneiden.",
+        "In the perfect with a second verb, two infinitives stand at the end: Ich habe mein Auto reparieren lassen. At B1 you mainly need to understand this.",
+      ],
+      beispiele: [
+        { de: "Ich lasse meine Zeugnisse übersetzen.", en: "I'm having my certificates translated." },
+        { de: "Er lässt sich morgen impfen.", en: "He's getting vaccinated tomorrow." },
+        { de: "Meine Chefin lässt mich früher gehen.", en: "My boss lets me leave earlier. (allow)" },
+      ],
+      fehler: [
+        "„Ich lasse mein Auto zu reparieren.“ — Wie bei Modalverben: kein zu. Ich lasse mein Auto reparieren.",
+        "„Er lasst sich impfen.“ — Bei er/sie/es mit ä: Er lässt sich impfen.",
+      ],
+      fehlerEn: [
+        "“Ich lasse mein Auto zu reparieren.” — As with modal verbs: no zu. Ich lasse mein Auto reparieren.",
+        "“Er lasst sich impfen.” — With er/sie/es use ä: Er lässt sich impfen.",
+      ],
+      merk: "lassen + Infinitiv (ohne zu) = jemand anderes macht es / erlauben · du lässt, er lässt.",
+      merkEn: "lassen + infinitive (no zu) = someone else does it / to allow · du lässt, er lässt.",
+      reminder: "lassen auf Platz 2, Infinitiv am Ende, kein zu. du/er: lässt.",
+      reminderEn: "lassen in position 2, infinitive at the end, no zu. du/er: lässt.",
+    },
+    uebung: {
+      luecke: [
+        { satz: "Ich ___ mir die Haare schneiden.", correct: "lasse", options: ["lasse", "lässt", "lassen", "lasst"], hint: "ich · der Friseur schneidet", en: "I'm having my hair cut." },
+        { satz: "Sie ___ ihre Zeugnisse übersetzen.", correct: "lässt", options: ["lässt", "lasst", "lasse", "lassen"], hint: "sie (eine Frau) → ä", en: "She's having her certificates translated." },
+        { satz: "Wir lassen das Zimmer ___.", correct: "streichen", options: ["streichen", "zu streichen", "gestrichen", "streicht"], hint: "Infinitiv ohne zu am Ende", en: "We're having the room painted." },
+        { satz: "Ich lasse mich morgen ___.", correct: "impfen", options: ["impfen", "geimpft", "zu impfen", "impfe"], hint: "Infinitiv am Ende", en: "I'm getting vaccinated tomorrow." },
+        { satz: "Mein Chef ___ mich heute früher gehen.", correct: "lässt", options: ["lässt", "lasst", "lasse", "lassen"], hint: "erlauben · er", en: "My boss is letting me leave earlier today." },
+        { satz: "___ du dein Handy reparieren?", correct: "Lässt", options: ["Lässt", "Lasst", "Lasse", "Lassen"], hint: "du → ä", en: "Are you having your phone repaired?" },
+        { satz: "Wo kann man hier Passfotos ___ lassen?", correct: "machen", options: ["machen", "gemacht", "zu machen", "macht"], hint: "zwei Infinitive am Ende", en: "Where can you get passport photos taken here?" },
+        { satz: "Ich habe meinen Schirm im Café ___.", correct: "gelassen", options: ["gelassen", "lassen", "gelasst", "lässt"], hint: "Perfekt: etwas liegen lassen", en: "I left my umbrella in the café." },
+      ],
+      schwer: [
+        { ...wf, options: ["Ich lasse mein Auto reparieren.", "Ich lasse mein Auto zu reparieren.", "Ich lasse mein Auto repariert.", "Ich lasst mein Auto reparieren."], correct: "Ich lasse mein Auto reparieren.",
+          warum: "lassen wie ein Modalverb: Infinitiv ohne zu am Ende.", warumEn: "lassen works like a modal: infinitive without zu at the end." },
+        { ...wf, options: ["Er lässt seine Dokumente übersetzen.", "Er lasst seine Dokumente übersetzen.", "Er lässt seine Dokumente übersetzt.", "Er lässt seinen Dokumente übersetzen."], correct: "Er lässt seine Dokumente übersetzen.",
+          warum: "er → lässt (mit ä). Infinitiv am Ende.", warumEn: "er → lässt (with ä). Infinitive at the end." },
+        { frage: "Du reparierst die Heizung nicht selbst. Der Techniker kommt. Was sagst du?", frageEn: "You don't repair the heating yourself. The technician comes. What do you say?", satz: "Die Heizung ist kaputt.",
+          options: ["Ich lasse die Heizung reparieren.", "Ich repariere die Heizung.", "Ich lasse die Heizung repariert.", "Ich muss die Heizung zu reparieren."], correct: "Ich lasse die Heizung reparieren.",
+          warum: "Jemand anderes macht es → lassen + Infinitiv.", warumEn: "Someone else does it → lassen + infinitive." },
+        { ...wf, options: ["Meine Eltern lassen mich allein reisen.", "Meine Eltern lassen ich allein reisen.", "Meine Eltern lässt mich allein reisen.", "Meine Eltern lassen mich allein gereist."], correct: "Meine Eltern lassen mich allein reisen.",
+          warum: "erlauben → lassen. Wen? mich (Akkusativ). Infinitiv am Ende.", warumEn: "allow → lassen. Whom? mich (accusative). Infinitive at the end." },
+        { ...wf, options: ["Lässt du dir die Haare schneiden?", "Lasst du dir die Haare schneiden?", "Lässt du dir die Haare geschnitten?", "Lässt du dich die Haare schneiden?"], correct: "Lässt du dir die Haare schneiden?",
+          warum: "du → lässt. Wem? dir. Was? die Haare. Infinitiv am Ende.", warumEn: "du → lässt. To whom? dir. What? die Haare. Infinitive at the end." },
+      ],
+      paare: [
+        { auftrag: "Verbinde Person und Form von „lassen“.", auftragEn: "Connect the person and the form of “lassen”.",
+          paare: [["ich", "lasse"], ["du", "lässt"], ["ihr", "lasst"], ["wir", "lassen"]] },
+        { auftrag: "Wer macht es wirklich? Verbinde.", auftragEn: "Who really does it? Connect.",
+          paare: [["Ich lasse mein Auto reparieren.", "die Werkstatt"], ["Ich lasse mir die Haare schneiden.", "der Friseur"], ["Ich lasse meine Zeugnisse übersetzen.", "die Übersetzerin"], ["Ich lasse mich impfen.", "die Ärztin"]] },
+      ],
+      fliegen: [
+        { auftrag: "Fang alle korrekten Sätze mit „lassen“!", auftragEn: "Catch every correct sentence with “lassen”!",
+          richtig: ["Ich lasse es machen.", "Er lässt sich impfen.", "Wir lassen ihn gehen.", "Du lässt es reparieren."],
+          falsch: ["Ich lasse es zu machen.", "Er lasst sich impfen.", "Wir lassen ihn gegangen.", "Du lasst es reparieren."] },
+        { auftrag: "Fang alles, was jemand ANDERES für dich macht!", auftragEn: "Catch everything that someone ELSE does for you!",
+          richtig: ["Ich lasse mein Auto waschen.", "Ich lasse mich untersuchen.", "Ich lasse ein Foto machen."],
+          falsch: ["Ich wasche mein Auto.", "Ich untersuche mich.", "Ich mache ein Foto."] },
+      ],
+      umformen: [
+        umf("Jemand anderes macht es — schreib mit „lassen“:", "Someone else does it — write with “lassen”:", "Ich repariere mein Fahrrad.", ["Ich lasse mein Fahrrad reparieren."], "I'm having my bike repaired."),
+        umf("Schreib für „er“:", "Write for “er”:", "Ich lasse meine Dokumente übersetzen.", ["Er lässt seine Dokumente übersetzen."], "He's having his documents translated."),
+        umf("Du gehst zum Arzt. Schreib mit „lassen“:", "You go to the doctor. Write with “lassen”:", "Der Arzt untersucht mich.", ["Ich lasse mich untersuchen.", "Ich lasse mich vom Arzt untersuchen."], "I'm having myself examined."),
+        umf("Schreib mit „lassen“ (erlauben):", "Write with “lassen” (allow):", "Meine Mutter erlaubt mir, allein zu reisen.", ["Meine Mutter lässt mich allein reisen."], "My mother lets me travel alone."),
+      ],
+    },
+  });
+
+  // B1.2 — Konjunktiv II der Vergangenheit
+  g("leuchtturm-konj-vergangenheit", "konjvergangenheit", 6, {
+    lektion: {
+      title: "Konjunktiv II der Vergangenheit: hätte gemacht, wäre gekommen", titleEn: "Past subjunctive II: hätte gemacht, wäre gekommen",
+      explain: [
+        "Mit dem Konjunktiv II der Gegenwart sprichst du über Wünsche und Träume: Ich würde gern in Berlin wohnen.",
+        "Jetzt geht es um die Vergangenheit — um Dinge, die NICHT passiert sind. Du bedauerst etwas oder stellst dir vor, was anders gewesen wäre.",
+        "Die Form ist einfach: hätte oder wäre + Partizip II. Ich hätte mehr gelernt. Ich wäre früher gekommen.",
+        "hätte oder wäre? Genau wie beim Perfekt. Wer im Perfekt „hat“ nimmt, nimmt jetzt „hätte“. Wer „ist“ nimmt, nimmt „wäre“.",
+        "Perfekt: Ich habe gelernt. → Ich hätte gelernt. · Perfekt: Ich bin gefahren. → Ich wäre gefahren.",
+        "Mit wenn baust du Bedingungen, für die es zu spät ist: Wenn ich mehr gelernt hätte, hätte ich die Prüfung bestanden.",
+        "Im wenn-Satz steht hätte/wäre ganz am Ende. Im zweiten Teil steht hätte/wäre direkt nach dem Komma, dann das Subjekt.",
+        "Bedauern klingt so: Hätte ich nur mehr geschlafen! Wäre ich doch zu Hause geblieben!",
+        "Und fast passiert: Ich wäre fast gefallen. = Ich bin NICHT gefallen, aber es war knapp.",
+      ],
+      explainEn: [
+        "With the present subjunctive II you talk about wishes and dreams: Ich würde gern in Berlin wohnen.",
+        "Now it's about the past — about things that did NOT happen. You regret something or imagine how it could have been different.",
+        "The form is simple: hätte or wäre + past participle. Ich hätte mehr gelernt (I would have studied more). Ich wäre früher gekommen.",
+        "hätte or wäre? Exactly like the perfect. If the perfect uses “hat”, now use “hätte”. If it uses “ist”, use “wäre”.",
+        "Perfect: Ich habe gelernt. → Ich hätte gelernt. · Perfect: Ich bin gefahren. → Ich wäre gefahren.",
+        "With wenn you build conditions that are too late: Wenn ich mehr gelernt hätte, hätte ich die Prüfung bestanden.",
+        "In the wenn clause hätte/wäre goes right to the end. In the second part hätte/wäre comes straight after the comma, then the subject.",
+        "Regret sounds like this: Hätte ich nur mehr geschlafen! Wäre ich doch zu Hause geblieben!",
+        "And almost happened: Ich wäre fast gefallen. = I did NOT fall, but it was close.",
+      ],
+      beispiele: [
+        { de: "Wenn ich Zeit gehabt hätte, wäre ich gekommen.", en: "If I had had time, I would have come." },
+        { de: "Ohne deine Hilfe hätte ich das nicht geschafft.", en: "Without your help I wouldn't have managed it." },
+        { de: "Ich wäre fast zu spät gekommen.", en: "I was almost late. (but I wasn't)" },
+      ],
+      fehler: [
+        "„Ich hätte gekommen.“ — kommen bildet das Perfekt mit sein: Ich wäre gekommen.",
+        "„Wenn ich Zeit hätte gehabt, …“ — Im wenn-Satz steht hätte am Ende: Wenn ich Zeit gehabt hätte, …",
+      ],
+      fehlerEn: [
+        "“Ich hätte gekommen.” — kommen forms the perfect with sein: Ich wäre gekommen.",
+        "“Wenn ich Zeit hätte gehabt, …” — In the wenn clause hätte goes last: Wenn ich Zeit gehabt hätte, …",
+      ],
+      merk: "hätte/wäre + Partizip II = ist nicht passiert · hat → hätte, ist → wäre.",
+      merkEn: "hätte/wäre + past participle = didn't happen · hat → hätte, ist → wäre.",
+      reminder: "hat → hätte, ist → wäre + Partizip II am Ende.",
+      reminderEn: "hat → hätte, ist → wäre + participle at the end.",
+    },
+    uebung: {
+      luecke: [
+        { satz: "Wenn ich Zeit gehabt hätte, ___ ich gekommen.", correct: "wäre", options: ["wäre", "hätte", "würde", "war"], hint: "kommen → ist gekommen → wäre", en: "If I had had time, I would have come." },
+        { satz: "Ich ___ gern länger geschlafen.", correct: "hätte", options: ["hätte", "wäre", "würde", "habe"], hint: "schlafen → hat geschlafen → hätte", en: "I would have liked to sleep longer." },
+        { satz: "Wenn der Zug pünktlich gewesen ___, wäre ich nicht zu spät gekommen.", correct: "wäre", options: ["wäre", "hätte", "ist", "war"], hint: "sein → ist gewesen → wäre gewesen", en: "If the train had been on time, I wouldn't have been late." },
+        { satz: "Wir hätten das Problem früher ___.", correct: "gelöst", options: ["gelöst", "lösen", "gelösen", "löste"], hint: "Partizip II am Ende", en: "We should have solved the problem earlier." },
+        { satz: "Wenn ich das gewusst ___, hätte ich dir geholfen.", correct: "hätte", options: ["hätte", "wäre", "würde", "hatte"], hint: "wissen → hat gewusst; im wenn-Satz am Ende", en: "If I had known that, I would have helped you." },
+        { satz: "Sie ___ lieber in Hamburg geblieben.", correct: "wäre", options: ["wäre", "hätte", "würde", "ist"], hint: "bleiben → ist geblieben → wäre", en: "She would rather have stayed in Hamburg." },
+        { satz: "Ohne deine Hilfe ___ ich die Prüfung nicht bestanden.", correct: "hätte", options: ["hätte", "wäre", "habe", "würde"], hint: "bestehen → hat bestanden", en: "Without your help I wouldn't have passed the exam." },
+        { satz: "Ihr ___ fast den Flug verpasst!", correct: "hättet", options: ["hättet", "wärt", "hattet", "hätten"], hint: "ihr · verpassen → hat verpasst", en: "You almost missed the flight!" },
+      ],
+      schwer: [
+        { ...wf, options: ["Ich hätte mehr gelernt.", "Ich wäre mehr gelernt.", "Ich hätte mehr lernen.", "Ich würde mehr gelernt."], correct: "Ich hätte mehr gelernt.",
+          warum: "lernen → Perfekt mit haben → hätte + gelernt.", warumEn: "lernen → perfect with haben → hätte + gelernt." },
+        { ...wf, options: ["Ich wäre gern mitgekommen.", "Ich hätte gern mitgekommen.", "Ich wäre gern mitkommen.", "Ich war gern mitgekommen."], correct: "Ich wäre gern mitgekommen.",
+          warum: "mitkommen → ist mitgekommen → wäre.", warumEn: "mitkommen → ist mitgekommen → wäre." },
+        { ...wf, options: ["Wenn ich Zeit gehabt hätte, wäre ich gekommen.", "Wenn ich Zeit gehabt hätte, hätte ich gekommen.", "Wenn ich Zeit hätte gehabt, wäre ich gekommen.", "Wenn ich Zeit gehabt hätte, ich wäre gekommen."], correct: "Wenn ich Zeit gehabt hätte, wäre ich gekommen.",
+          warum: "wenn-Satz: hätte am Ende. Danach: wäre direkt nach dem Komma. kommen → sein.", warumEn: "wenn clause: hätte at the end. Then: wäre straight after the comma. kommen → sein." },
+        { frage: "Du hast die Prüfung nicht bestanden, weil du wenig gelernt hast. Was sagst du?", frageEn: "You failed the exam because you studied too little. What do you say?", satz: "Die Prüfung ist vorbei.",
+          options: ["Hätte ich nur mehr gelernt!", "Wäre ich nur mehr gelernt!", "Hätte ich nur mehr lernen!", "Hatte ich nur mehr gelernt!"], correct: "Hätte ich nur mehr gelernt!",
+          warum: "Bedauern über die Vergangenheit: Hätte ich nur … + Partizip!", warumEn: "Regret about the past: Hätte ich nur … + participle!" },
+        { frage: "Was bedeutet der Satz?", frageEn: "What does the sentence mean?", satz: "Ich wäre fast gefallen.",
+          options: ["Ich bin nicht gefallen — aber es war knapp.", "Ich bin gefallen.", "Ich falle morgen vielleicht.", "Ich möchte gern fallen."], correct: "Ich bin nicht gefallen — aber es war knapp.",
+          warum: "Konjunktiv II der Vergangenheit = es ist NICHT passiert. fast = beinahe.", warumEn: "Past subjunctive II = it did NOT happen. fast = almost." },
+      ],
+      paare: [
+        { auftrag: "Verbinde Perfekt und Konjunktiv II der Vergangenheit.", auftragEn: "Connect the perfect and the past subjunctive II.",
+          paare: [["ich habe gelernt", "ich hätte gelernt"], ["ich bin gefahren", "ich wäre gefahren"], ["sie ist geblieben", "sie wäre geblieben"], ["wir haben gewusst", "wir hätten gewusst"]] },
+        { auftrag: "Verbinde die Satzhälften.", auftragEn: "Connect the halves of the sentence.",
+          paare: [["Wenn ich früher aufgestanden wäre,", "hätte ich den Bus bekommen."], ["Wenn du mich gefragt hättest,", "hätte ich dir die Antwort gesagt."], ["Wenn es nicht geregnet hätte,", "wären wir an den Strand gefahren."]] },
+      ],
+      fliegen: [
+        { auftrag: "Fang alle Formen mit „wäre“ (Perfekt mit sein)!", auftragEn: "Catch every form with “wäre” (perfect with sein)!",
+          richtig: ["gekommen", "gefahren", "geblieben", "gegangen", "geflogen", "gewesen"],
+          falsch: ["gelernt", "gemacht", "gewusst", "gegessen", "gesagt", "gekauft"] },
+        { auftrag: "Fang alle korrekten Sätze!", auftragEn: "Catch every correct sentence!",
+          richtig: ["Ich hätte angerufen.", "Er wäre gekommen.", "Wir hätten gewartet.", "Sie wäre geblieben."],
+          falsch: ["Ich wäre angerufen.", "Er hätte gekommen.", "Wir wären gewartet.", "Sie hätte geblieben."] },
+      ],
+      umformen: [
+        umf("Schreib im Konjunktiv II der Vergangenheit:", "Write in the past subjunctive II:", "Ich habe mehr gelernt.", ["Ich hätte mehr gelernt."], "I would have studied more."),
+        umf("Schreib im Konjunktiv II der Vergangenheit:", "Write in the past subjunctive II:", "Er ist früher gekommen.", ["Er wäre früher gekommen."], "He would have come earlier."),
+        umf("Schreib als Bedauern mit „Hätte ich nur …!“:", "Write as a regret with “Hätte ich nur …!”:", "Ich habe nicht angerufen.", ["Hätte ich nur angerufen!", "Hätte ich doch nur angerufen!"], "If only I had called!"),
+        umf("Verbinde mit „wenn“:", "Connect with “wenn”:", "Ich hatte keine Zeit. Ich bin nicht gekommen.", ["Wenn ich Zeit gehabt hätte, wäre ich gekommen."], "If I had had time, I would have come."),
+      ],
+    },
+  });
+
   // Zusaetzliche Verbformen fuer die Verb-Markierung (helfer.js), die in keiner Verbliste stehen.
   window.EXTRA_VERBFORMEN = [
     "konnte", "konntest", "konnten", "konntet", "musste", "musstest", "mussten", "musstet", "durfte", "durftest", "durften", "durftet",
     "wollte", "wolltest", "wollten", "wolltet", "sollte", "solltest", "solltet", "mochte", "mochtest", "mochten", "mag", "magst", "mögen", "mögt",
     "möchtet", "werde", "wirst", "werdet", "geworden", "müssten", "müsstest", "müsstet", "könntet", "dürften", "dürftest", "dürftet", "mochtet", "wäre", "käme", "führe",
     "spielen", "spielt", "beginnt", "fährt", "fährst", "fliege", "fliegst", "fliegt", "kostet", "nimmst", "gemessen", "gewechselt",
+    "lasse", "lässt", "lasst", "lassen", "gelassen", "hätte", "hättest", "hätten", "hättet", "wärst", "wären", "wärt",
+    "gehabt", "gewesen", "gewusst", "mitgekommen", "gelöst", "verpasst", "bestanden", "geschlafen", "geblieben",
     "geteilt", "operiert", "gelüftet", "dokumentiert", "abgegeben", "erledigt", "zerkleinert", "bezogen", "gelagert", "gemacht", "repariert", "geraucht", "notiert",
   ];
 })();
@@ -8892,25 +9511,25 @@ const LEKTIONEN_PLUS = {};
   Object.assign(neu, LEKTIONEN_PLUS);
 
   // ---------------- Lektionen je Bezirk ----------------
-  // 10 Lektionen je Bezirk. Nach der 5. Lektion kommt der Zwischentest (ZWISCHENTEST_NACH in economy.js),
+  // 10–11 Lektionen je Bezirk (die elfte kam mit dem Pruefungs-Kern dazu, siehe lektionen-plus.js). Nach der 5. Lektion kommt der Zwischentest (ZWISCHENTEST_NACH in economy.js),
   // am Ende der Boss. Reihenfolge: Grammatik, Wortschatz und Fertigkeiten wechseln sich ab.
   const VERTEILUNG = {
     quelle: ["quelle-satzbau", "quelle-sein-haben", "quelle-praesens-ich-du", "quelle-praesens-er-wir", "quelle-fragen",
       "quelle-praesens-ihr-sie", "quelle-wortschatz-begruessung", "quelle-wortschatz-familie", "quelle-hoeren", "quelle-lesen"],
     schilf: ["quelle-praesens-vokalwechsel", "dorf-wortschatz-alltag", "schilf-plural", "quelle-modalverben", "schilf-wortschatz-gefuehle",
-      "dorf-artikel", "schilf-zeitpraep", "schilf-wortschatz-tageszeiten", "dorf-negation", "schilf-hoeren"],
+      "dorf-artikel", "schilf-zeitpraep", "schilf-es-gibt", "schilf-wortschatz-tageszeiten", "dorf-negation", "schilf-hoeren"],
     dorf: ["dorf-possessiv", "dorf-wortschatz-essen", "dorf-lokalpraep", "dorf-imperativ", "dorf-wortschatz-wetter",
-      "dorf-moechten", "dorf-wortschatz-wohnen", "dorf-wortschatz-kueche", "dorf-wortschatz-kleidung", "dorf-lesen"],
+      "dorf-moechten", "dorf-konnektoren", "dorf-wortschatz-wohnen", "dorf-wortschatz-kueche", "dorf-wortschatz-kleidung", "dorf-lesen"],
     handelsstadt: ["handelsstadt-akkusativ", "handelsstadt-wortschatz-zahlen", "handelsstadt-ordinal", "handelsstadt-dativ", "handelsstadt-wortschatz-einkaufen",
-      "handelsstadt-pronomen", "handelsstadt-welch", "handelsstadt-praepositionen", "handelsstadt-hoeren", "handelsstadt-lesen"],
+      "handelsstadt-pronomen", "handelsstadt-welch", "handelsstadt-dieser", "handelsstadt-praepositionen", "handelsstadt-hoeren", "handelsstadt-lesen"],
     bruecke: ["handelsstadt-perfekt", "handelsstadt-wortschatz-berufe", "bruecke-modal-praeteritum", "handelsstadt-trennbar", "bruecke-wortschatz-freizeit",
       "bruecke-werden", "bruecke-wortschatz-arbeitsalltag", "handelsstadt-reflexiv", "bruecke-wortschatz-tagesablauf", "bruecke-lesen"],
     stromschnellen: ["stromschnellen-komparativ", "stromschnellen-wortschatz-koerper", "stromschnellen-wechsel", "stromschnellen-nebensatz", "stromschnellen-wortschatz-reisen",
-      "stromschnellen-praeteritum", "stromschnellen-indirekt", "stromschnellen-hoeren", "stromschnellen-wortschatz-wohnungssuche", "stromschnellen-wortschatz-verkehr"],
+      "stromschnellen-praeteritum", "stromschnellen-indirekt", "stromschnellen-indefinit", "stromschnellen-hoeren", "stromschnellen-wortschatz-wohnungssuche", "stromschnellen-wortschatz-verkehr"],
     schleuse: ["stromschnellen-temporal", "stromschnellen-adjektive", "stromschnellen-wortschatz-beziehungen", "stromschnellen-adjektiv-ein", "stromschnellen-konnektoren",
-      "stromschnellen-zu-infinitiv", "stromschnellen-umzu", "schleuse-obwohl", "stromschnellen-futur", "schleuse-lesen"],
+      "stromschnellen-zu-infinitiv", "stromschnellen-umzu", "schleuse-obwohl", "schleuse-lassen", "stromschnellen-futur", "schleuse-lesen"],
     leuchtturm: ["hafenstadt-konjunktiv", "hafenstadt-wortschatz-gesundheit", "hafenstadt-passiv", "hafenstadt-wortschatz-station", "hafenstadt-plusquamperfekt",
-      "leuchtturm-passiv-modal", "hafenstadt-relativ", "leuchtturm-konjunktiv-wunsch", "hafenstadt-hoeren", "leuchtturm-lesen"],
+      "leuchtturm-passiv-modal", "hafenstadt-relativ", "leuchtturm-konjunktiv-wunsch", "leuchtturm-konj-vergangenheit", "hafenstadt-hoeren", "leuchtturm-lesen"],
     hafenstadt: ["hafenstadt-email", "hafenstadt-wortschatz-arbeit", "hafenstadt-verbpraep", "hafenstadt-wortschatz-amt", "hafenstadt-genitiv",
       "hafenstadt-zweiteilig", "hafenstadt-ndeklination", "hafenstadt-wortschatz-bewerbung", "hafenstadt-wortschatz-anerkennung", "hafenstadt-lesen"],
   };
@@ -9545,6 +10164,204 @@ const Verben = {
   },
 };
 
+// ---------------- Antworten vergleichen: ae/oe/ue/ss sind erlaubt ----------------
+// Viele Schueler:innen tippen auf philippinischen Tastaturen ohne Umlaute. "schoen" muss
+// deshalb genauso zaehlen wie "schön". Beide Seiten werden gleich umgeschrieben, damit
+// "Bär" (→ baer) und "Bar" (→ bar) trotzdem verschieden bleiben.
+function ohneUmlaute(s) {
+  return String(s)
+    .replace(/ä/g, "ae").replace(/ö/g, "oe").replace(/ü/g, "ue")
+    .replace(/Ä/g, "ae").replace(/Ö/g, "oe").replace(/Ü/g, "ue")
+    .replace(/ß/g, "ss");
+}
+
+// Vergleichsform einer Antwort: klein, ohne Satzzeichen, ohne doppelte Leerzeichen, ohne Umlaute.
+function normAntwort(s) {
+  return ohneUmlaute(String(s == null ? "" : s))
+    .trim().toLowerCase()
+    .replace(/[.,!?;:„“"']/g, "")
+    .replace(/\s+/g, " ");
+}
+
+// Der kleine Hinweis unter Eingabefeldern. Nur dort sinnvoll, wo wirklich getippt wird.
+function umlautTipp() {
+  return `<span class="umlaut-tipp">${Lang.isEn()
+    ? "ä ö ü ß may also be typed as ae oe ue ss"
+    : "ä ö ü ß darfst du auch ae oe ue ss schreiben"}</span>`;
+}
+
+// ---------------- Kurze Erklaerungen nach einem Fehler ----------------
+// Kein Grammatik-Lexikon, sondern ein Satz, der beim naechsten Mal hilft. Wird von
+// Combat.onWrong unter der Loesung angezeigt (siehe combat.js).
+const Erklaerung = {
+  en() { return Lang.isEn(); },
+
+  // Artikel: die verlaesslichen Endungs-Regeln zuerst, sonst die Faustregel zum Mitlernen.
+  artikel(wort, artikel) {
+    const w = String(wort || "").replace(/^(der|die|das) /, "");
+    const en = this.en();
+    const regeln = [
+      [/(ung|heit|keit|schaft|ion|tät|ik|ei|enz|anz)$/, "die", en ? "Nouns ending in -ung, -heit, -keit, -schaft, -ion, -tät are always <b>die</b>." : "Wörter auf -ung, -heit, -keit, -schaft, -ion, -tät sind immer <b>die</b>."],
+      [/(chen|lein|ment|um|tum|ma)$/, "das", en ? "Nouns ending in -chen, -lein, -ment, -um are <b>das</b> — also every diminutive." : "Wörter auf -chen, -lein, -ment, -um sind <b>das</b> — auch jede Verkleinerung."],
+      [/(er|ling|ismus|ant|ent|or|ich|ig)$/, "der", en ? "Nouns ending in -er, -ling, -or, -ismus are usually <b>der</b> (people who do something)." : "Wörter auf -er, -ling, -or, -ismus sind meist <b>der</b> (oft Personen, die etwas tun)."],
+      [/^Ge/, "das", en ? "Nouns starting with Ge- are mostly <b>das</b> (das Gebäude, das Gespräch)." : "Wörter mit Ge- am Anfang sind meist <b>das</b> (das Gebäude, das Gespräch)."],
+    ];
+    for (const [re, art, text] of regeln) if (re.test(w) && art === artikel) return text;
+    // Zusammengesetzte Woerter: das letzte Wort bestimmt den Artikel (die Tuer → die Haustuer).
+    const grund = this.grundwort(w, artikel);
+    if (grund) {
+      return en
+        ? `Compound noun: the <b>last</b> word decides the article — <b>${artikel} ${grund}</b> → <b>${artikel} ${w}</b>.`
+        : `Zusammengesetztes Wort: Das <b>letzte</b> Wort bestimmt den Artikel — <b>${artikel} ${grund}</b> → <b>${artikel} ${w}</b>.`;
+    }
+    const spaet = [
+      [/^(Montag|Dienstag|Mittwoch|Donnerstag|Freitag|Samstag|Sonntag|Januar|Februar|März|April|Mai|Juni|Juli|August|September|Oktober|November|Dezember|Frühling|Sommer|Herbst|Winter|Morgen|Vormittag|Mittag|Nachmittag|Abend)$/, "der",
+        en ? "Days, months, seasons and times of day are <b>der</b> (der Montag, der Mai, der Winter) — only <b>die</b> Nacht is different." : "Tage, Monate, Jahreszeiten und Tageszeiten sind <b>der</b> (der Montag, der Mai, der Winter) — nur <b>die</b> Nacht nicht."],
+      [/(er|ant|ent|eur|ist|and|or|arzt|ärzt)in$/, "die",
+        en ? "Female persons ending in <b>-in</b> are always <b>die</b>: der Lehrer → die Lehrerin." : "Weibliche Personen auf <b>-in</b> sind immer <b>die</b>: der Lehrer → die Lehrerin."],
+      [/en$/, "das",
+        en ? "A verb used as a noun is always <b>das</b>: essen → das Essen, röntgen → das Röntgen." : "Ein Verb als Nomen ist immer <b>das</b>: essen → das Essen, röntgen → das Röntgen."],
+      [/en$/, "der",
+        en ? "Nouns ending in <b>-en</b> (that are not verbs) are mostly <b>der</b>: der Garten, der Husten, der Magen." : "Nomen auf <b>-en</b> (die keine Verben sind) sind meist <b>der</b>: der Garten, der Husten, der Magen."],
+      [/(frau|mutter|schwester|tochter)$/i, "die",
+        en ? "Female persons are <b>die</b>: die Frau, die Kauffrau, die Schwester." : "Weibliche Personen sind <b>die</b>: die Frau, die Kauffrau, die Schwester."],
+      [/(mann|vater|bruder|sohn)$/i, "der",
+        en ? "Male persons are <b>der</b>: der Mann, der Kaufmann, der Bruder." : "Männliche Personen sind <b>der</b>: der Mann, der Kaufmann, der Bruder."],
+      [/e$/, "die",
+        en ? "Nouns ending in <b>-e</b> are <b>die</b> in about 9 of 10 cases (die Lampe, die Woche). Exceptions: der Name, der Junge, das Auge, das Ende." : "Wörter auf <b>-e</b> sind in 9 von 10 Fällen <b>die</b> (die Lampe, die Woche). Ausnahmen: der Name, der Junge, das Auge, das Ende."],
+    ];
+    for (const [re, art, text] of spaet) if (re.test(w) && art === artikel) return text;
+    return en
+      ? `There is no rule here — learn the article with the word: say <b>${artikel} ${w}</b> out loud, never just “${w}”.`
+      : `Hier hilft keine Regel — lerne den Artikel mit dem Wort: sag <b>${artikel} ${w}</b> laut, nie nur „${w}“.`;
+  },
+
+  // Laengstes bekanntes Nomen mit demselben Artikel, auf das w endet (Haustuer → Tuer).
+  // Quelle: der Wortschatz des Spiels, einmal als Liste aufgebaut.
+  grundwort(w, artikel) {
+    if (!this._nomen) {
+      const liste = [];
+      const rein = (de) => { const m = String(de).match(/^(der|die|das) ([A-ZÄÖÜ][a-zäöüß]+)$/); if (m) liste.push([m[2], m[1]]); };
+      if (typeof VOCAB_THEMES !== "undefined") Object.values(VOCAB_THEMES).forEach((l) => l.forEach((x) => rein(x.de)));
+      if (typeof ARTICLE_NOUNS !== "undefined") ARTICLE_NOUNS.forEach((n) => rein(`${n.article} ${n.noun}`));
+      this._nomen = liste.sort((a, b) => b[0].length - a[0].length);
+    }
+    const klein = w.toLowerCase();
+    for (const [n, art] of this._nomen) {
+      if (n.length < 3 || n.length >= w.length - 1 || art !== artikel) continue;
+      if (klein.endsWith(n.toLowerCase())) return n;
+    }
+    return null;
+  },
+
+  // Vokabel: was man sich merken kann — Artikel, Wortart, verwandtes englisches Wort.
+  vokabel(de, en_) {
+    const en = this.en();
+    const m = String(de || "").match(/^(der|die|das) (.+)$/);
+    if (m) {
+      const artikelSatz = this.artikel(m[2], m[1]);
+      return `<b>${de}</b> — ${en_}. ${artikelSatz}`;
+    }
+    if (/^to /.test(String(en_ || ""))) {
+      return en
+        ? `<b>${de}</b> is a verb (<i>${en_}</i>). The dictionary form always ends in -en: ich ${String(de).replace(/en$/, "e")}, wir ${de}.`
+        : `<b>${de}</b> ist ein Verb (<i>${en_}</i>). Die Grundform endet immer auf -en: ich ${String(de).replace(/en$/, "e")}, wir ${de}.`;
+    }
+    return en ? `<b>${de}</b> = ${en_}. Say it out loud twice — it comes back soon.`
+      : `<b>${de}</b> = ${en_}. Sprich es zweimal laut mit — es kommt bald wieder.`;
+  },
+
+  // Strategie-Tipps fuer Aufgaben ohne eigene Regel (Lesen, Hoeren, Dialog …): Was mache ich
+  // beim naechsten Mal anders? Ein Satz, nicht mehr.
+  tipp(art) {
+    const T = {
+      lesen: ["Im Text stehen oft andere Wörter als in der Frage (Synonyme). Such die Stelle mit derselben Information — Zahl, Zeit, Ort oder Name.",
+        "The text often uses other words than the question (synonyms). Look for the same information — number, time, place or name."],
+      lesenRF: ["Bei Richtig/Falsch reicht <b>ein</b> falsches Detail — Tag, Uhrzeit, Person —, und die ganze Aussage ist falsch.",
+        "In true/false, <b>one</b> wrong detail — day, time, person — makes the whole statement false."],
+      hoeren: ["Achte beim Hören zuerst auf die Schlüsselwörter: Verb, Zahl, Zeit, Ort. Der Rest ergibt sich. Nutze 🐢 langsamer.",
+        "When listening, catch the key words first: verb, number, time, place. Use 🐢 slower."],
+      lueckentext: ["Frag bei jeder Lücke: Wer ist das Subjekt? Das Verb muss zur Person passen (ich -e, du -st, er/sie -t, wir/sie -en) und steht im Hauptsatz auf Position 2.",
+        "For each gap ask: who is the subject? The verb must match the person (ich -e, du -st, er/sie -t, wir/sie -en) and stands in position 2."],
+      dialog: ["Die passende Antwort geht <b>auf die Frage ein</b> und bleibt höflich. Bei Fremden, im Amt und im Beruf: <b>Sie</b> und höfliche Formen wie <b>könnten, würden, gern</b>.",
+        "The right reply <b>answers the question</b> and stays polite. With strangers, at offices and at work: <b>Sie</b> and polite forms like <b>könnten, würden, gern</b>."],
+      kollokation: ["Nomen und Verb gehören fest zusammen — übersetzt man wörtlich, klingt es falsch. Lerne das Paar als Block: <b>einen Termin machen</b>, nicht „einen Termin tun“.",
+        "Noun and verb belong together — word-by-word translation sounds wrong. Learn the pair as one block: <b>einen Termin machen</b>."],
+      zuordnen: ["Sprich jedes Paar einmal laut: deutsches Wort (mit Artikel!) — Bedeutung. Falsche Paare kommen bald im Wiederholungs-Deck wieder.",
+        "Say each pair out loud once: German word (with article!) — meaning. Missed pairs return soon in your review deck."],
+      fangen: ["Lies das Wort ganz, bevor du tippst — besonders die Endung. Fang lieber langsam und sicher.",
+        "Read the whole word before you tap — especially the ending. Slow and sure beats fast."],
+    };
+    const x = T[art];
+    return x ? (this.en() ? x[1] : x[0]) : "";
+  },
+
+  // Praesens, wenn die Form NICHT der Endungsregel folgt (du faehrst, er kann, ich bin).
+  unregelmaessig(pronomen, form, inf, formen) {
+    const en = this.en();
+    // Modalverb-Muster: ich und er/sie/es gleich, ohne Endung (ich kann, er kann).
+    if (formen && formen[0] === formen[2] && /^(ich|er)/.test(pronomen) && !/e$/.test(formen[0])) {
+      return en
+        ? `<b>${inf}</b> works like a modal verb: <b>ich ${formen[0]}</b> and <b>er/sie/es ${formen[2]}</b> are the same — no ending, often a new vowel.`
+        : `<b>${inf}</b> funktioniert wie ein Modalverb: <b>ich ${formen[0]}</b> und <b>er/sie/es ${formen[2]}</b> sind gleich — ohne Endung, oft mit neuem Vokal.`;
+    }
+    // Vokalwechsel: nur du und er/sie/es (fahren → du fährst, sprechen → er spricht).
+    if (formen && /^(du|er)/.test(pronomen) && formen[0] === inf.replace(/e?n$/, "") + "e") {
+      return en
+        ? `<b>${inf}</b> changes its vowel — but <b>only with du and er/sie/es</b>: ich ${formen[0]}, du ${formen[1]}, er ${formen[2]}. The endings stay regular.`
+        : `<b>${inf}</b> wechselt den Vokal — aber <b>nur bei du und er/sie/es</b>: ich ${formen[0]}, du ${formen[1]}, er ${formen[2]}. Die Endungen bleiben normal.`;
+    }
+    return en
+      ? `<b>${inf}</b> is irregular: <b>${pronomen} ${form}</b>. Irregular verbs are the most frequent ones — learn these forms by heart.`
+      : `<b>${inf}</b> ist unregelmäßig: <b>${pronomen} ${form}</b>. Unregelmäßige Verben sind die häufigsten — diese Formen lernst du auswendig.`;
+  },
+
+  perfekt(inf, hilfsverb, partizip, regelmaessig) {
+    const en = this.en();
+    const hv = hilfsverb === "sein"
+      ? (en ? "<b>sein</b>: the verb describes movement from A to B or a change (gehen, fahren, werden, sterben)." : "<b>sein</b>: Das Verb beschreibt eine Bewegung von A nach B oder eine Veränderung (gehen, fahren, werden, sterben).")
+      : (en ? "<b>haben</b>: most verbs — everything without movement or change." : "<b>haben</b>: die meisten Verben — alles ohne Ortswechsel oder Veränderung.");
+    const pp = regelmaessig
+      ? (en ? `Regular: ge- + stem + -t → <b>${partizip}</b>.` : `Regelmäßig: ge- + Stamm + -t → <b>${partizip}</b>.`)
+      : (en ? `Irregular: usually ge- … -en, often with a new vowel → <b>${partizip}</b>.` : `Unregelmäßig: meist ge- … -en, oft mit neuem Vokal → <b>${partizip}</b>.`);
+    return `${inf} → ${hv} ${pp}`;
+  },
+
+  praeteritum(inf, form, schwach) {
+    return schwach
+      ? (this.en() ? `Regular verbs add <b>-te</b>: ${inf} → <b>${form}</b>.` : `Regelmäßige Verben bekommen <b>-te</b>: ${inf} → <b>${form}</b>.`)
+      : (this.en() ? `Strong verb — new vowel, no -te: ${inf} → <b>${form}</b>. Learn it together with the participle.` : `Starkes Verb — neuer Vokal, kein -te: ${inf} → <b>${form}</b>. Lerne es zusammen mit dem Partizip.`);
+  },
+
+  komparativ(pos, komp, sup, regelmaessig) {
+    return regelmaessig
+      ? (this.en() ? `Comparative <b>-er</b>, superlative <b>am -sten</b>: ${pos} → ${komp} → ${sup}. Short words with a/o/u often get an umlaut (alt → älter).` : `Komparativ <b>-er</b>, Superlativ <b>am -sten</b>: ${pos} → ${komp} → ${sup}. Kurze Wörter mit a/o/u bekommen oft einen Umlaut (alt → älter).`)
+      : (this.en() ? `Irregular — learn all three together: <b>${pos} → ${komp} → ${sup}</b>.` : `Unregelmäßig — lerne alle drei zusammen: <b>${pos} → ${komp} → ${sup}</b>.`);
+  },
+
+  trennbar(inf, stamm, praefix) {
+    return this.en()
+      ? `<b>${inf}</b> splits: the verb <b>${stamm}</b> stays in position 2, the prefix <b>${praefix}</b> jumps to the very end.`
+      : `<b>${inf}</b> trennt sich: Das Verb <b>${stamm}</b> bleibt auf Position 2, die Vorsilbe <b>${praefix}</b> springt ganz ans Ende.`;
+  },
+
+  konjunktiv() {
+    return this.en()
+      ? `Polite forms: <b>würde</b> + infinitive for most verbs — but <b>wäre, hätte, könnte, müsste, dürfte</b> are used directly.`
+      : `Höflich: <b>würde</b> + Infinitiv für die meisten Verben — aber <b>wäre, hätte, könnte, müsste, dürfte</b> benutzt man direkt.`;
+  },
+
+  // Verbform: die Endung ist der Schluessel.
+  verbform(pronomen, form, inf) {
+    const en = this.en();
+    const endungen = { ich: "-e", du: "-st", "er/sie/es": "-t", wir: "-en", ihr: "-t", "sie/Sie": "-en" };
+    const e = endungen[pronomen] || "";
+    return en
+      ? `<b>${pronomen} ${form}</b> (${inf}). After <b>${pronomen}</b> the verb ends in <b>${e}</b>.`
+      : `<b>${pronomen} ${form}</b> (${inf}). Nach <b>${pronomen}</b> endet das Verb auf <b>${e}</b>.`;
+  },
+};
+
 
 // ===== economy.js =====
 // Der Strom — Belohnungssystem (Abschnitt 2 & 6 des GDD)
@@ -9561,6 +10378,8 @@ function freshState() {
     xpTotal: 0,
     xpByAttr: { hoeren: 0, lesen: 0, schreiben: 0, sprechen: 0, grammatik: 0, wortschatz: 0 },
     combo: 0,
+    serie: 0,          // richtige Antworten am Stueck — treibt das Leuchten an (siehe Serie in ui.js)
+    serieBeste: 0,     // laengste Serie aller Zeiten
     bernstein: 0,
     defeats: 0,
     cratesSinceEpicPlus: 0, // Pity-Timer, siehe GDD Abschnitt 2
@@ -9680,6 +10499,9 @@ const Economy = {
     if (!this.state.tests) this.state.tests = {};
     // Spielstaende von vor den Minispielen kennen den Schluessel noch nicht.
     if (!this.state.minispiele) this.state.minispiele = { wortle: {}, jagd: {} };
+    // Serie (Leucht-Streak) gibt es erst seit dem Streak-Update.
+    if (typeof this.state.serie !== "number") this.state.serie = 0;
+    if (typeof this.state.serieBeste !== "number") this.state.serieBeste = 0;
     this.state.inventory = this.state.inventory.filter((it) => it.slot);
     // Falls sich die XP-Kurve seit dem letzten Speicherstand geaendert hat (Balancing-Update),
     // Level und xpTotal wieder in Einklang bringen statt eine falsche Anzeige zu riskieren.
@@ -9704,12 +10526,25 @@ const Economy = {
     return 1 + Math.min(this.state.combo, 6) * 0.15;
   },
 
-  incCombo() { this.state.combo++; },
+  incCombo() {
+    this.state.combo++;
+    this.state.serie++;
+    if (this.state.serie > (this.state.serieBeste || 0)) this.state.serieBeste = this.state.serie;
+  },
 
   // Rüstung federt den Combo-Verlust ab statt ihn komplett zu loeschen.
+  // Die Serie dagegen reisst bei jedem Fehler komplett — sie ist die Belohnung fuers Drankbleiben.
   resetCombo() {
     const keep = this.slotValue("ruestung") / 100;
     this.state.combo = Math.floor(this.state.combo * keep);
+    this.state.serie = 0;
+  },
+
+  // Wie stark leuchtet gerade alles? 0 = gar nicht, 5 = Vollbrand.
+  // Schwellen: 3 / 5 / 8 / 12 / 20 richtige Antworten am Stueck.
+  serieStufe(serie) {
+    const n = serie === undefined ? (this.state.serie || 0) : serie;
+    return n >= 20 ? 5 : n >= 12 ? 4 : n >= 8 ? 3 : n >= 5 ? 2 : n >= 3 ? 1 : 0;
   },
 
   // Der nach dem Boss gewaehlte Weg gibt dauerhaft Bonus auf ein Attribut.
@@ -9991,8 +10826,9 @@ const VocabSRS = {
   // Wählt das nächste abzufragende Wort aus einem Thema: fällige Karten zuerst,
   // darunter die mit der niedrigsten Stufe. So trainiert das Spiel automatisch das,
   // was gerade wackelt — statt zufällig zu würfeln.
-  pickForTheme(theme) {
-    const items = VOCAB_THEMES[theme];
+  // eigene (z.B. nach Niveau gefilterte) Wortliste geht vor.
+  pickForTheme(theme, eigene) {
+    const items = eigene && eigene.length ? eigene : VOCAB_THEMES[theme];
     if (!items || !items.length) return null;
     const cards = this.cards();
     const now = Date.now();
@@ -10008,6 +10844,69 @@ const VocabSRS = {
     // Unter den besten drei würfeln, damit es nicht stur immer dasselbe Wort ist.
     const pool = scored.slice(0, Math.min(3, scored.length));
     return pool[Math.floor(Math.random() * pool.length)].w;
+  },
+};
+
+// ---------------- Wortschatz-Stufen: erst die absoluten Basics, dann immer schwerer ----------------
+//
+// Jede Vokabel bekommt eine Stufe von 1 (absolute Basis: Mutter, Brot, gut) bis 5 (B1-Fachwort:
+// die Anerkennung, der Arbeitsvertrag). Die Stufe ergibt sich aus dem Bezirk, in dem das Thema
+// zum ersten Mal vorkommt — die Bezirke sind ohnehin nach Niveau sortiert — plus einem Zuschlag
+// fuer lange oder mehrteilige Woerter.
+//
+// Abgefragt wird immer nur bis zur Stufe, die zum Fortschritt passt (maxStufe). So bekommt
+// jemand im Heimatdorf nie "die Aufenthaltserlaubnis", waehrend in der Amtsstadt alles drankommt.
+const Wortschatz = {
+  _stufen: null, // theme -> Grundstufe, einmal berechnet
+
+  // Grundstufe je Thema: Bezirk 0/1 → 1, 2/3 → 2, 4/5 → 3, 6/7 → 4, 8+ → 5.
+  themenStufen() {
+    if (this._stufen) return this._stufen;
+    const map = {};
+    DISTRICTS.forEach((d, idx) => {
+      const stufe = Math.min(5, 1 + Math.floor(idx / 2));
+      for (const th of d.vocabThemes || []) if (map[th] === undefined) map[th] = stufe;
+    });
+    this._stufen = map;
+    return map;
+  },
+
+  // Stufe einer einzelnen Vokabel. Ohne bekanntes Thema entscheidet die Wortform allein.
+  stufe(de, theme) {
+    const basis = (theme && this.themenStufen()[theme]) || 2;
+    const rein = String(de || "").replace(/^(der|die|das|sich) /, "");
+    let s = basis;
+    if (rein.length <= 5) s -= 1;                       // kurze Woerter sind fast immer die haeufigen
+    if (rein.length >= 12 || /[ -]/.test(rein)) s += 1;  // Komposita und Wortgruppen sind schwerer
+    return Math.max(1, Math.min(5, s));
+  },
+
+  // Bis zu welcher Stufe darf gerade abgefragt werden?
+  maxStufe() {
+    const id = typeof window.currentDistrictId === "function" ? window.currentDistrictId() : "heimatdorf";
+    const idx = Math.max(0, DISTRICTS.findIndex((d) => d.id === id));
+    let max = Math.min(5, 1 + Math.floor(idx / 2));
+    // Wer im aktuellen Bezirk schon alles gelernt hat, darf einen Schritt vorgreifen.
+    if (typeof Economy !== "undefined" && (LESSONS[id] || []).length && Economy.alleLektionenFertig(id)) max++;
+    return Math.max(1, Math.min(5, max));
+  },
+
+  passt(de, theme, max) {
+    return this.stufe(de, theme) <= (max === undefined ? this.maxStufe() : max);
+  },
+
+  // Liste auf das erlaubte Niveau eindampfen. Bleibt zu wenig uebrig, wird die Grenze
+  // schrittweise gelockert — lieber ein zu schweres Wort als eine leere Aufgabe.
+  // thema: fester Themenname fuer die ganze Liste, oder null — dann zaehlt w.theme.
+  filter(list, feldDe, thema, mindestens) {
+    const min = mindestens || 6;
+    if (!list || list.length <= min) return list || [];
+    const themaVon = (w) => (typeof thema === "string" ? thema : (thema ? thema(w) : w.theme));
+    for (let max = this.maxStufe(); max <= 5; max++) {
+      const eng = list.filter((w) => this.passt(feldDe ? w[feldDe] : w.de, themaVon(w), max));
+      if (eng.length >= min) return eng;
+    }
+    return list;
   },
 };
 
@@ -10872,9 +11771,13 @@ const World = {
     return { x: d.width * 0.64, y: d.height * 0.5, r: 88 };
   },
 
+  // Angreifen darf man den Boss IMMER (solange er noch steht). "bereit" heisst nur:
+  // alle Lektionen des Bezirks sitzen — dann leuchtet er staerker und das Schild lockt.
+  // Bestehen kann man den Test so oder so nur mit 80 % richtigen Antworten.
+  bossOffen(state) { return !!state.cfg.boss && !state.bossDefeated; },
+
   bossBereit(state) {
-    const d = state.cfg;
-    return !!d.boss && !state.bossDefeated && Economy.alleLektionenFertig(d.id);
+    return this.bossOffen(state) && Economy.alleLektionenFertig(state.cfg.id);
   },
 
   drawBossGate(ctx, state, cam, time) {
@@ -10968,9 +11871,11 @@ const World = {
     // Namensschild und Status
     ctx.translate(0, -schweben);
     const name = tf(info, "name");
+    const fertig = (LESSONS[d.id] || []).filter((l) => Economy.isLessonDone(l.id)).length;
+    const alle = (LESSONS[d.id] || []).length;
     const status = bereit ? (Lang.isEn() ? "⚔️ Final test — walk into me" : "⚔️ Abschlusstest — lauf hinein")
       : Economy.zwischentestFaellig(d.id) ? (Lang.isEn() ? "🛡️ Midway test first" : "🛡️ Erst den Zwischentest")
-      : `🔒 ${Lang.isEn() ? "Lessons" : "Lektionen"} ${(LESSONS[d.id] || []).filter((l) => Economy.isLessonDone(l.id)).length} / ${(LESSONS[d.id] || []).length}`;
+      : `⚔️ ${Lang.isEn() ? "Lessons" : "Lektionen"} ${fertig} / ${alle}`;
     ctx.font = "bold 15px 'Bricolage Grotesque', sans-serif";
     const w = Math.max(ctx.measureText(name).width, 170) + 30;
     const ny = -R * 1.86;
@@ -12295,6 +13200,101 @@ Object.assign(ERKLAERFILME, {
     { typ: "merk", text: "hätte · wäre · würde + Infinitiv · Rat: solltest.", textEn: "hätte · wäre · würde + infinitive · advice: solltest." },
   ],
 
+  // ---------------- Pruefungs-Kern (25.09.2026) ----------------
+  esgibt: [
+    { typ: "satz", zeilen: ["Es:x gibt:v einen:a Park:a", "Es:x gibt:v keinen:n Aufzug:a"],
+      text: "es gibt + Akkusativ: einen, eine, ein — verneint: keinen, keine, kein.", textEn: "es gibt + accusative: einen, eine, ein — negated: keinen, keine, kein." },
+    { typ: "tabelle", kopf: ["Nomen", "es gibt …"],
+      zeilen: [["der_Park", "ein+en:e Park"], ["die_Bank", "eine_Bank"], ["das_Café", "ein_Café"], ["die_Stühle", "Stühle"]],
+      text: "Nur maskulin ändert sich: einen.", textEn: "Only masculine changes: einen." },
+    { typ: "dialog", sprecher: [{ e: "👩", name: "Ana" }, { e: "🧑", name: "Jomar" }],
+      zeilen: [[0, "Gibt:v es:x hier:o eine_Apotheke:a ?"], [1, "Ja , es:x gibt:v eine_Apotheke:a am_Markt:o"], [0, "Wie:k sagt:v man:s „medicine“ ?"], [1, "Man:s sagt:v „das_Medikament“"]],
+      text: "Fragen mit Gibt es …? · man = alle Leute.", textEn: "Questions with Gibt es …? · man = people in general." },
+    { typ: "satz", zeilen: ["Hier:o darf:v man:s nicht:n rauchen:v2"],
+      text: "man hat die Verbform von er: man darf, man kann, man spricht.", textEn: "man takes the er verb form: man darf, man kann, man spricht." },
+    { typ: "vergleich", falsch: "Es gibt ein Park", richtig: "Es:x gibt:v ein+en:e Park:a",
+      text: "der Park → einen Park.", textEn: "der Park → einen Park." },
+    { typ: "merk", text: "es gibt + Akkusativ · man + Verb wie er/sie/es.", textEn: "es gibt + accusative · man + verb like er/sie/es." },
+  ],
+
+  hauptkonn: [
+    { typ: "satz", zeilen: ["Ich:s bin:v müde ,_aber:k ich:s arbeite:v weiter:v2"],
+      text: "aber steht auf Platz 0 — danach Subjekt und Verb wie in jedem Satz.", textEn: "aber sits in position 0 — then subject and verb as in any sentence." },
+    { typ: "satz", zeilen: ["…:x ,_denn:k ich:s habe:v keine_Zeit:a", "…:x ,_weil:k ich:s keine_Zeit:a habe:v"],
+      text: "denn: Verb auf Platz 2 · weil: Verb am Ende. Gleiche Bedeutung!", textEn: "denn: verb in position 2 · weil: verb at the end. Same meaning!" },
+    { typ: "satz", zeilen: ["Ich:s komme:v nicht:n aus_Manila:o ,_sondern:k aus_Cebu:o"],
+      text: "sondern korrigiert nach nicht oder kein.", textEn: "sondern corrects after nicht or kein." },
+    { typ: "dialog", sprecher: [{ e: "🧑‍🏫", name: "Lehrer", nameEn: "Teacher" }, { e: "👩", name: "Rosa" }],
+      zeilen: [[0, "Kommst:v du:s morgen:z ,_oder:k bleibst:v du:s zu_Hause:o ?"], [1, "Ich:s komme:v ,_aber:k ich:s bin:v spät:z da"], [0, "Warum:k ?"], [1, "Ich:s arbeite:v bis_neun:z ,_denn:k wir:s haben:v viele_Patienten:a"]],
+      text: "oder = Wahl · aber = Gegensatz · denn = Grund.", textEn: "oder = choice · aber = contrast · denn = reason." },
+    { typ: "vergleich", falsch: "…, denn ich krank bin", richtig: "…:x ,_denn:k ich:s bin:v krank",
+      text: "Nach denn bleibt das Verb auf Platz 2.", textEn: "After denn the verb stays in position 2." },
+    { typ: "merk", text: "ADUSO — aber, denn, und, sondern, oder: Platz 0, das Verb bleibt auf Platz 2.", textEn: "ADUSO — aber, denn, und, sondern, oder: position 0, the verb stays in position 2." },
+  ],
+
+  demonstrativ: [
+    { typ: "tabelle", kopf: ["Artikel", "dieser", "jeder"],
+      zeilen: [["der", "diese+r:e", "jede+r:e"], ["die", "diese:e", "jede:e"], ["das", "diese+s:e", "jede+s:e"], ["die_(Plural)", "diese:e", "alle:e"]],
+      text: "Der letzte Buchstabe vom Artikel kommt ans Ende.", textEn: "The last letter of the article goes on the end." },
+    { typ: "satz", zeilen: ["Ich:s nehme:v diese+n:e Pullover:a"],
+      text: "Akkusativ maskulin: den → diesen.", textEn: "Accusative masculine: den → diesen." },
+    { typ: "satz", zeilen: ["Ich:s fahre:v mit:k diese+m:e Bus:d"],
+      text: "Dativ: dem → diesem.", textEn: "Dative: dem → diesem." },
+    { typ: "dialog", sprecher: [{ e: "🛍️", name: "Verkäuferin", nameEn: "Shop assistant" }, { e: "🧑", name: "Jomar" }],
+      zeilen: [[1, "Was:k kostet:v dieser:e Rucksack:s ?"], [0, "Dieser:e Rucksack:s kostet:v 40_Euro"], [1, "Und:k diese:e Tasche:s ?"], [0, "Alle:e Taschen:s kosten:v heute:z 20_Euro"]],
+      text: "Im Laden zeigst du mit dieser, diese, dieses.", textEn: "In a shop you point with dieser, diese, dieses." },
+    { typ: "vergleich", falsch: "Ich nehme dieser Pullover", richtig: "Ich:s nehme:v diese+n:e Pullover:a",
+      text: "der Pullover im Akkusativ → diesen.", textEn: "der Pullover in the accusative → diesen." },
+    { typ: "merk", text: "deR → dieseR · diE → diesE · daS → dieseS · Plural: alle.", textEn: "deR → dieseR · diE → diesE · daS → dieseS · plural: alle." },
+  ],
+
+  indefinit: [
+    { typ: "tabelle", kopf: ["", "Person", "Ding"],
+      zeilen: [["eins,_egal_welches", "jemand:e", "etwas:e"], ["keins", "niemand:n", "nichts:n"], ["alle_zusammen", "alle:e", "alles:e"]],
+      text: "Personen und Dinge haben eigene Wörter.", textEn: "People and things have their own words." },
+    { typ: "satz", zeilen: ["Jemand:s hat:v angerufen:v2", "Niemand:s weiß:v es:a"],
+      text: "Das Verb steht im Singular.", textEn: "The verb is singular." },
+    { typ: "dialog", sprecher: [{ e: "👩‍⚕️", name: "Maria" }, { e: "🧑‍⚕️", name: "Pfleger", nameEn: "Nurse" }],
+      zeilen: [[0, "Hat:v jemand:s nach_mir:d gefragt:v2 ?"], [1, "Nein , niemand:s"], [0, "Brauchst:v du:s noch etwas:a ?"], [1, "Nein_danke , alles:s ist:v gut"]],
+      text: "Kurze Antworten: niemand, nichts, alles gut.", textEn: "Short answers: niemand, nichts, alles gut." },
+    { typ: "vergleich", falsch: "Ich sehe nicht nichts", richtig: "Ich:s sehe:v nichts:n",
+      text: "nichts ist schon verneint.", textEn: "nichts is already negative." },
+    { typ: "satz", zeilen: ["etwas Neu+es:e", "nichts Besonder+es:e", "alles Gut+e:e"],
+      text: "Nach etwas und nichts: groß und -es. Nach alles: -e.", textEn: "After etwas and nichts: capital letter and -es. After alles: -e." },
+    { typ: "merk", text: "jemand ↔ niemand · etwas ↔ nichts · Verb im Singular · nie doppelt verneinen.", textEn: "jemand ↔ niemand · etwas ↔ nichts · singular verb · never a double negative." },
+  ],
+
+  lassen: [
+    { typ: "satz", zeilen: ["Ich:s repariere:v mein_Auto:a", "Ich:s lasse:v mein_Auto:a reparieren:v2"],
+      text: "Mit lassen macht es jemand anderes — hier die Werkstatt.", textEn: "With lassen someone else does it — here the garage." },
+    { typ: "tabelle", kopf: ["Person", "lassen"],
+      zeilen: [["ich", "lasse:v"], ["du", "l+ä:e+sst:v"], ["er/sie/es", "l+ä:e+sst:v"], ["wir", "lassen:v"], ["ihr", "lasst:v"], ["sie/Sie", "lassen:v"]],
+      text: "du und er/sie/es bekommen ä.", textEn: "du and er/sie/es get ä." },
+    { typ: "dialog", sprecher: [{ e: "🧑‍🏫", name: "Lehrer", nameEn: "Teacher" }, { e: "👩", name: "Ana" }],
+      zeilen: [[0, "Hast:v du:s deine_Zeugnisse:a schon übersetzt:v2 ?"], [1, "Nein , ich:s lasse:v sie:a übersetzen:v2"], [0, "Und:k die_Impfung:a ?"], [1, "Ich:s lasse:v mich:a morgen:z impfen:v2"]],
+      text: "Für Visum und Anerkennung: lassen + Infinitiv.", textEn: "For visa and recognition: lassen + infinitive." },
+    { typ: "satz", zeilen: ["Meine_Eltern:s lassen:v mich:a allein reisen:v2"],
+      text: "Zweite Bedeutung: lassen = erlauben.", textEn: "Second meaning: lassen = to allow." },
+    { typ: "vergleich", falsch: "Ich lasse mein Auto zu reparieren", richtig: "Ich:s lasse:v mein_Auto:a reparieren:v2",
+      text: "Kein zu — wie bei Modalverben.", textEn: "No zu — just like modal verbs." },
+    { typ: "merk", text: "lassen + Infinitiv ohne zu · du lässt, er lässt.", textEn: "lassen + infinitive without zu · du lässt, er lässt." },
+  ],
+
+  konjvergangenheit: [
+    { typ: "satz", zeilen: ["Ich:s habe:v gelernt:v2", "Ich:s h+ä:e+tte:v gelernt:v2"],
+      text: "Perfekt mit haben → hätte + Partizip.", textEn: "Perfect with haben → hätte + participle." },
+    { typ: "satz", zeilen: ["Ich:s bin:v gekommen:v2", "Ich:s w+ä:e+re:v gekommen:v2"],
+      text: "Perfekt mit sein → wäre + Partizip.", textEn: "Perfect with sein → wäre + participle." },
+    { typ: "satz", zeilen: ["Wenn:k ich:s Zeit gehabt:v2 hätte:v ,", "wäre:v ich:s gekommen:v2"],
+      text: "wenn-Satz: hätte ans Ende · zweiter Teil: wäre gleich nach dem Komma.", textEn: "wenn clause: hätte at the end · second part: wäre right after the comma." },
+    { typ: "dialog", sprecher: [{ e: "😩", name: "Ana" }, { e: "🧑‍🏫", name: "Lehrer", nameEn: "Teacher" }],
+      zeilen: [[0, "Ich:s habe:v die_Prüfung:a nicht:n bestanden:v2"], [1, "Mit_mehr_Übung:z hättest:v du:s bestanden:v2"], [0, "Ja , ich:s wäre:v fast:z durchgekommen:v2"], [1, "Nächstes_Mal:z schaffst:v du:s es:a"]],
+      text: "Bedauern: Hätte ich …! · fast = ist nicht passiert.", textEn: "Regret: Hätte ich …! · fast = didn't happen." },
+    { typ: "vergleich", falsch: "Ich hätte gekommen", richtig: "Ich:s wäre:v gekommen:v2",
+      text: "kommen → ist gekommen → wäre gekommen.", textEn: "kommen → ist gekommen → wäre gekommen." },
+    { typ: "merk", text: "hätte/wäre + Partizip II = ist nicht passiert · hat → hätte, ist → wäre.", textEn: "hätte/wäre + participle = didn't happen · hat → hätte, ist → wäre." },
+  ],
+
   zweiteilig: [
     { typ: "satz", zeilen: ["sowohl:k Englisch als_auch:k Deutsch"],
       text: "sowohl … als auch = beides.", textEn: "sowohl … als auch = both." },
@@ -13302,7 +14302,7 @@ const MapView = {
             ? "✅" : Economy.zwischentestFaellig(d.id) ? (Lang.isEn() ? "ready" : "bereit") : (Lang.isEn() ? `after ${ZWISCHENTEST_NACH} lessons` : `nach ${ZWISCHENTEST_NACH} Lektionen`)}</div>` : ""}
           ${d.boss ? `<div class="map-card-row">${state.bossDefeated
             ? `${t("mapBossDone")} · ${d.bossInfo ? d.bossInfo.emoji + " " + tf(d.bossInfo, "name") : ""}`
-            : `${d.bossInfo ? d.bossInfo.emoji : "👑"} ${Lang.isEn() ? "Final test" : "Abschlusstest"}: ${doneCount === lessons.length ? (Lang.isEn() ? "ready" : "bereit") : (Lang.isEn() ? "after all lessons" : "nach allen Lektionen")}${(Economy.state.tests[d.id] || {}).beste ? ` · ${Lang.isEn() ? "best" : "bestes"} ${Economy.state.tests[d.id].beste}/${TEST_FRAGEN}` : ""}`}</div>` : ""}
+            : `${d.bossInfo ? d.bossInfo.emoji : "👑"} ${Lang.isEn() ? "Final test" : "Abschlusstest"}: ${doneCount === lessons.length ? (Lang.isEn() ? "ready" : "bereit") : (Lang.isEn() ? "after all lessons" : "nach allen Lektionen")}${(Economy.state.tests[d.id] || {}).beste ? ` · ${Lang.isEn() ? "best" : "bestes"} ${Economy.state.tests[d.id].beste}/${testLaenge(lessons.length)}` : ""}`}</div>` : ""}
           ${reachable && !isCurrent ? `<button class="map-travel-btn" data-id="${d.id}">${t("mapTravel")}</button>` : ""}
           ${isCurrent ? `<div class="map-card-row map-here">${t("mapHere")}</div>` : ""}
         </div>`;
@@ -13648,6 +14648,8 @@ const crateSpin = document.getElementById("crate-spin");
 // Boss-Test: so viele Aufgaben, so viel Prozent zum Bestehen.
 const TEST_FRAGEN = 10;
 const TEST_BESTEHEN = 0.8;
+// Mindestens TEST_FRAGEN Aufgaben — hat ein Bezirk mehr Lektionen, bekommt jede trotzdem ihre Aufgabe.
+const testLaenge = (lektionen) => Math.max(TEST_FRAGEN, lektionen || 0);
 
 // Welche Runde ein Gegnertyp spielt.
 const RUNDE_FUER_GEGNER = {
@@ -13671,6 +14673,8 @@ const Combat = {
     overlay.classList.remove("hidden", "boss");
     enemyNameEl.textContent = ENEMY_LABEL[enemy.type];
     this.renderHp();
+    this._serieStufe = Economy.serieStufe();
+    this.serieAnzeigen();
     this.nextRound();
   },
 
@@ -13680,6 +14684,8 @@ const Combat = {
   },
 
   close() {
+    if (typeof Duell !== "undefined") Duell.stop();
+    for (let i = 1; i <= 5; i++) card.classList.remove(`serie${i}`);
     this.active = false;
     this.enemy = null;
     this.test = null;
@@ -13780,6 +14786,8 @@ const Combat = {
 
   // Regel-Kasten ueber jeder Aufgabe — mit Regelbild, sobald es fuer die Lektion eines gibt.
   regel(lesson, label, fallback) {
+    // Merken, aus welcher Lektion die Runde ihren Stoff hat — fuer den Merksatz nach einem Fehler.
+    this._rundenLektion = lesson || null;
     const text = (lesson && tf(lesson, "reminder")) || fallback
       || (Lang.isEn() ? "Read carefully — every option looks plausible." : "Lies genau — jede Antwort sieht plausibel aus.");
     const bild = typeof Regelbild !== "undefined" ? Regelbild.html(lesson) : "";
@@ -13791,8 +14799,10 @@ const Combat = {
   },
 
   eingabe(placeholder) {
+    // Der Umlaut-Tipp steht ueberall da, wo wirklich getippt wird: viele Tastaturen hier
+    // haben kein ä/ö/ü, und normAntwort() laesst ae/oe/ue/ss genauso gelten.
     return `<input type="text" id="ans-input" autocomplete="off" spellcheck="false" placeholder="${placeholder}" />
-      <p class="hint">${t("enterToConfirm")}</p>`;
+      <p class="hint">${t("enterToConfirm")} ${umlautTipp()}</p>`;
   },
 
   // Enter im Eingabefeld → pruefen. Nur einmal pro Runde.
@@ -13826,8 +14836,63 @@ const Combat = {
     if (this.test) { this.naechsteTestfrage(); return; }
     if (!this.enemy) return;
     this._rundeId++;
+    this._rundenLektion = null;
     feedbackEl.innerHTML = ""; feedbackEl.className = "";
+    card.classList.remove("duell");
+    if (this.zwischenrunde()) return;
     this[RUNDE_FUER_GEGNER[this.enemy.type] || "roundMultipleChoice"]();
+  },
+
+  // Zwischen den Gegner-Aufgaben laufen zwei Dinge mit: faellige Vokabeln aus dem Deck und
+  // die beiden Minispiele. Beide kommen NIE zweimal kurz hintereinander, damit der Kampf
+  // nicht zum Quiz wird — aber oft genug, dass Wortschatz wirklich haengen bleibt.
+  zwischenrunde() {
+    if (this.test) return false;
+    this._seitVokabel = (this._seitVokabel || 0) + 1;
+    this._seitSpiel = (this._seitSpiel || 0) + 1;
+
+    if (this._seitSpiel >= 4 && Math.random() < 0.4 && this.roundMinispiel()) { this._seitSpiel = 0; return true; }
+
+    if (this._seitVokabel >= 4 || Math.random() < 0.22) {
+      const karte = this.vokabelKarte();
+      if (karte) { this._seitVokabel = 0; this.roundDeckVocab(karte); return true; }
+    }
+    return false;
+  },
+
+  // Faellige Karte, die zum Niveau passt (siehe Wortschatz in vocab.js): am Anfang nur
+  // die absoluten Basics, spaeter auch die langen Komposita.
+  vokabelKarte() {
+    const due = VocabSRS.dueCards();
+    if (!due.length) return null;
+    const passend = Wortschatz.filter(due, "de", "theme", 1);
+    const pool = (passend.length ? passend : due).sort((a, b) => a.level - b.level).slice(0, 5);
+    return zufall(pool);
+  },
+
+  // Wortle oder Wortjagd mitten im Kampf — abwechselnd, nie dasselbe zweimal.
+  roundMinispiel() {
+    if (typeof Duell === "undefined") return false;
+    const reihe = this._letztesSpiel === "wortle" ? ["jagd", "wortle"]
+      : this._letztesSpiel === "jagd" ? ["wortle", "jagd"] : mischen(["wortle", "jagd"]);
+    for (const art of reihe) {
+      const ok = art === "wortle"
+        ? Duell.wortle(bodyEl, (gewonnen, info) => this.duellFertig("wortle", gewonnen, info))
+        : Duell.jagd(bodyEl, (gewonnen, info) => this.duellFertig("jagd", gewonnen, info));
+      if (ok) { this._letztesSpiel = art; return true; }
+    }
+    return false;
+  },
+
+  // Ergebnis eines Minispiels wird wie jede andere Antwort verbucht — gleiche Waehrung,
+  // gleiche Serie, gleiche Loesungsanzeige mit Erklaerung.
+  duellFertig(art, gewonnen, info) {
+    if (!this.active) return;
+    if (gewonnen) {
+      this.onCorrect(art === "wortle" ? 20 : 22, info.attr || "wortschatz", 8, "wortschatz");
+      return;
+    }
+    this.onWrong(info.loesung, null, info.erklaerung);
   },
 
   // ---------------- Hoeren ----------------
@@ -13851,7 +14916,7 @@ const Combat = {
         <div class="prompt"><strong>${Verben.markiere(s.text)}</strong><span class="task-en">${Lang.isEn() ? "What does it mean?" : "Was bedeutet das?"}</span></div>
         <div class="choices email-choices">${this.knoepfe(opts.map((o) => o.en), "email-choice")}</div>`;
       this.beiKlick(".choice", (btn) => btn.dataset.v === s.en
-        ? this.onCorrect(8, "lesen", 3, "hoeren") : this.onWrong(loesung, s.en));
+        ? this.onCorrect(8, "lesen", 3, "hoeren") : this.onWrong(loesung, s.en, Erklaerung.tipp("lesen")));
       return;
     }
 
@@ -13872,10 +14937,10 @@ const Combat = {
     document.getElementById("hear-slow").addEventListener("click", () => Sound.speak(s.text, 0.6));
 
     if (typeIt) {
-      const norm = (x) => x.trim().toLowerCase().replace(/[.,!?;:„“"]/g, "").replace(/\s+/g, " ");
-      this.beiEnter((v) => norm(v) === norm(s.text) ? this.onCorrect(16, "hoeren", 6, "schreiben") : this.onWrong(loesung));
+      const norm = normAntwort;
+      this.beiEnter((v) => norm(v) === norm(s.text) ? this.onCorrect(16, "hoeren", 6, "schreiben") : this.onWrong(loesung, null, Erklaerung.tipp("hoeren")));
     } else {
-      this.beiKlick(".choice", (btn) => btn.dataset.v === s.text ? this.onCorrect(10, "hoeren", 4, "lesen") : this.onWrong(loesung, s.text));
+      this.beiKlick(".choice", (btn) => btn.dataset.v === s.text ? this.onCorrect(10, "hoeren", 4, "lesen") : this.onWrong(loesung, s.text, Erklaerung.tipp("hoeren")));
     }
   },
 
@@ -13897,12 +14962,13 @@ const Combat = {
     return this.roundPraesens(lesson);
   },
 
-  checkFreitext(typed, correct, erklaerung) {
-    const norm = (s) => s.trim().toLowerCase().replace(/\s+/g, " ");
+  // beispiel: die Form im Satz (unter der Loesung) · warum: die Regel dahinter (Warum?-Kasten)
+  checkFreitext(typed, correct, beispiel, warum) {
+    const norm = normAntwort;
     if (norm(typed) === norm(correct)) { this.onCorrect(12, "schreiben", 6, "wortschatz"); return; }
     const fast = levenshtein(norm(typed), norm(correct)) <= 2;
     const getippt = typed.replace(/&/g, "&amp;").replace(/</g, "&lt;");
-    this.onWrong(`${fast ? `${t("almost")} ` : ""}${Lang.isEn() ? "You wrote" : "Du hast"} „${getippt}“${Lang.isEn() ? "" : " geschrieben"} → ${hl(correct)}${erklaerung ? `<br><span class="task-en">${erklaerung}</span>` : ""}`);
+    this.onWrong(`${fast ? `${t("almost")} ` : ""}${Lang.isEn() ? "You wrote" : "Du hast"} „${getippt}“${Lang.isEn() ? "" : " geschrieben"} → ${hl(correct)}${beispiel ? `<br><span class="task-en">${beispiel}</span>` : ""}`, null, warum);
   },
 
   roundPraeteritum(lesson) {
@@ -13917,7 +14983,8 @@ const Combat = {
       <div class="prompt">${t("fillGap")} <strong>${capSubject} ____ …</strong>
         <span class="task-en">${Lang.isEn() ? "Past tense of" : "Präteritum von"} „${v.inf}“ (${v.en})${v.spoken ? (Lang.isEn() ? " · also used when speaking" : " · auch gesprochen üblich") : ""}</span></div>
       ${this.eingabe(Lang.isEn() ? "past form" : "Präteritum")}`;
-    this.beiEnter((val) => this.checkFreitext(val, correct, `${v.inf} → ${subject} <span class="vb">${correct}</span>`));
+    this.beiEnter((val) => this.checkFreitext(val, correct, `${v.inf} → ${subject} <span class="vb">${correct}</span>`,
+      Erklaerung.praeteritum(v.inf, correct, v.forms[0].endsWith("te"))));
   },
 
   // Trennbare Verben: gegen Ende der Lektion fehlen beide Teile — dann baut man die Klammer selbst.
@@ -13934,7 +15001,8 @@ const Combat = {
       ${this.regel(lesson)}
       <div class="prompt">${satz}<span class="task-en">${v.inf} — ${v.en} · ${fehlt}</span></div>
       ${this.eingabe(beide ? (Lang.isEn() ? "verb + prefix" : "Verb + Vorsilbe") : askPraefix ? (Lang.isEn() ? "prefix" : "Vorsilbe") : "Verb")}`;
-    this.beiEnter((val) => this.checkFreitext(val, correct, `Ich <span class="vb">${v.stamm}</span> ${v.tail} <span class="vb">${v.praefix}</span>.`));
+    this.beiEnter((val) => this.checkFreitext(val, correct, `Ich <span class="vb">${v.stamm}</span> ${v.tail} <span class="vb">${v.praefix}</span>.`,
+      Erklaerung.trennbar(v.inf, v.stamm, v.praefix)));
   },
 
   // Komparativ/Superlativ: mit dem Lektionsfortschritt mehr Sonderformen und mehr Superlative.
@@ -13948,7 +15016,8 @@ const Combat = {
       <div class="prompt">${Lang.isEn() ? "What is the" : "Wie lautet der"} <strong>${askSuper ? "Superlativ" : "Komparativ"}</strong> ${Lang.isEn() ? "of" : "von"} <strong>${a.pos}</strong>?
         <span class="task-en">(${a.en}${a.regular ? "" : Lang.isEn() ? " — irregular!" : " — unregelmäßig!"})</span></div>
       ${this.eingabe(askSuper ? "am ___sten" : "___er")}`;
-    this.beiEnter((val) => this.checkFreitext(val, correct, `${a.pos} → ${a.komp} → ${a.sup}`));
+    this.beiEnter((val) => this.checkFreitext(val, correct, `${a.pos} → ${a.komp} → ${a.sup}`,
+      Erklaerung.komparativ(a.pos, a.komp, a.sup, a.regular)));
   },
 
   // Konjunktiv II: mit dem Lektionsfortschritt mehr unregelmaessige Formen (kaeme, naehme, braeuchte)
@@ -13963,7 +15032,7 @@ const Combat = {
       <div class="prompt">${Lang.isEn() ? "Which polite form?" : "Welche Höflichkeitsform?"} <strong>${Lang.isEn() ? (k.promptEn || k.prompt) : k.prompt}</strong>
         <span class="task-en">${luecke}${k.schwer ? (Lang.isEn() ? " · irregular!" : " · unregelmäßig!") : ""}</span></div>
       ${this.eingabe(Lang.isEn() ? "polite form" : "Konjunktiv II")}`;
-    this.beiEnter((val) => this.checkFreitext(val, k.correct, Verben.markiere(k.example)));
+    this.beiEnter((val) => this.checkFreitext(val, k.correct, Verben.markiere(k.example), Erklaerung.konjunktiv()));
   },
 
   roundPraesens(lesson) {
@@ -13986,8 +15055,14 @@ const Combat = {
       ${this.regel(lesson, null, PRONOUN_RULES[pIdx])}
       <div class="prompt">${prompt}</div>
       ${this.eingabe(useGap ? (Lang.isEn() ? "missing verb" : "fehlendes Verb") : subject + " ___")}`;
+    // arbeiten → du arbeitest: Stamm auf -t/-d bekommt ein -e- dazwischen — das ist regelmaessig.
+    const einschub = /[td]$/.test(stamm) && correct === `${stamm}e${endung[pIdx]}`;
+    const regelmaessig = einschub || correct === stamm + endung[pIdx];
+    const warum = !regelmaessig ? Erklaerung.unregelmaessig(PRONOUNS[pIdx], correct, v.inf, v.forms)
+      : Erklaerung.verbform(PRONOUNS[pIdx], correct, v.inf) + (einschub
+        ? (Lang.isEn() ? " Stem ends in -t/-d: add an extra <b>-e-</b> (du arbeitest)." : " Stamm auf -t/-d: ein <b>-e-</b> kommt dazwischen (du arbeitest).") : "");
     this.beiEnter((val) => this.checkFreitext(val, correct,
-      `${capSubject} <span class="vb">${correct}</span> ${v.tail || ""}. · ${v.inf} (${PRONOUNS[pIdx]})`));
+      `${capSubject} <span class="vb">${correct}</span> ${v.tail || ""}. · ${v.inf} (${PRONOUNS[pIdx]})`, warum));
   },
 
   // Perfekt: erst regelmaessige Partizipien allein, spaeter unregelmaessig/sein + Hilfsverb.
@@ -14007,7 +15082,8 @@ const Combat = {
       ${this.regel(lesson)}
       <div class="prompt">${prompt}</div>
       ${this.eingabe(onlyParticiple ? "ge___" : (Lang.isEn() ? "e.g. hat gemacht" : "z. B. hat gemacht"))}`;
-    this.beiEnter((val) => this.checkFreitext(val, correct, `${v.inf} → <span class="vb">${v.aux === "sein" ? "ist" : "hat"}</span> … <span class="vb">${v.pp}</span>`));
+    this.beiEnter((val) => this.checkFreitext(val, correct, `${v.inf} → <span class="vb">${v.aux === "sein" ? "ist" : "hat"}</span> … <span class="vb">${v.pp}</span>`,
+      Erklaerung.perfekt(v.inf, v.aux, v.pp, v.regular)));
   },
 
   // ---------------- Formelle E-Mail ----------------
@@ -14084,6 +15160,7 @@ const Combat = {
   roundArtikel(lesson) {
     const n = zufall(ARTICLE_NOUNS);
     const loesung = hl(`${n.article} ${n.noun}`) + `<br><span class="task-en">${n.hint}</span>`;
+    const warum = Erklaerung.artikel(n.noun, n.article);
     // Variante: Richtig/Falsch statt Artikel-Auswahl — trainiert dasselbe Wissen anders herum.
     if (Math.random() < 0.35) {
       const showCorrect = Math.random() < 0.5;
@@ -14093,7 +15170,7 @@ const Combat = {
         <div class="prompt">${t("isThisRight")} <strong>${shown} ${n.noun}</strong><span class="task-en">(${n.en})</span></div>
         <div class="choices"><button class="choice" data-v="ja">${t("answerYes")}</button><button class="choice" data-v="nein">${t("answerNo")}</button></div>`;
       this.beiKlick(".choice", (btn) => (btn.dataset.v === "ja") === showCorrect
-        ? this.onCorrect(5, "grammatik", 0, null) : this.onWrong(loesung, showCorrect ? "ja" : "nein"));
+        ? this.onCorrect(5, "grammatik", 0, null) : this.onWrong(loesung, showCorrect ? "ja" : "nein", warum));
       return;
     }
     bodyEl.innerHTML = `
@@ -14101,7 +15178,7 @@ const Combat = {
       <div class="prompt">${t("whichArticle")} <strong>___ ${n.noun}</strong><span class="task-en">(${n.en})</span></div>
       <div class="choices">${this.knoepfe(["der", "die", "das"])}</div>`;
     this.beiKlick(".choice", (btn) => btn.dataset.v === n.article
-      ? this.onCorrect(5, "grammatik", 0, null) : this.onWrong(loesung, n.article));
+      ? this.onCorrect(5, "grammatik", 0, null) : this.onWrong(loesung, n.article, warum));
   },
 
   // Kasus: der Satz steht komplett da, nur der Artikel fehlt.
@@ -14235,7 +15312,7 @@ const Combat = {
       ${this.regel(lesson, "✍️ " + (Lang.isEn() ? "Rewrite" : "Umformen"))}
       <div class="prompt">${tf(it, "auftrag")}<br><strong>${Verben.markiere(it.vorgabe)}</strong>${it.en ? `<span class="task-en">${it.en}</span>` : ""}</div>
       ${this.eingabe(Lang.isEn() ? "write the whole sentence" : "ganzen Satz schreiben")}`;
-    const norm = (s) => s.trim().toLowerCase().replace(/[.,!?;:„“"]/g, "").replace(/\s+/g, " ");
+    const norm = normAntwort;
     this.beiEnter((val) => {
       const typed = norm(val);
       if (it.loesungen.some((l) => norm(l) === typed)) { this.onCorrect(16, "schreiben", 6, "grammatik"); return; }
@@ -14254,7 +15331,7 @@ const Combat = {
     this.beiKlick(".choice", (btn) => {
       if (btn.dataset.v === it.correct) { btn.classList.add("right"); this.onCorrect(13, "grammatik", 5, "lesen"); return; }
       btn.classList.add("wrong");
-      this.onWrong(`${hl(Verben.markiere(it.correct))}<br>${tf(it, "warum")}`, it.correct);
+      this.onWrong(hl(Verben.markiere(it.correct)), it.correct, tf(it, "warum"));
     });
   },
 
@@ -14268,7 +15345,7 @@ const Combat = {
       <div class="choices"><button class="choice" data-v="ja">${t("answerYes")}</button><button class="choice" data-v="nein">${t("answerNo")}</button></div>`;
     this.beiKlick(".choice", (btn) => (btn.dataset.v === "ja") === zeigtRichtig
       ? this.onCorrect(9, "grammatik", 3, "lesen")
-      : this.onWrong(`${zeigtRichtig ? (Lang.isEn() ? "The sentence is correct:" : "Der Satz ist korrekt:") : (Lang.isEn() ? "Correct would be:" : "Richtig wäre:")} ${hl(Verben.markiere(it.correct))}<br>${tf(it, "warum")}`, zeigtRichtig ? "ja" : "nein"));
+      : this.onWrong(`${zeigtRichtig ? (Lang.isEn() ? "The sentence is correct:" : "Der Satz ist korrekt:") : (Lang.isEn() ? "Correct would be:" : "Richtig wäre:")} ${hl(Verben.markiere(it.correct))}`, zeigtRichtig ? "ja" : "nein", tf(it, "warum")));
   },
 
   // Satz bauen aus einem korrekten Satz. Das erste Wort steht fest, damit es nur EINE richtige Reihenfolge gibt.
@@ -14291,7 +15368,7 @@ const Combat = {
     this.beiKlick(".word-chip", (chip) => {
       if (Number(chip.dataset.v) === it.idx) { chip.classList.add("right"); this.onCorrect(12, "grammatik", 5, "lesen"); return; }
       chip.classList.add("wrong");
-      this.onWrong(`${hl(Verben.markiere(it.korrekt))}<br>${Lang.isEn() ? it.warumEn || it.warum : it.warum}`, String(it.idx));
+      this.onWrong(hl(Verben.markiere(it.korrekt)), String(it.idx), Lang.isEn() ? it.warumEn || it.warum : it.warum);
     });
   },
 
@@ -14353,7 +15430,7 @@ const Combat = {
               l.classList.add("right"); r.classList.add("right");
               linie(l, r, "loesung-linie");
             });
-            this.onWrong(paare.map((p) => `${p[0]} – ${hl(p[1])}`).join(" · "));
+            this.onWrong(paare.map((p) => `${p[0]} – ${hl(p[1])}`).join(" · "), null, lesson ? null : Erklaerung.tipp(opts.tipp || "zuordnen"));
           });
         }
       });
@@ -14442,7 +15519,7 @@ const Combat = {
         this.patzer(++fehler, [], () => {
           vorbei = true;
           flieger.forEach((g) => { if (g.ok && g.aktiv) g.el.classList.add("reveal"); });
-          this.onWrong(`${Lang.isEn() ? "The right ones were:" : "Richtig waren:"} ${richtig.map(hl).join(" ")}`);
+          this.onWrong(`${Lang.isEn() ? "The right ones were:" : "Richtig waren:"} ${richtig.map(hl).join(" ")}`, null, lesson ? null : Erklaerung.tipp("fangen"));
         });
       });
     });
@@ -14492,6 +15569,7 @@ const Combat = {
     this.roundVerbinden(null, zufall(sets), {
       attr: "wortschatz",
       regel: Lang.isEn() ? "Nouns and verbs belong together in fixed pairs. Learn them as one block." : "Nomen und Verben gehören in festen Paaren zusammen. Lerne sie als Block.",
+      tipp: "kollokation",
     });
   },
 
@@ -14511,7 +15589,7 @@ const Combat = {
     const ziel = bildZuWort ? it.de : it.e;
     this.beiKlick(".choice", (btn) => btn.dataset.v === ziel
       ? this.onCorrect(8, "wortschatz", 2, "lesen")
-      : this.onWrong(`${it.e} = ${hl(it.de)} <span class="task-en">(${it.en})</span>`, ziel));
+      : this.onWrong(`${it.e} = ${hl(it.de)} <span class="task-en">(${it.en})</span>`, ziel, Erklaerung.vokabel(it.de, it.en)));
   },
 
   // Buchstabensalat: die Buchstaben eines Nomens in die richtige Reihenfolge klicken.
@@ -14550,7 +15628,7 @@ const Combat = {
             this.onCorrect(10, "schreiben", 3, "wortschatz");
           } else {
             if (VocabSRS.cards()[w.de]) VocabSRS.grade(w.de, false);
-            this.onWrong(`${hl(w.de)} <span class="task-en">(${w.en})</span>`);
+            this.onWrong(`${hl(w.de)} <span class="task-en">(${w.en})</span>`, null, Erklaerung.vokabel(w.de, w.en));
           }
         }
       });
@@ -14587,9 +15665,11 @@ const Combat = {
         if (--offen === 0) { vorbei = true; this.onCorrect(12, "grammatik", 4, "wortschatz"); }
       } else {
         chosen.classList.remove("sel");
+        const falschesNomen = nouns.find((n) => n.noun === chosen.textContent) || nouns[0];
         this.patzer(++fehler, [chosen, bucket], () => {
           vorbei = true;
-          this.onWrong(nouns.map((n) => hl(`${n.article} ${n.noun}`)).join(" "));
+          this.onWrong(nouns.map((n) => hl(`${n.article} ${n.noun}`)).join(" "), null,
+            lesson ? null : Erklaerung.artikel(falschesNomen.noun, falschesNomen.article));
         });
       }
     }));
@@ -14608,7 +15688,7 @@ const Combat = {
       <div class="prompt" style="font-size:.9rem">${d.en}</div>
       <div class="choices email-choices">${this.knoepfe(mischen([d.correct, ...d.wrong]), "email-choice")}</div>`;
     this.beiKlick(".choice", (btn) => btn.dataset.v === d.correct
-      ? this.onCorrect(13, "schreiben", 5, "lesen") : this.onWrong(hl(Verben.markiere(d.correct)), d.correct));
+      ? this.onCorrect(13, "schreiben", 5, "lesen") : this.onWrong(hl(Verben.markiere(d.correct)), d.correct, Erklaerung.tipp("dialog")));
   },
 
   // Wiederholung aus dem gesamten Deck.
@@ -14623,15 +15703,17 @@ const Combat = {
     this.beiKlick(".choice", (btn) => {
       const right = btn.dataset.v === expected;
       VocabSRS.grade(card.de, right);
-      right ? this.onCorrect(6, "wortschatz", 0, null) : this.onWrong(`„${card.de}“ = ${hl(card.en)}`, expected);
+      right ? this.onCorrect(6, "wortschatz", 0, null)
+        : this.onWrong(`„${card.de}“ = ${hl(card.en)}`, expected, Erklaerung.vokabel(card.de, card.en));
     });
   },
 
   // Wortschatz-Lektion: DE→EN und EN→DE, das SRS waehlt das Wort.
   roundVocab(lesson) {
     const theme = lesson.scope.vocabTheme;
-    const items = VOCAB_THEMES[theme];
-    const correct = VocabSRS.pickForTheme(theme) || zufall(items);
+    // Innerhalb des Themas erst die einfachen Woerter, die langen Komposita spaeter.
+    const items = Wortschatz.filter(VOCAB_THEMES[theme], "de", theme, 6);
+    const correct = VocabSRS.pickForTheme(theme, items) || zufall(items);
     VocabSRS.ensureCard(correct.de, correct.en, theme);
     const options = mischen([correct, ...mischen(items.filter((it) => it !== correct)).slice(0, 3)]);
     const deToEn = Math.random() < 0.5;
@@ -14643,7 +15725,8 @@ const Combat = {
     this.beiKlick(".choice", (btn) => {
       const right = btn.dataset.v === expected;
       VocabSRS.grade(correct.de, right);
-      right ? this.onCorrect(5, "wortschatz", 0, null) : this.onWrong(`„${correct.de}“ = ${hl(correct.en)}`, expected);
+      right ? this.onCorrect(5, "wortschatz", 0, null)
+        : this.onWrong(`„${correct.de}“ = ${hl(correct.en)}`, expected, Erklaerung.vokabel(correct.de, correct.en));
     });
   },
 
@@ -14651,8 +15734,8 @@ const Combat = {
   roundVocabHoeren(lesson) {
     if (!Sound.hasSpeech()) return false;
     const theme = lesson.scope.vocabTheme;
-    const items = VOCAB_THEMES[theme];
-    const correct = VocabSRS.pickForTheme(theme) || zufall(items);
+    const items = Wortschatz.filter(VOCAB_THEMES[theme], "de", theme, 6);
+    const correct = VocabSRS.pickForTheme(theme, items) || zufall(items);
     VocabSRS.ensureCard(correct.de, correct.en, theme);
     const options = mischen([correct, ...mischen(items.filter((it) => it !== correct && it.en !== correct.en)).slice(0, 3)]);
     bodyEl.innerHTML = `
@@ -14665,7 +15748,8 @@ const Combat = {
     this.beiKlick(".choice", (btn) => {
       const right = btn.dataset.v === correct.en;
       VocabSRS.grade(correct.de, right);
-      right ? this.onCorrect(7, "hoeren", 3, "wortschatz") : this.onWrong(`🔊 „${hl(correct.de)}“ = ${correct.en}`, correct.en);
+      right ? this.onCorrect(7, "hoeren", 3, "wortschatz")
+        : this.onWrong(`🔊 „${hl(correct.de)}“ = ${correct.en}`, correct.en, Erklaerung.vokabel(correct.de, correct.en));
     });
   },
 
@@ -14683,7 +15767,7 @@ const Combat = {
     document.getElementById("hear-btn").addEventListener("click", () => Sound.speak(it.de, 0.7));
     this.beiKlick(".choice", (btn) => btn.dataset.v === it.e
       ? this.onCorrect(9, "hoeren", 3, "wortschatz")
-      : this.onWrong(`${it.e} = ${hl(it.de)} <span class="task-en">(${it.en})</span>`, it.e));
+      : this.onWrong(`${it.e} = ${hl(it.de)} <span class="task-en">(${it.en})</span>`, it.e, Erklaerung.vokabel(it.de, it.en)));
   },
 
   // Lückentext mit Wortbank: In einem Lesetext fehlen 3–4 Verben. Woerter antippen, dann pruefen.
@@ -14755,7 +15839,7 @@ const Combat = {
           return l ? hl(l.wort) + l.zeichen : tok;
         }).join("");
         textEl.innerHTML = loesung;
-        this.onWrong(`${Lang.isEn() ? "The missing verbs:" : "Die fehlenden Verben:"} ${luecken.map((l) => hl(l.wort)).join(" · ")}`);
+        this.onWrong(`${Lang.isEn() ? "The missing verbs:" : "Die fehlenden Verben:"} ${luecken.map((l) => hl(l.wort)).join(" · ")}`, null, Erklaerung.tipp("lueckentext"));
       });
       // Falsch belegte Luecken werden geleert, die richtigen bleiben stehen.
       if (!vorbei) { falsch.forEach((g) => { belegt[g] = null; }); setTimeout(() => { if (!vorbei) zeichnen(); }, 350); }
@@ -14794,7 +15878,8 @@ const Combat = {
         if (mark) mark.scrollIntoView({ block: "center" });
       }
       const antwort = f.typ === "rf" ? (f.richtig ? (Lang.isEn() ? "True" : "Richtig") : (Lang.isEn() ? "False" : "Falsch")) : f.correct;
-      this.onWrong(`${hl(antwort)} — ${Lang.isEn() ? "see the highlighted part of the text." : "siehe die markierte Stelle im Text."}`, ziel);
+      this.onWrong(`${hl(antwort)} — ${Lang.isEn() ? "see the highlighted part of the text." : "siehe die markierte Stelle im Text."}`, ziel,
+        Erklaerung.tipp(f.typ === "rf" ? "lesenRF" : "lesen"));
     });
   },
 
@@ -14898,7 +15983,7 @@ const Combat = {
       versuche++;
       if (gelegt.map((c) => c.w).join(" ") === korrekt.join(" ")) { this.onCorrect(15, "grammatik", 7, "schreiben"); return; }
       if (versuche >= 3) {
-        this.onWrong(`${hl(Verben.markiere((o.loesungVorspann || "") + satz))}${o.erklaerung ? `<br>${o.erklaerung}` : ""}`);
+        this.onWrong(hl(Verben.markiere((o.loesungVorspann || "") + satz)), null, o.erklaerung);
         return;
       }
       Economy.resetCombo(); UI.refresh(); Sound.playWrong();
@@ -14912,10 +15997,11 @@ const Combat = {
   // ---------------- Ergebnis-Verarbeitung ----------------
 
   // Falsche Antwort: Loesung hervorheben und stehen lassen, bis der Spieler weiterklickt (Leertaste).
-  onWrong(loesungHtml, richtigWert) {
+  onWrong(loesungHtml, richtigWert, erklaerung) {
     if (this.wartet || !this.active) return;
     Economy.resetCombo();
     UI.refresh();
+    this.serieAnzeigen();
     Sound.playWrong();
     if (this.test) {
       this.test.falsch++;
@@ -14934,6 +16020,7 @@ const Combat = {
       <div class="loesung">
         <div class="loesung-kopf">✗ ${Lang.isEn() ? "Not quite — here is the solution" : "Nicht ganz — so ist es richtig"}</div>
         <div class="loesung-text">${loesungHtml}</div>
+        ${this.erklaerKasten(erklaerung)}
         <div class="loesung-zeile">
           <span class="hint">${Lang.isEn() ? "Take your time to read it." : "Lies es in Ruhe durch."}</span>
           <button class="weiter-btn" id="weiter-btn">${Lang.isEn() ? "Next" : "Weiter"} <kbd>${Lang.isEn() ? "Space" : "Leertaste"}</kbd></button>
@@ -14941,6 +16028,42 @@ const Combat = {
       </div>`;
     document.getElementById("weiter-btn").addEventListener("click", () => this.weiter());
     feedbackEl.scrollIntoView({ block: "nearest" });
+  },
+
+  // Kurze Erklaerung unter der Loesung. Ohne eigenen Text nimmt sie den Merksatz der
+  // Lektion, zu der die Aufgabe gehoert — so steht nach JEDEM Fehler etwas Hilfreiches da.
+  erklaerKasten(erklaerung) {
+    const text = erklaerung || this.merkSatz();
+    if (!text) return "";
+    return `<div class="warum"><span class="warum-label">💡 ${Lang.isEn() ? "Why?" : "Warum?"}</span><p>${text}</p></div>`;
+  },
+
+  // Die Lektion der laufenden Runde (auch eine Wiederholungs-Lektion, siehe regel()) geht vor.
+  merkSatz() {
+    const l = this._rundenLektion || (this.test && this.test.lektion) || (Lesson.active || null);
+    const m = l ? tf(l, "merk") : "";
+    return m || "";
+  },
+
+  // ---------------- Serie: je laenger die Kette, desto staerker leuchtet die Karte ----------------
+  serieAnzeigen() {
+    const stufe = Economy.serieStufe();
+    for (let i = 1; i <= 5; i++) card.classList.toggle(`serie${i}`, i === stufe);
+    const el = document.getElementById("encounter-serie");
+    if (el) {
+      const n = Economy.state.serie || 0;
+      el.className = `serie-abzeichen s${stufe}`;
+      el.innerHTML = n >= 3
+        ? `${stufe >= 4 ? "🔥" : "✨"} ${Lang.isEn() ? "Streak" : "Serie"} <strong>${n}</strong>`
+        : "";
+    }
+    // Neue Stufe erreicht: kurzer Jubel, damit der Sprung spuerbar ist.
+    if (stufe > (this._serieStufe || 0)) {
+      const n = Economy.state.serie || 0;
+      UI.toast(`${stufe >= 4 ? "🔥" : "✨"} ${Lang.isEn() ? "Streak" : "Serie"} ×${n}${stufe >= 3 ? ` — ${Lang.isEn() ? "you are on fire" : "du brennst"}` : ""}`, "gold");
+      Sound.tone(560 + stufe * 90, 0.12, "triangle", 0.09);
+    }
+    this._serieStufe = stufe;
   },
 
   weiter() {
@@ -15018,11 +16141,15 @@ const Combat = {
     overlay.classList.remove("hidden");
     card.style.setProperty("--boss", info.farbe);
     enemyNameEl.textContent = `${info.emoji} ${tf(info, "name")}`;
+    this._serieStufe = Economy.serieStufe();
+    this.serieAnzeigen();
     const lessons = this.testLektionen(cfg, art);
+    const offen = { fertig: (LESSONS[cfg.id] || []).filter((l) => Economy.isLessonDone(l.id)).length };
     const titel = mitte ? (Lang.isEn() ? "Midway test" : "Zwischentest") : (Lang.isEn() ? "Final test" : "Abschlusstest");
     hpEl.textContent = titel;
     const bisher = (Economy.state.tests || {})[this.testSchluessel(cfg, art)];
-    const noetig = Math.ceil(TEST_FRAGEN * TEST_BESTEHEN);
+    const fragen = testLaenge(lessons.length);
+    const noetig = Math.ceil(fragen * TEST_BESTEHEN);
     const lohn = mitte
       ? (Lang.isEn() ? "then the second half of the district opens" : "dann öffnet sich die zweite Hälfte des Bezirks")
       : (Lang.isEn() ? "only then does the way on open" : "erst dann ist der Weg frei");
@@ -15032,18 +16159,24 @@ const Combat = {
         <div>
           <div class="boss-spruch">„${tf(info, "spruch")}“</div>
           <p class="boss-regeln">${Lang.isEn()
-            ? `${titel} for <strong>${cfg.name}</strong> (${cfg.cefr}): <strong>${TEST_FRAGEN} tasks</strong> of at least five different kinds, covering ${mitte ? "the first" : "all"} ${lessons.length} lessons. You pass with <strong>${noetig} correct answers</strong> — ${lohn}.`
-            : `${titel} für <strong>${cfg.name}</strong> (${cfg.cefr}): <strong>${TEST_FRAGEN} Aufgaben</strong> aus mindestens fünf verschiedenen Aufgabentypen, quer durch ${mitte ? "die ersten" : "alle"} ${lessons.length} Lektionen. Bestanden mit <strong>${noetig} richtigen Antworten</strong> — ${lohn}.`}</p>
+            ? `${titel} for <strong>${cfg.name}</strong> (${cfg.cefr}): <strong>${fragen} tasks</strong> of at least five different kinds — every one of the ${mitte ? "first " : ""}${lessons.length} lessons comes up. You pass with <strong>${noetig} correct answers</strong> — ${lohn}.`
+            : `${titel} für <strong>${cfg.name}</strong> (${cfg.cefr}): <strong>${fragen} Aufgaben</strong> aus mindestens fünf verschiedenen Aufgabentypen — jede der ${mitte ? "ersten " : ""}${lessons.length} Lektionen kommt dran. Bestanden mit <strong>${noetig} richtigen Antworten</strong> — ${lohn}.`}</p>
           <ul class="test-themen">${lessons.map((l) => `<li>${tf(l, "title")}</li>`).join("")}</ul>
-          ${bisher ? `<p class="hint">${Lang.isEn() ? "Your best so far" : "Dein bestes Ergebnis bisher"}: ${bisher.beste} / ${TEST_FRAGEN} · ${bisher.versuche} ${Lang.isEn() ? "attempts" : "Versuche"}</p>` : ""}
+          ${bisher ? `<p class="hint">${Lang.isEn() ? "Your best so far" : "Dein bestes Ergebnis bisher"}: ${bisher.beste} / ${fragen} · ${bisher.versuche} ${Lang.isEn() ? "attempts" : "Versuche"}</p>` : ""}
+          ${!mitte && !Economy.alleLektionenFertig(cfg.id) ? `<p class="boss-warnung">⚠️ ${Lang.isEn()
+            ? `You may challenge the boss at any time — but the test asks about all ${lessons.length} lessons, and you have finished ${offen.fertig} of them.`
+            : `Angreifen darfst du jederzeit — der Test fragt aber alle ${lessons.length} Lektionen ab, und du hast erst ${offen.fertig} davon abgeschlossen.`}</p>` : ""}
         </div>
       </div>
       <div class="choices">
         <button class="choice boss-start" id="boss-start">⚔️ ${Lang.isEn() ? "Start the test" : "Test starten"}</button>
-        ${mitte ? `<button class="choice" id="test-spaeter">⏳ ${Lang.isEn() ? "Later" : "Später"}</button>` : ""}
+        ${mitte ? `<button class="choice" id="test-boss">👑 ${Lang.isEn() ? "Straight to the boss" : "Direkt zum Boss"}</button>
+        <button class="choice" id="test-spaeter">⏳ ${Lang.isEn() ? "Later" : "Später"}</button>` : ""}
       </div>`;
     feedbackEl.innerHTML = "";
     document.getElementById("boss-start").addEventListener("click", () => this.testStarten(cfg, art));
+    const zumBoss = document.getElementById("test-boss");
+    if (zumBoss) zumBoss.addEventListener("click", () => this.startTest(this.districtState, "boss"));
     const spaeter = document.getElementById("test-spaeter");
     if (spaeter) spaeter.addEventListener("click", () => this.close());
   },
@@ -15121,6 +16254,7 @@ const Combat = {
     const T = this.test;
     if (!T) return;
     this._rundeId++;
+    this._rundenLektion = null;
     feedbackEl.innerHTML = ""; feedbackEl.className = "";
     const erlaubt = T.plan.length - Math.ceil(T.plan.length * TEST_BESTEHEN);
     T.idx++;
@@ -15208,6 +16342,7 @@ const Combat = {
 Combat.onCorrect = function (baseXP, attr1, bonusXP, attr2) {
   if (this.wartet || !this.active) return;
   Economy.incCombo();
+  this.serieAnzeigen();
   const r1 = Economy.awardXP(attr1, baseXP);
   if (attr2 && bonusXP) Economy.awardXP(attr2, bonusXP);
   const drop = Economy.rollMicrodrop();
@@ -15275,20 +16410,41 @@ const TestPlan = {
     return k;
   },
 
+  // Erst die Lektionen, dann die Typen: Jede Lektion kommt gleich oft dran (Abschlusstest:
+  // 10 Lektionen → je 1 Aufgabe, Zwischentest: 5 Lektionen → je 2), sonst kann man einen
+  // Bezirk bestehen, ohne die Haelfte des Stoffs zu koennen. Innerhalb einer Lektion wird der
+  // Typ gewaehlt, der im Test bisher am seltensten vorkam — so bleibt der Test abwechslungsreich.
+  // Nur wenn es weniger Lektionen als Aufgaben gibt, fuellen allgemeine Aufgaben auf.
   bauen(C, cfg, lektionen) {
-    const nachTyp = {};
-    for (const x of mischen(this.kandidaten(C, cfg, lektionen))) (nachTyp[x.typ] = nachTyp[x.typ] || []).push(x);
-    const typen = mischen(Object.keys(nachTyp));
-    const plan = [];
-    // Reihum ueber die Typen: erst jeder Typ einmal, dann wieder von vorn. So kommen moeglichst
-    // viele verschiedene Aufgabentypen vor (mindestens fuenf, sobald der Bezirk sie hergibt).
-    while (plan.length < TEST_FRAGEN && typen.length) {
-      for (const ty of typen) {
-        if (plan.length >= TEST_FRAGEN) break;
-        const liste = nachTyp[ty];
-        plan.push(liste[plan.length % liste.length]);
-      }
+    const alle = mischen(this.kandidaten(C, cfg, lektionen));
+    const jeLektion = new Map();
+    const allgemein = [];
+    for (const x of alle) {
+      if (!x.lektion) { allgemein.push(x); continue; }
+      if (!jeLektion.has(x.lektion)) jeLektion.set(x.lektion, []);
+      jeLektion.get(x.lektion).push(x);
     }
+    const plan = [];
+    const benutzt = {};
+    const nimm = (liste) => {
+      const frei = liste.filter((x) => !plan.includes(x));
+      if (!frei.length) return false;
+      const min = Math.min(...frei.map((x) => benutzt[x.typ] || 0));
+      const x = zufall(frei.filter((y) => (benutzt[y.typ] || 0) === min));
+      benutzt[x.typ] = (benutzt[x.typ] || 0) + 1;
+      plan.push(x);
+      return true;
+    };
+    // Lektionen mit wenig Auswahl zuerst, damit sie ihren Typ noch frei bekommen.
+    const reihe = mischen([...jeLektion.keys()]).sort((a, b) => jeLektion.get(a).length - jeLektion.get(b).length);
+    const ziel = testLaenge(reihe.length);
+    const runden = reihe.length ? Math.max(1, Math.floor(ziel / reihe.length)) : 0;
+    for (let r = 0; r < runden; r++) {
+      for (const l of reihe) if (plan.length < ziel) nimm(jeLektion.get(l));
+    }
+    // Rest: erst allgemeine Aufgaben (Lesen, Wortpaare …), dann weitere Lektionsaufgaben.
+    while (plan.length < ziel && nimm(allgemein)) { /* weiter */ }
+    for (const l of reihe) if (plan.length < ziel) nimm(jeLektion.get(l));
     // Zwei Phasen: erst die leichteren Formate, in Phase 2 die schweren (selbst schreiben, Fehler finden …).
     const schwer = new Set(["schwer", "umformen", "fehlerwort", "satzbauen", "freitext", "satzbau", "lueckentext", "lesen", "hoeren", "email"]);
     const gemischt = mischen(plan);
@@ -15370,8 +16526,11 @@ const MinispielDaten = {
     return themen.reduce((s, th) => s + ((VOCAB_THEMES[th] || []).length), 0);
   },
 
-  woerter() {
-    return this.themen().flatMap((th) => (VOCAB_THEMES[th] || []).map((w) => ({ ...w, theme: th })));
+  // Alle Woerter der bisherigen Themen — aber nur bis zu der Schwierigkeitsstufe, die zum
+  // Fortschritt passt (Wortschatz in vocab.js). Am Anfang also wirklich nur die Basics.
+  woerter(alle) {
+    const liste = this.themen().flatMap((th) => (VOCAB_THEMES[th] || []).map((w) => ({ ...w, theme: th })));
+    return alle ? liste : Wortschatz.filter(liste, "de", null, 40);
   },
 
   themaLabel(theme) {
@@ -15963,17 +17122,32 @@ const Wortjagd = {
     document.getElementById("jagd-start").addEventListener("click", () => { Sound.playClick(); this.start(); });
   },
 
-  start() {
+  // opt (nur im Kampf): { kampf:true, box, zeit, leben, wellen, fertig(gewonnen, info) }
+  start(opt) {
     const en = Lang.isEn();
-    Minispiele.aktiv = "jagd";
-    Minispiele.body.innerHTML = `
-      <div class="ms-leiste">
-        ${Minispiele.kopf(en ? "Word hunt" : "Wortjagd")}
-        <div class="ms-punkte" id="jagd-anzeige"></div>
-      </div>
-      <canvas id="jagd-leinwand" width="940" height="470"></canvas>
-      <p class="jagd-hinweis">🖱️ ${en ? "aim & click" : "zielen & klicken"} · ⌨️ ${en ? "arrows + space" : "Pfeiltasten + Leertaste"} · ⎋ ${en ? "back" : "zurück"}</p>`;
-    Minispiele.bindZurueck();
+    this.opt = opt || {};
+    const kampf = !!this.opt.kampf;
+    this.maxWellen = this.opt.wellen || 0;
+    this.geschafft = false;
+    const box = kampf ? this.opt.box : Minispiele.body;
+    if (kampf) {
+      box.innerHTML = `
+        <div class="duell-kopf"><span class="duell-icon">🎯</span>
+          <div><strong>${en ? "Word hunt" : "Wortjagd"}</strong>
+          <span>${en ? "Hit the words the order asks for — survive both waves." : "Triff die Wörter, die der Auftrag verlangt — überstehe beide Wellen."}</span></div></div>
+        <canvas id="jagd-leinwand" width="940" height="470"></canvas>
+        <p class="jagd-hinweis">🖱️ ${en ? "aim & click" : "zielen & klicken"} · ⌨️ ${en ? "arrows + space" : "Pfeiltasten + Leertaste"}</p>`;
+    } else {
+      Minispiele.aktiv = "jagd";
+      box.innerHTML = `
+        <div class="ms-leiste">
+          ${Minispiele.kopf(en ? "Word hunt" : "Wortjagd")}
+          <div class="ms-punkte" id="jagd-anzeige"></div>
+        </div>
+        <canvas id="jagd-leinwand" width="940" height="470"></canvas>
+        <p class="jagd-hinweis">🖱️ ${en ? "aim & click" : "zielen & klicken"} · ⌨️ ${en ? "arrows + space" : "Pfeiltasten + Leertaste"} · ⎋ ${en ? "back" : "zurück"}</p>`;
+      Minispiele.bindZurueck();
+    }
 
     this.leinwand = document.getElementById("jagd-leinwand");
     this.malen = this.leinwand.getContext("2d");
@@ -15986,8 +17160,8 @@ const Wortjagd = {
 
     this.ziele = []; this.funken = []; this.strahlen = []; this.fehlerliste = [];
     this.hinweis = null;
-    this.zeit = JAGD_ZEIT;
-    this.leben = JAGD_LEBEN;
+    this.zeit = this.opt.zeit || JAGD_ZEIT;
+    this.leben = this.opt.leben || JAGD_LEBEN;
     this.punkte = 0; this.serie = 0; this.besteSerie = 0;
     this.treffer = 0; this.fehler = 0; this.verpasst = 0; this.welle = 0;
     this.rueckstoss = 0;
@@ -15995,7 +17169,7 @@ const Wortjagd = {
     this.krx = this.leinwand.width / 2;
     this.kry = this.leinwand.height / 2;
     this.auftrag = this.neuerAuftrag();
-    if (!this.auftrag) { this.oeffne(); return; }
+    if (!this.auftrag) { if (kampf) { this.opt = {}; if (opt.fertig) opt.fertig(true, { attr: "wortschatz" }); } else this.oeffne(); return; }
     this.neueWelle(0);
     this.laeuft = true;
     this.letzte = performance.now();
@@ -16010,9 +17184,11 @@ const Wortjagd = {
 
   // ---------- Wellen ----------
   neueWelle(now) {
+    // Im Kampf sind es nur wenige Wellen — danach ist die Runde gewonnen.
+    if (this.maxWellen && this.welle >= this.maxWellen) { this.geschafft = true; this.ende(); return; }
     this.welle++;
     // Alle paar Wellen ein neuer Auftrag — sonst wird es zu eintönig.
-    if (this.welle % 3 === 1 && this.welle > 1) this.auftrag = this.neuerAuftrag() || this.auftrag;
+    if (!this.maxWellen && this.welle % 3 === 1 && this.welle > 1) this.auftrag = this.neuerAuftrag() || this.auftrag;
     const w = this.auftrag.welle();
     this.frage = Lang.isEn() ? w.frageEn : w.frage;
     const tempo = 0.78 + Math.min(0.5, this.welle * 0.04) + Math.min(0.25, Combat.bezirkIndex() * 0.03);
@@ -16329,6 +17505,7 @@ const Wortjagd = {
   // ---------- Ende ----------
   ende() {
     this.stop();
+    if (this.opt && this.opt.kampf) { this.kampfEnde(); return; }
     const en = Lang.isEn();
     const s = Minispiele.stand().jagd;
     s.gespielt = (s.gespielt || 0) + 1;
@@ -16375,6 +17552,22 @@ const Wortjagd = {
     document.getElementById("jagd-nochmal").addEventListener("click", () => { Sound.playClick(); this.start(); });
   },
 
+  // ---------- Ende im Kampf ----------
+  // Gewonnen ist die Runde, wer alle Wellen ueberlebt. Die Fehlerliste wird zur Loesung,
+  // die Combat.onWrong anzeigt — mit Erklaerung zum ersten Wort, das danebenging.
+  kampfEnde() {
+    const en = Lang.isEn();
+    const opt = this.opt;
+    this.opt = {};
+    const gewonnen = this.geschafft && this.leben > 0;
+    const fehler = this.fehlerliste.slice(0, 5);
+    const loesung = fehler.length
+      ? `${en ? "These were the traps" : "Diese Wörter waren die Falle"}:<br>${fehler.map((f) => `${hl(f.de)} — ${f.en}`).join("<br>")}`
+      : (en ? "Time was up — the wave got through." : "Die Zeit war um — die Welle ist durchgekommen.");
+    const erklaerung = fehler.length ? Erklaerung.vokabel(fehler[0].de, fehler[0].en) : "";
+    if (opt.fertig) opt.fertig(gewonnen, { attr: (this.auftrag && this.auftrag.attr) || "wortschatz", loesung, erklaerung });
+  },
+
   // ---------- Tastatur ----------
   taste(e) {
     const k = e.key.toLowerCase();
@@ -16393,6 +17586,225 @@ const Wortjagd = {
   tasteAuf(e) {
     if (e.key === " " || e.key === "Spacebar" || e.key === "Enter") { this.tasten[" "] = false; return; }
     this.tasten[e.key.toLowerCase()] = false;
+  },
+};
+
+// ---------------- Duell: Wortle und Wortjagd mitten im Kampf ----------------
+//
+// Gegner stellen nicht nur Aufgaben, sondern ab und zu ein ganzes Minispiel. Gewonnen
+// zaehlt wie eine richtige Antwort (Treffer, XP, Serie), verloren wie eine falsche —
+// mit Loesung und Erklaerung im gewohnten Kasten (siehe Combat.duellFertig in combat.js).
+//
+// Es laeuft immer nur EIN Duell, deshalb reicht ein Objekt ohne Instanzen. Die Spielhalle
+// ist waehrend eines Kampfes zu, ein Kampf startet nicht bei offener Spielhalle — die
+// beiden koennen sich also nicht ins Gehege kommen.
+const DUELL_WORTLE_VERSUCHE = 4;
+
+const Duell = {
+  art: null,     // null | "wortle" | "jagd"
+  ende: null,    // Rueckruf zu Combat
+
+  laeuft() { return !!this.art; },
+
+  karte() { return document.getElementById("encounter-card"); },
+
+  // Die Kampfkarte wird fuer ein Duell breiter — sonst passen weder Tastatur noch Leinwand.
+  breit(an) {
+    const k = this.karte();
+    if (k) k.classList.toggle("duell", !!an);
+  },
+
+  // breitLassen: nach dem Ende bleibt die Karte breit, bis die naechste Runde beginnt —
+  // sonst springt das Layout unter der Loesungsanzeige zusammen.
+  stop(breitLassen) {
+    if (this.art === "jagd") { Wortjagd.stop(); Wortjagd.opt = {}; }
+    this.art = null;
+    this.ende = null;
+    if (!breitLassen) this.breit(false);
+  },
+
+  fertig(gewonnen, info) {
+    const rueckruf = this.ende;
+    this.stop(true);
+    if (rueckruf) rueckruf(gewonnen, info || {});
+  },
+
+  // ---------- Wortle im Kampf ----------
+  wortle(box, ende) {
+    const laengen = KampfWortle.moeglicheLaengen();
+    if (!laengen.length) return false;
+    this.art = "wortle";
+    this.ende = ende;
+    this.breit(true);
+    KampfWortle.start(box, laengen);
+    return true;
+  },
+
+  // ---------- Wortjagd im Kampf ----------
+  jagd(box, ende) {
+    // Ohne genug Wortmaterial kommt kein Auftrag zustande — dann lieber eine normale Aufgabe.
+    if (MinispielDaten.woerter().length < 8) return false;
+    this.art = "jagd";
+    this.ende = ende;
+    this.breit(true);
+    Wortjagd.start({
+      kampf: true, box, zeit: 42, leben: 2, wellen: 2,
+      fertig: (gewonnen, info) => this.fertig(gewonnen, info),
+    });
+    return true;
+  },
+
+  // ---------- Tastatur (main.js leitet waehrend eines Duells hierher um) ----------
+  // Rueckgabe true = Taste verbraucht. Escape bleibt frei, damit man den Kampf verlassen kann.
+  taste(e) {
+    if (e.key === "Escape") return false;
+    if (this.art === "wortle") { KampfWortle.taste(e); return true; }
+    if (this.art === "jagd") { Wortjagd.taste(e); return true; }
+    return false;
+  },
+
+  tasteAuf(e) {
+    if (this.art === "jagd") Wortjagd.tasteAuf(e);
+  },
+};
+
+// Kurze Wortle-Fassung fuer den Kampf: weniger Versuche, kurze Woerter, eigene IDs
+// (die Spielhallen-Fassung bleibt unveraendert und benutzt ihre eigenen Elemente).
+const KampfWortle = {
+  loesung: null,
+  ziel: [],
+  laenge: 5,
+  reihen: [],
+  eingabe: "",
+  vorbei: false,
+  tastenStand: {},
+  box: null,
+
+  // Im Kampf nur kurze Woerter — mit dem Fortschritt werden sie laenger.
+  moeglicheLaengen() {
+    const max = 4 + Math.min(2, Math.floor(Wortschatz.maxStufe() / 2));
+    return [4, 5, 6].filter((n) => n <= max && MinispielDaten.raetselWoerter(n).length >= 4);
+  },
+
+  start(box, laengen) {
+    this.box = box;
+    const laenge = zufall(laengen);
+    const pool = MinispielDaten.raetselWoerter(laenge);
+    this.loesung = zufall(pool);
+    this.ziel = msGross(this.loesung.wort).split("");
+    this.laenge = laenge;
+    this.reihen = [];
+    this.eingabe = "";
+    this.vorbei = false;
+    this.tastenStand = {};
+    const en = Lang.isEn();
+    box.innerHTML = `
+      <div class="duell-kopf"><span class="duell-icon">🟩</span>
+        <div><strong>Wortle</strong>
+        <span>${en ? `Guess the German word — ${DUELL_WORTLE_VERSUCHE} tries.` : `Errate das deutsche Wort — ${DUELL_WORTLE_VERSUCHE} Versuche.`}</span></div></div>
+      <div class="wortle-thema" id="duell-thema"></div>
+      <div class="wortle-grid" id="duell-grid"></div>
+      <div class="wortle-meldung" id="duell-meldung"></div>
+      <div class="wortle-tasten" id="duell-tasten"></div>`;
+    this.zeichne();
+  },
+
+  zeichne() {
+    const en = Lang.isEn();
+    const thema = MinispielDaten.themaLabel(this.loesung.theme);
+    const hilfe = this.reihen.length >= 2;
+    document.getElementById("duell-thema").innerHTML =
+      `<span class="wortle-chip">🗂️ ${thema || (en ? "Vocabulary" : "Wortschatz")}</span>
+       <span class="wortle-chip">${this.laenge} ${en ? "letters" : "Buchstaben"}</span>
+       ${hilfe ? `<span class="wortle-chip tipp">💡 ${this.loesung.en}</span>` : ""}`;
+
+    let html = "";
+    for (let r = 0; r < DUELL_WORTLE_VERSUCHE; r++) {
+      const fertig = this.reihen[r];
+      const aktuell = !fertig && r === this.reihen.length;
+      html += `<div class="wortle-reihe ${aktuell ? "aktiv" : ""}">`;
+      for (let i = 0; i < this.laenge; i++) {
+        const b = fertig ? fertig.buchstaben[i] : (aktuell ? (this.eingabe[i] || "") : "");
+        const w = fertig ? fertig.wertung[i] : "";
+        html += `<div class="wortle-feld ${w} ${b && !fertig ? "gefuellt" : ""}">${b || ""}</div>`;
+      }
+      html += "</div>";
+    }
+    document.getElementById("duell-grid").innerHTML = html;
+
+    const tasten = WORTLE_TASTEN.map((reihe) => `<div class="wt-reihe">${reihe.split("").map((c) => {
+      const breit = c === "⏎" || c === "⌫";
+      return `<button class="wt-taste ${breit ? "breit" : ""} ${this.tastenStand[c] || ""}" data-k="${c}">${c}</button>`;
+    }).join("")}</div>`).join("");
+    const box = document.getElementById("duell-tasten");
+    box.innerHTML = tasten;
+    box.querySelectorAll(".wt-taste").forEach((b) => b.addEventListener("click", () => {
+      const k = b.dataset.k;
+      if (k === "⏎") this.absenden();
+      else if (k === "⌫") this.loesche();
+      else this.tippe(k);
+    }));
+  },
+
+  meldung(text, art) {
+    const el = document.getElementById("duell-meldung");
+    if (el) { el.className = `wortle-meldung ${art || ""}`; el.innerHTML = text; }
+  },
+
+  tippe(c) {
+    if (this.vorbei || this.eingabe.length >= this.laenge) return;
+    this.eingabe += msGross(c);
+    Sound.tone(520, 0.03, "square", 0.05);
+    this.zeichne();
+  },
+
+  loesche() {
+    if (this.vorbei || !this.eingabe.length) return;
+    this.eingabe = this.eingabe.slice(0, -1);
+    this.zeichne();
+  },
+
+  absenden() {
+    if (this.vorbei) return;
+    const en = Lang.isEn();
+    if (this.eingabe.length < this.laenge) {
+      this.meldung(en ? `The word has ${this.laenge} letters.` : `Das Wort hat ${this.laenge} Buchstaben.`, "warn");
+      Sound.playWrong();
+      return;
+    }
+    const buchstaben = this.eingabe.split("");
+    const wertung = Wortle.bewerte.call({ ziel: this.ziel, laenge: this.laenge }, buchstaben);
+    this.reihen.push({ buchstaben, wertung });
+    const rang = { weg: 0, da: 1, ok: 2 };
+    buchstaben.forEach((c, i) => {
+      if (!this.tastenStand[c] || rang[wertung[i]] > rang[this.tastenStand[c]]) this.tastenStand[c] = wertung[i];
+    });
+    this.eingabe = "";
+    const gewonnen = wertung.every((w) => w === "ok");
+    this.zeichne();
+    if (gewonnen) { this.fertig(true); return; }
+    if (this.reihen.length >= DUELL_WORTLE_VERSUCHE) { this.fertig(false); return; }
+    Sound.tone(300, 0.08, "sine", 0.08);
+    this.meldung(`${en ? "Try" : "Versuch"} ${this.reihen.length + 1} / ${DUELL_WORTLE_VERSUCHE}`);
+  },
+
+  fertig(gewonnen) {
+    this.vorbei = true;
+    const w = this.loesung;
+    Minispiele.merkeWort(w.voll, w.en, w.theme, gewonnen);
+    Sound.speak(w.voll);
+    Duell.fertig(gewonnen, {
+      attr: "wortschatz",
+      loesung: `${Lang.isEn() ? "The word was" : "Das Wort war"} ${hl(w.voll)} — ${w.en}`,
+      erklaerung: Erklaerung.vokabel(w.voll, w.en),
+    });
+  },
+
+  taste(e) {
+    if (e.key === "Enter") { e.preventDefault(); this.absenden(); return; }
+    if (e.key === "Backspace") { e.preventDefault(); this.loesche(); return; }
+    if (e.key === " " || e.key === "Spacebar") { e.preventDefault(); return; }
+    if (/^[a-zA-ZäöüÄÖÜß]$/.test(e.key)) { e.preventDefault(); this.tippe(e.key); }
   },
 };
 
@@ -16575,8 +17987,12 @@ const UI = {
     this.els.xpBar.style.width = `${prog.pct}%`;
     this.els.bernstein.textContent = s.bernstein;
 
-    this.els.combo.textContent = `Combo ×${Economy.comboMultiplier().toFixed(2)}`;
+    // Serie (richtige Antworten am Stueck) steht vorn — sie ist das, was leuchtet.
+    const serie = s.serie || 0;
+    const stufe = Economy.serieStufe();
+    this.els.combo.textContent = `${serie >= 3 ? `${stufe >= 4 ? "🔥" : "✨"} ${serie} · ` : ""}Combo ×${Economy.comboMultiplier().toFixed(2)}`;
     this.els.combo.classList.toggle("hot", s.combo >= 3);
+    for (let i = 1; i <= 5; i++) this.els.combo.classList.toggle(`serie${i}`, i === stufe);
 
     let league = LEAGUES[0].label;
     for (const l of LEAGUES) if (s.level >= l.min) league = l.label;
@@ -17014,6 +18430,9 @@ window.addEventListener("keydown", (e) => {
   if (tippenInFeld(e)) return;
   // Spielhalle hat Vorrang: dort wird getippt (Wortle) und geschossen (Wortjagd).
   if (Minispiele.isOpen()) { Minispiele.taste(e); return; }
+  // Dasselbe im Kampf: laeuft dort gerade ein Duell (Wortle/Wortjagd), nimmt es die Tasten
+  // selbst entgegen — Escape laesst es durch, damit man den Kampf verlassen kann.
+  if (Combat.active && Duell.laeuft() && Duell.taste(e)) return;
   // Erklaerfilm hat Vorrang: Leertaste = Pause, Esc = schliessen.
   if (Erklaerfilm.isOpen()) {
     if (e.key === " " || e.key === "Spacebar") { e.preventDefault(); Erklaerfilm.umschalten(); }
@@ -17053,6 +18472,7 @@ window.addEventListener("keydown", (e) => {
 });
 window.addEventListener("keyup", (e) => {
   if (Minispiele.isOpen()) { Minispiele.tasteAuf(e); return; }
+  if (Combat.active && Duell.laeuft()) { Duell.tasteAuf(e); return; }
   keys[e.key.toLowerCase()] = false;
 });
 
@@ -17184,15 +18604,16 @@ function update(now) {
 
     updatePickups(cfg, now);
 
-    // Boss = Abschlusstest. Er steht immer sichtbar da; kaempfen kann man erst nach allen Lektionen.
+    // Boss = Abschlusstest. Er steht immer sichtbar da und ist jederzeit angreifbar.
     if (cfg.boss && !currentState.boss && !currentState.bossDefeated) {
       const gate = World.bossGateZone(currentState);
       const amBoss = dist(player.x, player.y, gate.x, gate.y) < gate.r + player.radius;
       if (amBoss && !currentState.amBoss) {
         player.target = null;
-        if (World.bossBereit(currentState)) Combat.startBoss(currentState);
-        else if (Economy.zwischentestFaellig(cfg.id)) Combat.startZwischentest(currentState);
-        else UI.toast(Lang.isEn() ? "🔒 Finish all lessons of this area first — then the test begins." : "🔒 Erst alle Lektionen dieses Bezirks abschließen — dann beginnt der Test.", "warn");
+        // Den Boss darf man IMMER angreifen — bestehen kann man ihn nur mit 80 % richtig.
+        // Steht der Zwischentest an, kommt der zuerst; von dort fuehrt ein Knopf zum Boss.
+        if (Economy.zwischentestFaellig(cfg.id) && !World.bossBereit(currentState)) Combat.startZwischentest(currentState);
+        else Combat.startBoss(currentState);
       }
       currentState.amBoss = amBoss;
     }
